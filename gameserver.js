@@ -37,6 +37,8 @@ function init() {
 	// Set up Socket.IO to listen on port 8000
 	serverSocket = io.listen(serverConfiguration.connectionPort);
 	console.log("# Game server is now listening");
+	
+	sessionHandler.ioSession = serverSocket;
 
 	// Start listening for events
 	setEventHandlers();
@@ -73,7 +75,7 @@ function onClientConnect(client) {
 	console.log("# New client has connected: " + client.id);
 
 	// send connect event
-	var event = { "module": "system", "action": "connectclient", "data": "" };
+	var event = { "module": "system", "action": "createclientsession", "data": "" };
 	eventHandler.executeEvent(client, event);
 }
 
@@ -83,7 +85,7 @@ function onClientDisconnect() {
     console.log('# Client has disconnected: ' + this.id);
 
 	// send disconnection event
-	var event = { "module": "system", "action": "disconnectclient", "data": "" };
+	var event = { "module": "system", "action": "destroyclientsession", "data": "" };
 	eventHandler.executeEvent(this, event);
 };
 

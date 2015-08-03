@@ -14,12 +14,12 @@ function SessionhandlerClass() {
 	this.sessionStorage = new Array();
 }
 
-SessionhandlerClass.prototype.createClientSession = function (sessionId) {
-	console.log("# Creating a new session for id " + sessionId);
+SessionhandlerClass.prototype.createClientSession = function (session) {
+	console.log("# Creating a new session for id " + session.id);
 
 	// create new session object
 	var newSession = new SessionObject();
-	newSession.sessionId = sessionId;
+	newSession.session = session;
 
 	// add new session to list
 	this.sessionStorage.push(newSession);
@@ -28,12 +28,12 @@ SessionhandlerClass.prototype.createClientSession = function (sessionId) {
 	return true;
 }
 
-SessionhandlerClass.prototype.destroyClientSession = function (sessionId) {
-	console.log("# Removing session with id " + sessionId + " from session storage");
+SessionhandlerClass.prototype.destroyClientSession = function (session) {
+	console.log("# Removing session with id " + session.id + " from session storage");
 
 	// filter out session with respective id
 	this.sessionStorage = this.sessionStorage.filter(function (el) {
-		return el.sessionId != sessionId;
+		return el.session != session;
 	});
 
 	console.log("# We now have " + this.sessionStorage.length + " sessions");
@@ -42,8 +42,7 @@ SessionhandlerClass.prototype.destroyClientSession = function (sessionId) {
 
 // Reference object for a session
 function SessionObject() {
-	// session id for referencing
-	this.sessionId = "";
+	this.session = "";
 
 	// user attached to this session
 	this.user = "";

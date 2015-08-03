@@ -13,6 +13,9 @@ var uuid = require('node-uuid');
 // game handler
 var gameHandler = require('./gamehandler.js');
 
+// session handler
+var sessionHandler = require('./sessionhandler.js');
+
 var lobbyHandler = new LobbyhandlerClass();
 
 // Class function that gets the prototype methods
@@ -79,9 +82,50 @@ LobbyhandlerClass.prototype.confirmLobby = function (sessionId, lobbyId) {
 
 	// check if all participants have already confirmed	
 	if (this.lobbyStorage[lobbyPos].lobbyParticipantsConfirmed.length == this.lobbyStorage[lobbyPos].lobbyParticipants.length) {
+		// create a new game via the gamehandler
+		var newGameUUID = gameHandler.createGame();
+	
+		// check if new game was created
+		if (!newGameUUID) {
+			// game creation failed
+			return false
+		}
+	
+		// return game id to the client so he can reference it
+		for (var i = 0, len = this.lobbyStorage[lobbyPos].lobbyParticipantsConfirmed.length; i < len; i++) {
+			var clientSessionId = this.lobbyStorage[lobbyPos].lobbyParticipantsConfirmed[i];
+			
+			// filter out session with respective id
+			var clientSession = sessionHandler.sessionStorage.filter(function (el) {
+				return el.session.id == clientSessionId;
+			});
+
+			// emit to found session			
+			clientSession[0].session.emit('message', newGameUUID);
+		}
+		
+		// destory lobby
+		this.destroyLobby(lobbyId);
+		
+		// done
+		console.log("# Session " + sessionId + " started a new game (" + newGameUUID + ")");
+		return true;
 	}
 
 	console.log("# Session " + sessionId + " confirmed lobby " + lobbyId + ", " + this.lobbyStorage[lobbyPos].lobbyParticipantsConfirmed.length + " / " + this.lobbyStorage[lobbyPos].lobbyParticipants.length);
+	return true;
+}
+
+// destroy lobby
+LobbyhandlerClass.prototype.destroyLobby = function (lobbyId) {
+	console.log("# Removing lobby with id " + lobbyId + " from lobby storage");
+
+	// filter out lobby with respective id
+	this.lobbyStorage = this.lobbyStorage.filter(function (el) {
+		return el.lobbyId != lobbyId;
+	});
+
+	console.log("# We now have " + this.lobbyStorage.length + " lobbies");
 	return true;
 }
 

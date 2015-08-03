@@ -78,8 +78,7 @@ The proof of concept tries to implement the following game as example.
 
 # How to get this game
 
-We expect two clients (Player1, Player2) that connect and play together. This is the "script"
-they go through from a server view.
+We expect two clients (Player1, Player2) that connect and play together. This is the "script" they go through from a server view.
 
 1) Player 1: Connect to the server as socket
 2) Player 2: Connect to the server as socket
@@ -88,6 +87,8 @@ they go through from a server view.
 5) Player 1: Call lobby/confirm
 6) Player 2: Call lobby/confirm
 
-) Player 1: Disconnect from the server
-) Player 2: Disconnect from the server
+..
+
+99) Player 1: Disconnect from the server
+100) Player 2: Disconnect from the server
 
