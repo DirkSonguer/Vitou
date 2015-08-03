@@ -1,0 +1,96 @@
+
+# Game Server Proof of Concept
+
+This is a proof of concept for a game server middleware.
+
+Please note: This is a proof of concept. I mean it!
+
+It is a really, really bad idea to use this thing in any way productive. For example it only runs
+in memory. There is no data storage attached and if it crashes, all is gone. Also, there is no real
+security and it's full of things that will affect performance in a very, very bad way. In other words,
+I tried to add TODOs as a blacklist but gave up since there would be too many. Got it?
+
+
+# Installation
+
+## Prerequisites
+- Get node.js: https://nodejs.org/download/
+- Change in the project root and get all dependencies with "npm install"
+
+## Run servers
+- "node ./gameserver.js" in project root runs the game server 
+
+- "node ./testserver.js" in project root runs a server that provides a demo interface
+- You can open it via browser at "http://localhost:8887/"
+- It will send a test client that allows you to send events to the server
+
+
+# How to use as client
+
+The calls to the server revolves around modules, actions and data, handed over in a
+JSON object.
+
+{
+	"module": "STRING",
+	"action": "STRING",
+	"data": "STRING"
+};
+
+The module defines the directory within /server_module, the action defines the file
+to call. Data describes what is handed over to the function.
+
+Example: { "module": "lobby", "action": "joinlobby", "data": "a86c3760-3a05-11e5-a155-fd6757717cdb" };
+
+
+# Proof of Concept Game
+
+The proof of concept tries to implement the following game as example.
+
+## Main Game - Tank fight
+- 2 player vs. game
+- Each player is represented one of his his personl tanks he choses in the lobby
+- Tanks have randomised starting positions on a 2D map
+- Starting player is chosen at random
+- Each round a player can either move up to his total speed along a vector or shoot
+- Players take turns
+- When a weapon hits a tank, it reduces the hitpoints of the hit tank
+- If a tank has <= 0 hitpoints, it is destroyed
+- A player wins if he destorys the other players tank
+- The winner gets 10 money
+
+## Meta - Player tanks
+- Each player can own multiple tanks
+- Each tank has hitpoints (=life)
+- Each tank has a size (=hitbox)
+- Each tank has a position on the map
+- Each tank has a speed he can move with
+- Each tank can be equiped with a weapon turret
+- There are multiple types of tanks, each with different values for hitpoints, size and speed
+- Each tank type has a price
+- Each player starts with one tank of default type on account creation
+- Players can buy more tanks for money
+
+## Meta - Tank weapon turrets
+- Each weapon turret causes damage on hit
+- Each weapon turret can be fired in each direction (0°-360°) around the tanks position
+- Each weapon turret can be angled at a max angle (0°-max°) in height
+- Each weapon can be fired with a specific power (0-max power), making the projectile go further
+- Players can buy tank weapon turrets
+- Every type of weapon turret can be mounted to every type of tank
+
+
+# How to get this game
+
+We expect two clients (Player1, Player2) that connect and play together. This is the "script"
+they go through from a server view.
+
+1) Player 1: Connect to the server as socket
+2) Player 2: Connect to the server as socket
+3) Player 1: Call lobby/createlobby
+4) Player 2: Call lobby/joinlobby with lobbyId from (3)
+5) Player 1: Call lobby/confirm
+6) Player 2: Call lobby/confirm
+
+) Player 1: Disconnect from the server
+) Player 2: Disconnect from the server
+

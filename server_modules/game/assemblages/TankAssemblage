@@ -1,0 +1,13 @@
+{
+	meta:{
+		"comment":""
+	},
+	data:{[
+		NameComponent,
+		HitboxComponent,
+		HitpointComponent,
+		PositionComponent,
+		CanMoveComponent,
+		PriceComponent
+	]}
+}

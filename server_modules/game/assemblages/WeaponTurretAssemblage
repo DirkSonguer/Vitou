@@ -1,0 +1,10 @@
+{
+	meta:{
+		"comment":""
+	},
+	data:{[
+		NameComponent,
+		CanFireComponent,
+		PriceComponent
+	]}
+}
