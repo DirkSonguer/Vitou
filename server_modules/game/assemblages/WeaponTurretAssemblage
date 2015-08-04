@@ -3,8 +3,8 @@
 		"comment":""
 	},
 	data:{[
-		NameComponent,
-		CanFireComponent,
-		PriceComponent
+		"NameComponent",
+		"CanFireComponent",
+		"PriceComponent"
 	]}
 }

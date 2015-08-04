@@ -3,7 +3,7 @@
 		"comment":""
 	},
 	data:{[
-		NameComponent,
-		HasMoneyComponent
+		"NameComponent",
+		"HasMoneyComponent"
 	]}
 }

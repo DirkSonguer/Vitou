@@ -3,11 +3,11 @@
 		"comment":""
 	},
 	data:{[
-		NameComponent,
-		HitboxComponent,
-		HitpointComponent,
-		PositionComponent,
-		CanMoveComponent,
-		PriceComponent
+		"NameComponent",
+		"HitboxComponent",
+		"HitpointComponent",
+		"PositionComponent",
+		"CanMoveComponent",
+		"PriceComponent"
 	]}
 }
