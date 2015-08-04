@@ -81,11 +81,15 @@ The proof of concept tries to implement the following game as example.
 We expect two clients (Player1, Player2) that connect and play together. This is the "script" they go through from a server view.
 
 1) Player 1: Connect to the server as socket
+2) Player 1: Buy new tank
+3) Player 1: Select new tank as main tank (still with default turret)
 2) Player 2: Connect to the server as socket
-3) Player 1: Call lobby/create
-4) Player 2: Call lobby/join with lobbyId from (3)
-5) Player 1: Call lobby/confirm
-6) Player 2: Call lobby/confirm
+4) Player 2: Buy new turret
+5) Player 2: Use new turret with current tank
+6) Player 1: Call lobby/create
+7) Player 2: Call lobby/join with lobbyId from (3)
+8) Player 1: Call lobby/confirm
+9) Player 2: Call lobby/confirm
 
 ..
 
