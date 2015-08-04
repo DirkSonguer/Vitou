@@ -2,8 +2,8 @@
 // lobby handler
 var lobbyHandler = require('../../../classes/lobbyhandler.js');
 
-// session handler
-var sessionHandler = require('../../../classes/sessionhandler.js');
+// communication handler
+var communicationHandler = require('../../../classes/communicationhandler.js');
 
 var run = function (session, data) {
 	// create a new game via the gamehandler
@@ -14,17 +14,10 @@ var run = function (session, data) {
 		// lobby could not be joined
 		return false
 	}
-
-	// send update lobby state to all participants
-	for (var i = 0, len = lobby.lobbyParticipants.length; i < len; i++) {
-		// filter out session with respective id
-		var clientSession = sessionHandler.sessionStorage.filter(function (el) {
-			return el.id == lobby.lobbyParticipants[i];
-		});
-
-		// emit to found session
-		clientSession[0].socket.emit('message', '{ "module": "lobby", "action": "newplayerjoined", "data": "' + session.id + '" };');
-	}
+	
+	// send update event to all clients in lobby
+	var event = '{ "module": "lobby", "action": "newplayerjoined", "data": "' + session.id + '" };';
+	communicationHandler.sendEventToList(event, lobby.lobbyParticipants);
 			
 	// done
 	return true;

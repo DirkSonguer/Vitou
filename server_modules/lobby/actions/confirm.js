@@ -5,8 +5,8 @@ var lobbyHandler = require('../../../classes/lobbyhandler.js');
 // game handler
 var gameHandler = require('../../../classes/gamehandler.js');
 
-// session handler
-var sessionHandler = require('../../../classes/sessionhandler.js');
+// communication handler
+var communicationHandler = require('../../../classes/communicationhandler.js');
 
 var run = function (session, data) {
 	// confirm the lobby participation
@@ -20,16 +20,9 @@ var run = function (session, data) {
 	
 	// check if all participants have already confirmed
 	if (lobby.lobbyParticipantsConfirmed.length != lobby.lobbyParticipants.length) {
-		// send update lobby state to all participants
-		for (var i = 0, len = lobby.lobbyParticipantsConfirmed.length; i < len; i++) {
-			// filter out session with respective id
-			var clientSession = sessionHandler.sessionStorage.filter(function (el) {
-				return el.id == lobby.lobbyParticipantsConfirmed[i];
-			});
-
-			// emit to found session
-			clientSession[0].socket.emit('message', '{ "module": "lobby", "action": "playerconfirmed", "data": "' + session.id + '" };');
-		}
+		// send update event to all clients in lobby
+		var event = '{ "module": "lobby", "action": "playerconfirmed", "data": "' + session.id + '" };';
+		communicationHandler.sendEventToList(event, lobby.lobbyParticipants);
 	} else {		
 		// create a new game via the gamehandler
 		var newGameUUID = gameHandler.createGame();
@@ -39,17 +32,14 @@ var run = function (session, data) {
 			// game creation failed
 			return false
 		}
-	
-		// return game id to the clients so they can reference it
-		for (var i = 0, len = lobby.lobbyParticipantsConfirmed.length; i < len; i++) {
-			// filter out session with respective id
-			var clientSession = sessionHandler.sessionStorage.filter(function (el) {
-				return el.id == lobby.lobbyParticipantsConfirmed[i];
-			});
+		
+		// send lobby update to all clients 
+		var event = '{ "module": "lobby", "action": "lobbyclosed", "data": "' + lobby.id + '" };';
+		communicationHandler.sendEventToList(event, lobby.lobbyParticipantsConfirmed);
 
-			// emit to found session			
-			clientSession[0].socket.emit('message', '{ "module": "game", "action": "gamecreated", "data": "' + newGameUUID + '" };');
-		}
+		// send game update to all clients 
+		event = '{ "module": "game", "action": "gamecreated", "data": "' + newGameUUID + '" };';
+		communicationHandler.sendEventToList(event, lobby.lobbyParticipantsConfirmed);
 		
 		// destory lobby
 		lobbyHandler.destroyLobby(lobby.id);
