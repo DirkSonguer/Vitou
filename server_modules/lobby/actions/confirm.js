@@ -1,6 +1,6 @@
 
 // lobby handler
-var lobbyHandler = require('../../classes/lobbyhandler.js');
+var lobbyHandler = require('../../../classes/lobbyhandler.js');
 
 var run = function (sender, data) {
 	// confirm the lobby participation

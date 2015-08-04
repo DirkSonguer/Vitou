@@ -27,6 +27,13 @@ function LobbyhandlerClass() {
 LobbyhandlerClass.prototype.createLobby = function (sessionId) {
 	console.log("# Creating a new lobby");
 
+	// check if user already is in a lobby
+	var userPos = sessionHandler.sessionStorage.map(function (x) { return x.session.id; }).indexOf(sessionId);
+	if (typeof sessionHandler.sessionStorage[userPos].lobbyState !== "undefined") {
+		console.log("# User already in a lobby (" + sessionHandler.sessionStorage[userPos].lobbyState + ")");
+		return false;
+	}
+
 	// create new lobby object
 	var newLobby = new LobbyObject();
 	newLobby.lobbyId = uuid.v1();
@@ -36,6 +43,10 @@ LobbyhandlerClass.prototype.createLobby = function (sessionId) {
 	// add new lobby to list
 	this.lobbyStorage.push(newLobby);
 
+	// add lobby state to session
+	var userPos = sessionHandler.sessionStorage.map(function (x) { return x.session.id; }).indexOf(sessionId);
+	sessionHandler.sessionStorage[userPos].lobbyState = newLobby.lobbyId;
+
 	console.log("# We now have " + this.lobbyStorage.length + " lobbies (added " + newLobby.lobbyId + ")");
 	return newLobby.lobbyId;
 }
@@ -43,6 +54,13 @@ LobbyhandlerClass.prototype.createLobby = function (sessionId) {
 // join an already existing lobby
 LobbyhandlerClass.prototype.joinLobby = function (sessionId, lobbyId) {
 	console.log("# Joining lobby with id " + lobbyId);
+
+	// check if user already is in a lobby
+	var userPos = sessionHandler.sessionStorage.map(function (x) { return x.session.id; }).indexOf(sessionId);
+	if (typeof sessionHandler.sessionStorage[userPos].lobbyState !== "undefined") {
+		console.log("# User already in a lobby (" + sessionHandler.sessionStorage[userPos].lobbyState + ")");
+		return false;
+	}
 	
 	// find index of a lobby with respective id
 	var lobbyPos = this.lobbyStorage.map(function (x) { return x.lobbyId; }).indexOf(lobbyId);
@@ -80,7 +98,7 @@ LobbyhandlerClass.prototype.confirmLobby = function (sessionId, lobbyId) {
 	// add session to participants confirmed list
 	this.lobbyStorage[lobbyPos].lobbyParticipantsConfirmed.push(sessionId);
 
-	// check if all participants have already confirmed	
+	// check if all participants have already confirmed
 	if (this.lobbyStorage[lobbyPos].lobbyParticipantsConfirmed.length == this.lobbyStorage[lobbyPos].lobbyParticipants.length) {
 		// create a new game via the gamehandler
 		var newGameUUID = gameHandler.createGame();
@@ -91,7 +109,7 @@ LobbyhandlerClass.prototype.confirmLobby = function (sessionId, lobbyId) {
 			return false
 		}
 	
-		// return game id to the client so he can reference it
+		// return game id to the clients so they can reference it
 		for (var i = 0, len = this.lobbyStorage[lobbyPos].lobbyParticipantsConfirmed.length; i < len; i++) {
 			var clientSessionId = this.lobbyStorage[lobbyPos].lobbyParticipantsConfirmed[i];
 			

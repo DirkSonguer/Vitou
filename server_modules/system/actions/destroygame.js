@@ -1,6 +1,6 @@
 
 // game handler
-var gameHandler = require('../../classes/gamehandler.js');
+var gameHandler = require('../../../classes/gamehandler.js');
 
 var run = function (sender, data) {
 	// destroy the given game via the gamehandler

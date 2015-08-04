@@ -1,6 +1,6 @@
 
 // game handler
-var gameHandler = require('../../classes/gamehandler.js');
+var gameHandler = require('../../../classes/gamehandler.js');
 
 var run = function (sender, data) {
 	// create a new game via the gamehandler

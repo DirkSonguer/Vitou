@@ -1,6 +1,6 @@
 
 // session handler
-var sessionHandler = require('../../classes/sessionhandler.js');
+var sessionHandler = require('../../../classes/sessionhandler.js');
 
 var run = function (sender, data) {
 	// destroy client session
