@@ -14,8 +14,10 @@ var sessionHandler = require('./sessionhandler.js');
 function CommunicationhandlerClass() {
 }
 
-// send a message to a specific user
-CommunicationhandlerClass.prototype.sendEventToCLient = function (event, receiver) {
+// send a message to a specific socket
+CommunicationhandlerClass.prototype.sendEventToSession = function (event, session) {
+	// emit message
+	session.socket.emit('message', event);
 
 	// done
 	return true;
@@ -36,7 +38,7 @@ CommunicationhandlerClass.prototype.sendEventToList = function (event, receiverL
 		});
 
 		// emit to found session
-		clientSession[0].socket.emit('message', event);
+		this.sendEventToSession(event, clientSession[0]);
 	}
 
 	// done

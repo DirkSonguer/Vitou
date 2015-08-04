@@ -1,6 +1,9 @@
 // event handler
 var eventHandler = require('../../../classes/eventhandler.js');
 
+// communication handler
+var communicationHandler = require('../../../classes/communicationhandler.js');
+
 var run = function (session, data) {
 	// check if data is available
 	if (!data) {
@@ -13,7 +16,8 @@ var run = function (session, data) {
 	
 	// broadcast data
 	session.socket.broadcast.emit('message', chatMessage);
-	session.socket.emit('message', chatMessage);
+	
+	communicationHandler.sendEventToSession(chatMessage, session);
 
 	// done		
 	return true;
