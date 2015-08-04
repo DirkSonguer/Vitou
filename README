@@ -38,6 +38,8 @@ to call. Data describes what is handed over to the function.
 
 Example: { "module": "lobby", "action": "joinlobby", "data": "a86c3760-3a05-11e5-a155-fd6757717cdb" };
 
+The same structure is also send back to the client. Yes, lazy.
+
 
 # Proof of Concept Game
 
@@ -84,7 +86,7 @@ We expect two clients (Player1, Player2) that connect and play together. This is
 2) Player 1: Buy new tank
 3) Player 1: Select new tank as main tank (still with default turret)
 2) Player 2: Connect to the server as socket
-4) Player 2: Buy new turret
+4) Player 2: Call game/meta_buytank
 5) Player 2: Use new turret with current tank
 6) Player 1: Call lobby/create
 7) Player 2: Call lobby/join with lobbyId from (3)

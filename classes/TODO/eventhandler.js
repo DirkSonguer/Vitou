@@ -15,9 +15,6 @@ var filePath = require('path');
 // general server configuration
 var serverConfiguration = JSON.parse(fileSystem.readFileSync(filePath.join(__dirname, '../configuration.json')));
 
-// session handler
-var sessionHandler = require('./sessionhandler.js');
-
 var eventHandler = new EventhandlerClass();
 
 // Class function that gets the prototype methods
@@ -26,37 +23,14 @@ function EventhandlerClass() {
 
 // parse a string and see if it can be converted
 // into an EventMessage structure
-EventhandlerClass.prototype.parseEventFromString = function (eventString) {
+EventhandlerClass.prototype.parseEventString = function (eventString) {
 	try {
-		var eventObject = JSON.parse(eventString);
+		var event = JSON.parse(eventString);
 	} catch (e) {
 		return false;
 	}
 
-	// done
-	return eventObject;
-}
-
-// build an EventMessage structure based on the
-// input parameters
-EventhandlerClass.prototype.createEventObject = function (eventModule, eventAction, eventData) {
-	
-	// create event structure
-	var eventObject = { "module": eventModule, "action": eventAction, "data": eventData };
-
-	// done
-	return eventObject;
-}
-
-// build an EventMessage string based on the
-// input parameters
-EventhandlerClass.prototype.createEventString = function (eventModule, eventAction, eventData) {
-	
-	// create event structure
-	var eventString = '{ "module": "' + eventModule + '", "action": "' + eventAction + '", "data": "' + eventData + '" }';
-
-	// done
-	return eventString;
+	return event;
 }
 
 // handle event
@@ -92,23 +66,10 @@ EventhandlerClass.prototype.executeEvent = function (sender, event) {
 		return false;
 	}
 
-	// get full session object for socket connection
-	var session = sessionHandler.getClientSessionForSocket(sender);
-	if (!session) {
-		// note that the reason we can't find a session might be
-		// that this is the connection call
-		if ((event.module == "system") && (event.action == "createclientsession")) {
-			session = sender;
-		} else {
-			console.log("# Could not find a valid session for id " + sender.id);
-			return false;
-		}
-	}
-
 	// calling the actual module and action
 	console.log("# Calling " + eventSourcePath + " with data \"" + event.data + "\"");
 	var eventAction = require(eventSourcePath);
-	var eventResult = eventAction(session, event.data);
+	var eventResult = eventAction(sender, event.data);
 
 	if (!eventResult) {
 		console.log("# The call " + eventSourcePath + " with data \"" + event.data + "\" went wrong. INVESTIGATE!!!!");

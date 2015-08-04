@@ -2,18 +2,18 @@
 // lobby handler
 var lobbyHandler = require('../../../classes/lobbyhandler.js');
 
-var run = function (sender, data) {
+var run = function (session, data) {
 	// create a new game via the gamehandler
-	var newLobbyUUID = lobbyHandler.createLobby(sender.id);
+	var newLobby = lobbyHandler.createLobby(session);
 	
 	// check if new lobby was created
-	if (!newLobbyUUID) {
+	if (!newLobby) {
 		// lobby creation failed
 		return false
 	}
 	
-	// return lobby id to the client so he can reference it
-	sender.emit('message', newLobbyUUID);
+	// send confirmation to creator
+	session.socket.emit('message', '{ "module": "lobby", "action": "created", "data": "' + newLobby.id + '" };');
 
 	// done
 	return true;

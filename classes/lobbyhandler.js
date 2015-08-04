@@ -10,9 +10,6 @@
 // UUID
 var uuid = require('node-uuid');
 
-// game handler
-var gameHandler = require('./gamehandler.js');
-
 // session handler
 var sessionHandler = require('./sessionhandler.js');
 
@@ -24,46 +21,55 @@ function LobbyhandlerClass() {
 }
 
 // create a new lobby
-LobbyhandlerClass.prototype.createLobby = function (sessionId) {
-	console.log("# Creating a new lobby");
+LobbyhandlerClass.prototype.createLobby = function (session) {
+	console.log("# Creating a new lobby initiated by " + session.id);
+
+	// check if user already is in a game
+	if (session.game != "") {
+		console.log("# User already in a game (" + session.game + ")");
+		return false;
+	}
 
 	// check if user already is in a lobby
-	var userPos = sessionHandler.sessionStorage.map(function (x) { return x.session.id; }).indexOf(sessionId);
-	if (typeof sessionHandler.sessionStorage[userPos].lobbyState !== "undefined") {
-		console.log("# User already in a lobby (" + sessionHandler.sessionStorage[userPos].lobbyState + ")");
+	if (session.lobby != "") {
+		console.log("# User already in a lobby (" + session.lobby + ")");
 		return false;
 	}
 
 	// create new lobby object
 	var newLobby = new LobbyObject();
-	newLobby.lobbyId = uuid.v1();
-	newLobby.lobbyParticipants.push(sessionId);
+	newLobby.id = uuid.v1();
+	newLobby.lobbyParticipants.push(session.id);
 	newLobby.lobbyState = "";
 
 	// add new lobby to list
 	this.lobbyStorage.push(newLobby);
 
 	// add lobby state to session
-	var userPos = sessionHandler.sessionStorage.map(function (x) { return x.session.id; }).indexOf(sessionId);
-	sessionHandler.sessionStorage[userPos].lobbyState = newLobby.lobbyId;
+	sessionHandler.sessionStorage[session.index].lobby = newLobby.id;
 
-	console.log("# We now have " + this.lobbyStorage.length + " lobbies (added " + newLobby.lobbyId + ")");
-	return newLobby.lobbyId;
+	console.log("# We now have " + this.lobbyStorage.length + " lobbies (added " + newLobby.id + ")");
+	return newLobby;
 }
 
 // join an already existing lobby
-LobbyhandlerClass.prototype.joinLobby = function (sessionId, lobbyId) {
+LobbyhandlerClass.prototype.joinLobby = function (session, lobbyId) {
 	console.log("# Joining lobby with id " + lobbyId);
 
+	// check if user already is in a game
+	if (session.game != "") {
+		console.log("# User already in a game (" + session.game + ")");
+		return false;
+	}
+
 	// check if user already is in a lobby
-	var userPos = sessionHandler.sessionStorage.map(function (x) { return x.session.id; }).indexOf(sessionId);
-	if (typeof sessionHandler.sessionStorage[userPos].lobbyState !== "undefined") {
-		console.log("# User already in a lobby (" + sessionHandler.sessionStorage[userPos].lobbyState + ")");
+	if (session.lobby != "") {
+		console.log("# User already in a lobby (" + session.lobby + ")");
 		return false;
 	}
 	
-	// find index of a lobby with respective id
-	var lobbyPos = this.lobbyStorage.map(function (x) { return x.lobbyId; }).indexOf(lobbyId);
+	// find index of the lobby with given id
+	var lobbyPos = this.lobbyStorage.map(function (x) { return x.id; }).indexOf(lobbyId);
 
 	// no matching lobby found
 	if (lobbyPos < 0) {
@@ -71,19 +77,28 @@ LobbyhandlerClass.prototype.joinLobby = function (sessionId, lobbyId) {
 	}
 
 	// add session to participants list
-	this.lobbyStorage[lobbyPos].lobbyParticipants.push(sessionId);
+	this.lobbyStorage[lobbyPos].lobbyParticipants.push(session.id);
+	
+	// add lobby state to session
+	sessionHandler.sessionStorage[session.index].lobby = lobbyId;
 
-	console.log("# Session " + sessionId + " joined lobby " + lobbyId + ", lobby now has " + this.lobbyStorage[lobbyPos].lobbyParticipants.length + " participants");
-	return true;
+	console.log("# Session " + session.id + " joined lobby " + lobbyId + ", lobby now has " + this.lobbyStorage[lobbyPos].lobbyParticipants.length + " participants");
+	return this.lobbyStorage[lobbyPos];
 }
 
 // confirm that the game can start
 // the game will start once all participants in a lobby have confirmed
-LobbyhandlerClass.prototype.confirmLobby = function (sessionId, lobbyId) {
+LobbyhandlerClass.prototype.confirmLobby = function (session, lobbyId) {
 	console.log("# Confirming lobby with id " + lobbyId);
 	
+	// check if user is really in the respective lobby
+	if (session.lobby != lobbyId) {
+		console.log("# User not in the given lobby (" + session.lobby + ")");
+		return false;
+	}
+
 	// find index of a lobby with respective id
-	var lobbyPos = this.lobbyStorage.map(function (x) { return x.lobbyId; }).indexOf(lobbyId);
+	var lobbyPos = this.lobbyStorage.map(function (x) { return x.id; }).indexOf(lobbyId);
 
 	// no matching lobby found
 	if (lobbyPos < 0) {
@@ -91,47 +106,15 @@ LobbyhandlerClass.prototype.confirmLobby = function (sessionId, lobbyId) {
 	}
 	
 	// check if the session is really in the lobby
-	if (this.lobbyStorage[lobbyPos].lobbyParticipants.indexOf(sessionId) < 0) {
+	if (this.lobbyStorage[lobbyPos].lobbyParticipants.indexOf(session.id) < 0) {
 		return false;
 	}	
 
 	// add session to participants confirmed list
-	this.lobbyStorage[lobbyPos].lobbyParticipantsConfirmed.push(sessionId);
+	this.lobbyStorage[lobbyPos].lobbyParticipantsConfirmed.push(session.id);
 
-	// check if all participants have already confirmed
-	if (this.lobbyStorage[lobbyPos].lobbyParticipantsConfirmed.length == this.lobbyStorage[lobbyPos].lobbyParticipants.length) {
-		// create a new game via the gamehandler
-		var newGameUUID = gameHandler.createGame();
-	
-		// check if new game was created
-		if (!newGameUUID) {
-			// game creation failed
-			return false
-		}
-	
-		// return game id to the clients so they can reference it
-		for (var i = 0, len = this.lobbyStorage[lobbyPos].lobbyParticipantsConfirmed.length; i < len; i++) {
-			var clientSessionId = this.lobbyStorage[lobbyPos].lobbyParticipantsConfirmed[i];
-			
-			// filter out session with respective id
-			var clientSession = sessionHandler.sessionStorage.filter(function (el) {
-				return el.session.id == clientSessionId;
-			});
-
-			// emit to found session			
-			clientSession[0].session.emit('message', newGameUUID);
-		}
-		
-		// destory lobby
-		this.destroyLobby(lobbyId);
-		
-		// done
-		console.log("# Session " + sessionId + " started a new game (" + newGameUUID + ")");
-		return true;
-	}
-
-	console.log("# Session " + sessionId + " confirmed lobby " + lobbyId + ", " + this.lobbyStorage[lobbyPos].lobbyParticipantsConfirmed.length + " / " + this.lobbyStorage[lobbyPos].lobbyParticipants.length);
-	return true;
+	console.log("# Session " + session.id + " confirmed lobby " + lobbyId + ", " + this.lobbyStorage[lobbyPos].lobbyParticipantsConfirmed.length + " / " + this.lobbyStorage[lobbyPos].lobbyParticipants.length);
+	return this.lobbyStorage[lobbyPos];
 }
 
 // destroy lobby
@@ -140,7 +123,7 @@ LobbyhandlerClass.prototype.destroyLobby = function (lobbyId) {
 
 	// filter out lobby with respective id
 	this.lobbyStorage = this.lobbyStorage.filter(function (el) {
-		return el.lobbyId != lobbyId;
+		return el.id != lobbyId;
 	});
 
 	console.log("# We now have " + this.lobbyStorage.length + " lobbies");
@@ -150,7 +133,7 @@ LobbyhandlerClass.prototype.destroyLobby = function (lobbyId) {
 // Reference object for a game
 function LobbyObject() {
 	// lobby id for referencing
-	this.lobbyId = "";
+	this.id = "";
 
 	// contains the session ids of lobby participants
 	this.lobbyParticipants = new Array();
