@@ -19,18 +19,28 @@
       <input id="m" autocomplete="off" />
       <input id="a" autocomplete="off" />
       <input id="d" autocomplete="off" />
-      <button>Send</button>
+      <button id="s">Send</button>
+      <button id="c">Clear</button>
     </form>
-    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="http://localhost:8887/socket"></script>
+    <script src="http://localhost:8887/jquery"></script>
     <script>
       var socket = io('http://localhost:8888');
     
       $('form').submit(function(){
+        return false;
+      });      
+      
+      $('#s').click(function() {
         var msgModule = JSON.stringify($('#m').val());
         var msgAction = JSON.stringify($('#a').val());
         var msgData = JSON.stringify($('#d').val());
         socket.emit('event', "{\"module\": " + msgModule + ", \"action\": " + msgAction + ", \"data\": " + msgData + "}");
+        return false;
+      });
+      
+      $('#c').click(function() {
+        $('#messages').empty();
         return false;
       });      
       

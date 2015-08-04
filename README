@@ -90,8 +90,8 @@ We expect two clients (Player1, Player2) that connect and play together. This is
 5) Player 2: Use new turret with current tank
 6) Player 1: Call lobby/create
 7) Player 2: Call lobby/join with lobbyId from (3)
-8) Player 1: Call lobby/confirm
-9) Player 2: Call lobby/confirm
+8) Player 1: Call lobby/confirm with lobbyId from (3)
+9) Player 2: Call lobby/confirm with lobbyId from (3)
 
 ..
 
