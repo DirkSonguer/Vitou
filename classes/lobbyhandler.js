@@ -130,7 +130,7 @@ LobbyhandlerClass.prototype.destroyLobby = function (lobbyId) {
 	return true;
 }
 
-// Reference object for a game
+// Reference object for a lobby
 function LobbyObject() {
 	// lobby id for referencing
 	this.id = "";

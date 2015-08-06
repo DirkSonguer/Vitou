@@ -71,14 +71,17 @@ function SessionObject() {
 	// io socket attached to this session
 	this.socket = "";
 
-	// user attached to this session
+	// link to user information (id)
 	this.user = "";
 
-	// lobby attached to this session
+	// link to the lobby (id)
 	this.lobby = "";
 
-	// game data attached to this session	
+	// link to global game session (id)	
 	this.game = "";
+
+	// player based game data	
+	this.playerState = "";
 }
 
 module.exports = sessionHandler;

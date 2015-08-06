@@ -4,6 +4,7 @@
 	},
 	data:{[
 		"NameComponent",
-		"HasMoneyComponent"
+		"HasMoneyComponent",
+		"HasActiveTankComponent"
 	]}
 }

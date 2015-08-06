@@ -3,7 +3,7 @@
 
 This is a proof of concept for a game server middleware.
 
-Proof of concept means: It is a really, really bad idea to use this thing in any way productive. For example it only runs in memory. There is no data storage attached and if it crashes, all is gone. Also, there is no real security and it's full of things that will affect performance in a very, very bad way. In other words I tried to add TODOs as a blacklist but gave up since there would be too many. Got it?
+Proof of concept means: It is a really, really bad idea to use this thing in any way productive. For example it only runs in memory. There is no data storage attached and if it crashes, all is gone. Also, there is no real security and it's full of things that will affect performance in a very, very bad way. There is no caching. At all. In other words I tried to add TODOs as a blacklist but gave up since there would be too many. Got it?
 
 
 # Installation
