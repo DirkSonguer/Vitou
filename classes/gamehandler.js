@@ -71,7 +71,7 @@ function GameObject() {
 
 	// global state for this game
 	// note: this is NOT the game state for a user!
-	this.gamestate = "";
+	this.gameState = "";
 }
 
 module.exports = gameHandler;
