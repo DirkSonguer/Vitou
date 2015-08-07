@@ -4,7 +4,7 @@ var sessionHandler = require('../../../classes/sessionhandler.js');
 
 var run = function (sender, data) {
 	// create new session for new client
-	sessionHandler.create(sender);
+	sessionHandler.createSession(sender);
 
 	// send confirmation to creator
 	sender.emit('message', '{ "module": "session", "action": "connected", "data": "' + sender.id + '" }');

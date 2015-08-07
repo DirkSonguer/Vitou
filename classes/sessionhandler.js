@@ -14,7 +14,7 @@ function SessionhandlerClass() {
 	this.sessionStorage = new Array();
 }
 
-SessionhandlerClass.prototype.create = function (socket) {
+SessionhandlerClass.prototype.createSession = function (socket) {
 	console.log("# Creating a new session for id " + socket.id);
 	
 	// check if socket is already known
@@ -36,7 +36,7 @@ SessionhandlerClass.prototype.create = function (socket) {
 	return true;
 }
 
-SessionhandlerClass.prototype.destroy = function (socket) {
+SessionhandlerClass.prototype.destroySession = function (socket) {
 	console.log("# Removing session with id " + socket.id + " from session storage");
 
 	// filter out session with respective id

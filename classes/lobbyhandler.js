@@ -89,6 +89,51 @@ LobbyhandlerClass.prototype.joinLobby = function (session, lobbyId) {
 	return this.lobbyStorage[lobbyPos];
 }
 
+// leave a lobby the user is in
+LobbyhandlerClass.prototype.leaveLobby = function (session, lobbyId) {
+	console.log("# Leaving lobby with id " + lobbyId);
+
+	// check if user is really in the given lobby
+	if (session.lobby != lobbyId) {
+		console.log("# User is not in given lobby (" + lobbyId + " vs " + session.lobby + ")");
+		return false;
+	}
+	
+	// find index of the lobby with given id
+	var lobbyPos = this.lobbyStorage.map(function (x) { return x.id; }).indexOf(lobbyId);
+
+	// no matching lobby found
+	if (lobbyPos < 0) {
+		return false;
+	}
+	
+	// again validate that user is in participants list
+	var participantIndex = this.lobbyStorage[lobbyPos].lobbyParticipants.indexOf(session.id);
+	
+	// user not in lobby
+	if (participantIndex < 0) {
+		return false;
+	}
+
+	// remove lobby id from user session
+	session.lobby = "";
+
+	// remove session from participants list
+	console.log("# Participants before: " + this.lobbyStorage[lobbyPos].lobbyParticipants.length);
+	this.lobbyStorage[lobbyPos].lobbyParticipants.splice(participantIndex, 1);
+	console.log("# Participants after: " + this.lobbyStorage[lobbyPos].lobbyParticipants.length);
+	
+	// check if lobby still has participants
+	// if not, then remove
+	if (this.lobbyStorage[lobbyPos].lobbyParticipants.length == 0) {
+		this.destroyLobby(lobbyId);
+		return true;
+	}
+
+	console.log("# Session " + session.id + " left lobby " + lobbyId + ", lobby now has " + this.lobbyStorage[lobbyPos].lobbyParticipants.length + " participants");
+	return this.lobbyStorage[lobbyPos];
+}
+
 // confirm that the game can start
 // the game will start once all participants in a lobby have confirmed
 LobbyhandlerClass.prototype.confirmLobby = function (session, lobbyId) {

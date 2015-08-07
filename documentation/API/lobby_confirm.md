@@ -1,4 +1,3 @@
-
 # Lobby - Confirm Lobby
 
 This indicates that a client that is part of a lobby confirms the respective game confiugration.

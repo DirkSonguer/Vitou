@@ -7,9 +7,9 @@ var run = function (session, data) {
 	session.socket.emit('message', '{ "module": "session", "action": "disconnected", "data": "' + session.id + '" }');
 	
 	// remove client session from handler
-	sessionHandler.destroy(session);
+	sessionHandler.destroySession(session);
 		
-	// force disconnect client
+	// io force disconnect client
 	session.socket.disconnect();
 	
 	// done

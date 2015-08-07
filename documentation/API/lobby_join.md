@@ -1,4 +1,3 @@
-
 # Lobby - Join Lobby
 
 This indicates that a client wants to join the given lobby.
@@ -20,7 +19,7 @@ All clients participating in the current lobby (including the one that just join
 ```javascript
 {
 	"module": "lobby",
-	"action": "newplayerjoined",
+	"action": "playerjoined",
 	"data": "$PLAYER_ID"
 }
 ```
