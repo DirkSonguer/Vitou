@@ -7,7 +7,7 @@ var run = function (sender, data) {
 	sessionHandler.create(sender);
 
 	// send confirmation to creator
-	sender.emit('message', '{ "module": "session", "action": "created", "data": "' + sender.id + '" }');
+	sender.emit('message', '{ "module": "session", "action": "connected", "data": "' + sender.id + '" }');
 
 	// done
 	return true;

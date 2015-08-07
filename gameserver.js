@@ -75,7 +75,7 @@ function onClientConnect(client) {
 	console.log("# New client has connected: " + client.id);
 
 	// send connect event
-	var event = eventHandler.createEventObject("session", "create", "");
+	var event = eventHandler.createEventObject("session", "connect", "");
 	eventHandler.executeEvent(client, event);
 }
 
@@ -85,7 +85,7 @@ function onClientDisconnect() {
     console.log('# Client has disconnected: ' + this.id);
 
 	// send disconnection event
-	var event = eventHandler.createEventObject("session", "destroy", "");
+	var event = eventHandler.createEventObject("session", "disconnect", "");
 	eventHandler.executeEvent(this, event);
 };
 

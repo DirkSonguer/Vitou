@@ -16,6 +16,12 @@ function SessionhandlerClass() {
 
 SessionhandlerClass.prototype.create = function (socket) {
 	console.log("# Creating a new session for id " + socket.id);
+	
+	// check if socket is already known
+	if (this.getClientSessionForSocket(socket)) {
+		console.log("# Session already exists for socket " + socket.id);
+		return false;
+	}
 
 	// create new session object
 	var newSession = new SessionObject();
