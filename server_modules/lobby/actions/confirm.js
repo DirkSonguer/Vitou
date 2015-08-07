@@ -21,7 +21,7 @@ var run = function (session, data) {
 	// check if all participants have already confirmed
 	if (lobby.lobbyParticipantsConfirmed.length != lobby.lobbyParticipants.length) {
 		// send update event to all clients in lobby
-		var event = '{ "module": "lobby", "action": "playerconfirmed", "data": "' + session.id + '" };';
+		var event = '{ "module": "lobby", "action": "playerconfirmed", "data": "' + session.id + '" }';
 		communicationHandler.sendEventToList(event, lobby.lobbyParticipants);
 	} else {		
 		// create a new game via the gamehandler
@@ -38,7 +38,7 @@ var run = function (session, data) {
 		communicationHandler.sendEventToList(event, lobby.lobbyParticipantsConfirmed);
 
 		// send game update to all clients 
-		event = '{ "module": "game", "action": "gamecreated", "data": "' + newGameUUID + '" };';
+		event = '{ "module": "game", "action": "gamecreated", "data": "' + newGameUUID + '" }';
 		communicationHandler.sendEventToList(event, lobby.lobbyParticipantsConfirmed);
 		
 		// destory lobby

@@ -16,7 +16,7 @@ var run = function (session, data) {
 	}
 	
 	// send update event to all clients in lobby
-	var event = '{ "module": "lobby", "action": "newplayerjoined", "data": "' + session.id + '" };';
+	var event = '{ "module": "lobby", "action": "newplayerjoined", "data": "' + session.id + '" }';
 	communicationHandler.sendEventToList(event, lobby.lobbyParticipants);
 			
 	// done

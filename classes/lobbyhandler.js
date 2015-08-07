@@ -7,6 +7,9 @@
 // instances.
 // *************************************************** //
 
+// TODO: Call to get all open lobbies
+// TODO: Ability to make lobbies private
+
 // UUID
 var uuid = require('node-uuid');
 

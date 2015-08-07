@@ -12,7 +12,7 @@ var run = function (session, data) {
 	}
 	
 	// create message
-	var chatMessage = eventHandler.createEventString("chat", "incomingmessage", data);
+	var chatMessage = eventHandler.createEventString("chat", "message", data);
 	
 	// broadcast data
 	session.socket.broadcast.emit('message', chatMessage);

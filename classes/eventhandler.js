@@ -97,7 +97,7 @@ EventhandlerClass.prototype.executeEvent = function (sender, event) {
 	if (!session) {
 		// note that the reason we can't find a session might be
 		// that this is the connection call
-		if ((event.module == "system") && (event.action == "createclientsession")) {
+		if ((event.module == "session") && (event.action == "create")) {
 			session = sender;
 		} else {
 			console.log("# Could not find a valid session for id " + sender.id);

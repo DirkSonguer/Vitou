@@ -74,7 +74,6 @@ EntityComponentSystemClass.prototype.getStructureForAssemblage = function (assem
 	return assemblageObject;
 }
 
-
 // load a given component into an object
 EntityComponentSystemClass.prototype.getStructureForComponent = function (component) {
 
@@ -100,6 +99,36 @@ EntityComponentSystemClass.prototype.getStructureForComponent = function (compon
 	
 	// done
 	return componentObject;
+}
+
+// load data for a given component type into an component object
+EntityComponentSystemClass.prototype.getDataForComponent = function (dataFile, dataIndex, component) {
+
+	// build path to component source file
+	var dataSourcePath = filePath.join(__dirname, '/../game/data/' + dataFile + '.json');
+
+	// checking if the component actually exists in the system
+	try {
+		var stat = fileSystem.statSync(dataSourcePath);
+		if (!stat.isFile()) {
+			console.log("# Data file does not exist: " + dataSourcePath + " not found (Not a file)");
+			return false;
+		}
+	} catch (e) {
+		console.log("# Data file does not exist: " + dataSourcePath + " not found (" + e.code + ")");
+		return false;
+	}
+	
+	// TODO: WTFCACHING!
+	
+	// load component data from file system
+	var dataSource = JSON.parse(fileSystem.readFileSync(dataSourcePath, 'utf8'));
+	
+	// get data from index
+	var dataObject = dataSource[dataIndex];
+	
+	// done
+	return dataObject;
 }
 
 

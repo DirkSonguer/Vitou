@@ -13,7 +13,7 @@ var run = function (session, data) {
 	}
 	
 	// send confirmation to creator
-	session.socket.emit('message', '{ "module": "lobby", "action": "created", "data": "' + newLobby.id + '" };');
+	session.socket.emit('message', '{ "module": "lobby", "action": "created", "data": "' + newLobby.id + '" }');
 
 	// done
 	return true;
