@@ -25,6 +25,9 @@ var sessionHandler = require('./classes/sessionhandler.js');
 // event handler
 var eventHandler = require('./classes/eventhandler.js');
 
+// game data handler
+var gamedataHandler = require('./classes/gamedatahandler.js');
+
 // general server configuration
 var fileSystem = require('fs');
 var serverConfiguration = JSON.parse(fileSystem.readFileSync('./configuration.json'));
@@ -34,13 +37,19 @@ var serverConfiguration = JSON.parse(fileSystem.readFileSync('./configuration.js
 // ################################################
 
 function init() {
-	// Set up Socket.IO to listen on port 8000
+	// loading game data
+	gamedataHandler.loadData();
+	console.log("# Game data loaded");
+	
+	process.exit();
+	
+	// set up Socket.IO to listen on port 8000
 	serverSocket = io.listen(serverConfiguration.connectionPort);
 	console.log("# Game server is now listening");
 	
 	sessionHandler.ioSession = serverSocket;
 
-	// Start listening for events
+	// start listening for events
 	setEventHandlers();
 };
 
