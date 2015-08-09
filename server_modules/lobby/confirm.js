@@ -1,12 +1,12 @@
 
 // lobby handler
-var lobbyHandler = require('../../../classes/lobbyhandler.js');
+var lobbyHandler = require('../../classes/lobbyhandler.js');
 
 // game handler
-var gameHandler = require('../../../classes/gamehandler.js');
+var gameHandler = require('../../classes/gamehandler.js');
 
 // communication handler
-var communicationHandler = require('../../../classes/communicationhandler.js');
+var communicationHandler = require('../../classes/communicationhandler.js');
 
 var run = function (session, data) {
 	// confirm the lobby participation

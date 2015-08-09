@@ -1,6 +1,6 @@
 
 // session handler
-var sessionHandler = require('../../../classes/sessionhandler.js');
+var sessionHandler = require('../../classes/sessionhandler.js');
 
 var run = function (session, data) {	
 	// send confirmation to client

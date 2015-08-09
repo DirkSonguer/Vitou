@@ -1,9 +1,9 @@
 
 // lobby handler
-var lobbyHandler = require('../../../classes/lobbyhandler.js');
+var lobbyHandler = require('../../classes/lobbyhandler.js');
 
 // communication handler
-var communicationHandler = require('../../../classes/communicationhandler.js');
+var communicationHandler = require('../../classes/communicationhandler.js');
 
 var run = function (session, data) {
 	// create a new game via the gamehandler

@@ -1,5 +1,5 @@
 // event handler
-var eventHandler = require('../../../classes/eventhandler.js');
+var eventHandler = require('../../classes/eventhandler.js');
 
 // communication handler
 var communicationHandler = require('../../../classes/communicationhandler.js');
