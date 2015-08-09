@@ -1,8 +1,8 @@
 {
-	meta:{
+	"meta":{
 		"comment":""
 	},
-	data:{
+	"data":{
 		"speed":0
 	}
 }
