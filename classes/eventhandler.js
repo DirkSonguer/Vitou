@@ -72,7 +72,7 @@ EventhandlerClass.prototype.executeEvent = function (sender, event) {
 	// TODO: OMFGWTF SECURITY!!!!
 	
 	// build path to event source file
-	var eventSourcePath = filePath.join(__dirname, '/../server_modules/' + event.module + '/actions/' + event.action + '.js');
+	var eventSourcePath = filePath.join(__dirname, '/../server_modules/' + event.module + '/' + event.action + '.js');
 
 	// checking if module is on the blacklist
 	if (serverConfiguration.privateServerDirectories.indexOf(event.module) != -1) {

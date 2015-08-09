@@ -51,7 +51,7 @@ EntityComponentSystemClass.prototype.addAssemblageToEntity = function (assemblag
 EntityComponentSystemClass.prototype.getStructureForAssemblage = function (assemblage) {
 
 	// build path to assemblage source file
-	var assemblageSourcePath = filePath.join(__dirname, '/../game/assemblages/' + assemblage + '.json');
+	var assemblageSourcePath = filePath.join(__dirname, '/../data/assemblages/' + assemblage + '.json');
 
 	// checking if the assemblage actually exists in the system
 	try {
@@ -78,7 +78,7 @@ EntityComponentSystemClass.prototype.getStructureForAssemblage = function (assem
 EntityComponentSystemClass.prototype.getStructureForComponent = function (component) {
 
 	// build path to component source file
-	var componentSourcePath = filePath.join(__dirname, '/../game/components/' + component + '.json');
+	var componentSourcePath = filePath.join(__dirname, '/../data/components/' + component + '.json');
 
 	// checking if the component actually exists in the system
 	try {
@@ -105,7 +105,7 @@ EntityComponentSystemClass.prototype.getStructureForComponent = function (compon
 EntityComponentSystemClass.prototype.getDataForComponent = function (dataFile, dataIndex, component) {
 
 	// build path to component source file
-	var dataSourcePath = filePath.join(__dirname, '/../game/data/' + dataFile + '.json');
+	var dataSourcePath = filePath.join(__dirname, '/../data/gamesdata/' + dataFile + '.json');
 
 	// checking if the component actually exists in the system
 	try {
