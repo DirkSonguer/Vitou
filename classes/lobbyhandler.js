@@ -51,6 +51,7 @@ LobbyhandlerClass.prototype.createLobby = function (session) {
 	// add lobby state to session
 	sessionHandler.sessionStorage[session.index].lobby = newLobby.id;
 
+	// done
 	console.log("# We now have " + this.lobbyStorage.length + " lobbies (added " + newLobby.id + ")");
 	return newLobby;
 }
@@ -85,6 +86,7 @@ LobbyhandlerClass.prototype.joinLobby = function (session, lobbyId) {
 	// add lobby state to session
 	sessionHandler.sessionStorage[session.index].lobby = lobbyId;
 
+	// done
 	console.log("# Session " + session.id + " joined lobby " + lobbyId + ", lobby now has " + this.lobbyStorage[lobbyPos].lobbyParticipants.length + " participants");
 	return this.lobbyStorage[lobbyPos];
 }
@@ -130,6 +132,7 @@ LobbyhandlerClass.prototype.leaveLobby = function (session, lobbyId) {
 		return true;
 	}
 
+	// done
 	console.log("# Session " + session.id + " left lobby " + lobbyId + ", lobby now has " + this.lobbyStorage[lobbyPos].lobbyParticipants.length + " participants");
 	return this.lobbyStorage[lobbyPos];
 }
@@ -161,8 +164,22 @@ LobbyhandlerClass.prototype.confirmLobby = function (session, lobbyId) {
 	// add session to participants confirmed list
 	this.lobbyStorage[lobbyPos].lobbyParticipantsConfirmed.push(session.id);
 
+	// done
 	console.log("# Session " + session.id + " confirmed lobby " + lobbyId + ", " + this.lobbyStorage[lobbyPos].lobbyParticipantsConfirmed.length + " / " + this.lobbyStorage[lobbyPos].lobbyParticipants.length);
 	return this.lobbyStorage[lobbyPos];
+}
+
+// get lobby data
+LobbyhandlerClass.prototype.getLobbyData = function (lobbyId) {
+	console.log("# Getting lobby data for id " + lobbyId + " from lobby storage");
+
+	// filter out lobby with respective id
+	var lobbyData = this.lobbyStorage.filter(function (el) {
+		return el.id == lobbyId;
+	});
+
+	// done
+	return lobbyData[0];
 }
 
 // destroy lobby
@@ -174,6 +191,7 @@ LobbyhandlerClass.prototype.destroyLobby = function (lobbyId) {
 		return el.id != lobbyId;
 	});
 
+	// done
 	console.log("# We now have " + this.lobbyStorage.length + " lobbies");
 	return true;
 }

@@ -6,7 +6,7 @@ var lobbyHandler = require('../../classes/lobbyhandler.js');
 var communicationHandler = require('../../classes/communicationhandler.js');
 
 var run = function (session, data) {
-	// create a new game via the gamehandler
+	// leave lobby
 	var lobby = lobbyHandler.leaveLobby(session, data);
 
 	// check if lobby was left

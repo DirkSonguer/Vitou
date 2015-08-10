@@ -44,7 +44,16 @@ GamehandlerClass.prototype.destroyGame = function(gameId) {
 	return true;
 }
 
-GamehandlerClass.prototype.addPlayerToGame = function() {	
+GamehandlerClass.prototype.addPlayerToGame = function(session, gameId) {	
+	console.log("# Adding player with id " + session.id + " to game with id " + gameId);
+
+	// filter out game with respective id
+	this.gameStorage = this.gameStorage.filter(function (el) {
+		return el.gameId != gameId;
+	});
+
+	console.log("# We now have " + this.gameStorage.length + " games");
+	return true;
 }
 
 GamehandlerClass.prototype.removePlayerFromGame = function() {	

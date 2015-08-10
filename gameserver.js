@@ -41,13 +41,10 @@ function init() {
 	gamedataHandler.loadData();
 	console.log("# Game data loaded");
 	
-	process.exit();
-	
 	// set up Socket.IO to listen on port 8000
-	serverSocket = io.listen(serverConfiguration.connectionPort);
-	console.log("# Game server is now listening");
-	
+	serverSocket = io.listen(serverConfiguration.connectionPort);	
 	sessionHandler.ioSession = serverSocket;
+	console.log("# Game server is now listening");
 
 	// start listening for events
 	setEventHandlers();
