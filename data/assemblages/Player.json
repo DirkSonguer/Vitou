@@ -1,10 +1,10 @@
 {
 	"meta":{
-		"comment":""
+		"comment":"Player structure for the game"
 	},
 	"data":[
-		"NameComponent",
-		"HasMoneyComponent",
-		"HasActiveTankComponent"
+		["NameComponent"],
+		["HasMoneyComponent"],
+		["HasActiveTankComponent"]
 	]
 }
