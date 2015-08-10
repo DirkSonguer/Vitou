@@ -23,6 +23,10 @@ var run = function (session, data) {
 	// get lobby data
 	var lobbyData = lobbyHandler.getLobbyData(session.lobby);
 
+	for (var i = 0, len = lobbyData.lobbyParticipantsConfirmed.length; i < len; i++) {
+		gameHandler.addPlayerToGame(lobbyData.lobbyParticipantsConfirmed[i], newGameUUID);
+	}	
+
 	// send lobby update to all clients 
 	event = '{ "module": "lobby", "action": "lobbyclosed", "data": "' + session.lobby + '" };';
 	communicationHandler.sendEventToList(event, lobbyData.lobbyParticipantsConfirmed);

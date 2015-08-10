@@ -17,22 +17,22 @@ function GamehandlerClass() {
 	this.gameStorage = new Array();
 }
 
-GamehandlerClass.prototype.createGame = function() {	
+GamehandlerClass.prototype.createGame = function () {
 	console.log("# Creating a new game");
 
-// create new game object
+	// create new game object
 	var newGame = new GameObject();
-	newGame.gameId = uuid.v1();
+	newGame.id = uuid.v1();
 	newGame.globalState = "";
 
 	// add new game to list
 	this.gameStorage.push(newGame);
-	
-	console.log("# We now have " + this.gameStorage.length + " games (added " + newGame.gameId + ")");
-	return newGame.gameId;
+
+	console.log("# We now have " + this.gameStorage.length + " games (added " + newGame.id + ")");
+	return newGame.id;
 }
 
-GamehandlerClass.prototype.destroyGame = function(gameId) {	
+GamehandlerClass.prototype.destroyGame = function (gameId) {
 	console.log("# Removing game with id " + gameId + " from game storage");
 
 	// filter out game with respective id
@@ -44,39 +44,35 @@ GamehandlerClass.prototype.destroyGame = function(gameId) {
 	return true;
 }
 
-GamehandlerClass.prototype.addPlayerToGame = function(session, gameId) {	
-	console.log("# Adding player with id " + session.id + " to game with id " + gameId);
+GamehandlerClass.prototype.addPlayerToGame = function (sessionId, gameId) {
+	console.log("# Adding player with id " + sessionId + " to game with id " + gameId);
 
-	// filter out game with respective id
-	this.gameStorage = this.gameStorage.filter(function (el) {
-		return el.gameId != gameId;
-	});
+	// find index of a game with respective id
+	var gamePos = this.gameStorage.map(function (x) { return x.id; }).indexOf(gameId);
 
-	console.log("# We now have " + this.gameStorage.length + " games");
+	// no matching game found
+	if (gamePos < 0) {
+		return false;
+	}
+	
+	// add player
+	this.gameStorage[gamePos].gameParticipants.push(sessionId);	
+
+	// done
+	console.log("# We now have " + this.gameStorage[gamePos].gameParticipants.length + " players in game " + gameId);
 	return true;
 }
 
-GamehandlerClass.prototype.removePlayerFromGame = function() {	
+GamehandlerClass.prototype.removePlayerFromGame = function () {
 }
-
-/*
-GamehandlerClass.prototype.AddEntityToGame = function() {	
-}
-
-GamehandlerClass.prototype.RemoveEntityFromGame = function() {	
-}
-
-GamehandlerClass.prototype.AddEntityToPlayer = function() {	
-}
-
-GamehandlerClass.prototype.RemoveEntityFromPlayer = function() {	
-}
-*/
 
 // Reference object for a game
 function GameObject() {
 	// game id for referencing
-	this.gameId = "";
+	this.id = "";
+
+	// contains the session ids of game participants
+	this.gameParticipants = new Array();
 
 	// global state for this game
 	// note: this is NOT the game state for a user!
