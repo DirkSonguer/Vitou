@@ -12,6 +12,11 @@
 // UUID
 var uuid = require('node-uuid');
 
+// merge
+var merge = require('merge');
+
+var util = require('util');
+
 // file system
 var fileSystem = require('fs');
 var filePath = require('path');
@@ -32,7 +37,7 @@ GamedatahandlerClass.prototype.loadData = function () {
 	
 	// iterate through files
 	for (var i = 0, ilen = dataFilesList.length; i < ilen; i++) {
-		console.log("# Loading data for file " + dataFilesList[i] + "(" + (i + 1) + "/" + dataFilesList.length + ")");
+		// console.log("# Loading data for file " + dataFilesList[i] + "(" + (i + 1) + "/" + dataFilesList.length + ")");
 
 		// open file and get data
 		var dataFilePath = filePath.join(__dirname, '/../data/gamedata/' + dataFilesList[i]);
@@ -42,19 +47,30 @@ GamedatahandlerClass.prototype.loadData = function () {
 		var gameDataAssemblage = gameDataContent.meta.assemblage;
 			
 		// get assemblage components
-		var assemblageData = this.getStructureForAssemblage(gameDataAssemblage);
-		
-		var dataStructure = {};
+		var assemblageStructure = this.getStructureForAssemblage(gameDataAssemblage);
 
+		// get structure for each component
+		var dataStructure = {};
+		for (var j = 0, jlen = assemblageStructure.data.length; j < jlen; j++) {
+			var componentStructure = this.getStructureForComponent(assemblageStructure.data[j]);
+			var componentObject = {};
+			componentObject[assemblageStructure.data[j]] = componentStructure.data;
+			dataStructure = merge(dataStructure, componentObject);
+		}
+		
 		// iterate through data array
-		for (var j = 0, jlen = gameDataContent.data.length; j < jlen; j++) {
-			console.log("# Data: " + gameDataContent.data[j]);
+		for (var k = 0, klen = gameDataContent.data.length; k < klen; k++) {
+			// console.log("# Data: " + gameDataContent.data[k]);
 			
-			// fill new game data object
+			// fill new game data object with standard info
 			var gameDataItem = new GameDataObject();
 			gameDataItem.id = uuid.v1();
 			gameDataItem.assemblage = gameDataAssemblage;
-			gameDataItem.data = gameDataContent.data[j];
+			gameDataItem.components = assemblageStructure.data;
+			
+			// transform the raw data into the component based structure
+			var gameDataObject = this.transformData(gameDataContent.data[k], dataStructure);
+			gameDataItem.data = gameDataObject;
 
 			// push new item on game data array
 			this.gameData.push(gameDataItem);
@@ -95,7 +111,6 @@ GamedatahandlerClass.prototype.getStructureForAssemblage = function (assemblage)
 
 // load a given component into an object
 GamedatahandlerClass.prototype.getStructureForComponent = function (component) {
-
 	// build path to component source file
 	var componentSourcePath = filePath.join(__dirname, '/../data/components/' + component + '.json');
 
@@ -120,13 +135,45 @@ GamedatahandlerClass.prototype.getStructureForComponent = function (component) {
 	return componentObject;
 }
 
+// transform given raw data into the given component based structure
+GamedatahandlerClass.prototype.transformData = function (rawData, dataStructure) {
+	// define new data object to hold the data
+	var dataObject = {};
+
+	// iterate through the data structure
+	// the first layer is the component
+	var i = 0;
+	for (var key in dataStructure) {
+		// check that this is objects own property 
+		// not from prototype prop inherited
+		if (dataStructure.hasOwnProperty(key)) {
+			var obj = dataStructure[key];
+			for (var prop in obj) {
+				// if correct property, add it to structure and proceed
+				if (obj.hasOwnProperty(prop)) {
+					// this would keep the key -> value structure of the components
+					// dataStructure[key][prop] = rawData[i];
+					dataObject[prop] = rawData[i];
+					i++;
+				}
+			}
+		}
+	}
+	
+	// done
+	return dataObject;
+}
+
 // Reference object for a dame data item
 function GameDataObject() {
 	// game data id for referencing
 	this.id = "";
 
 	// contains the assemblage for the data item
-	this.assemblage = new Array();
+	this.assemblage = "";
+
+	// contains the components for the data item
+	this.components = new Array();
 
 	// contains the actual data
 	this.data = new Array();

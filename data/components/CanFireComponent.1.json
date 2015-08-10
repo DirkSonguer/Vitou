@@ -1,0 +1,10 @@
+{
+	"meta":{
+		"comment":"This component defines if an entity can fire. Mostly used for the weapon turret."
+	},
+	"data":[
+		{"name": "damage", "type": "int", "default": 0},
+		{"name": "maxAngle", "type": "float", "default": 0.0},
+		{"name": "maxPower", "type": "float", "default": 0.0}
+	]
+}
