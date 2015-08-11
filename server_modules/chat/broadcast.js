@@ -2,7 +2,7 @@
 var eventHandler = require('../../classes/eventhandler.js');
 
 // communication handler
-var communicationHandler = require('../../../classes/communicationhandler.js');
+var communicationHandler = require('../../classes/communicationhandler.js');
 
 var run = function (session, data) {
 	// check if data is available

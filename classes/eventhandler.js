@@ -103,7 +103,7 @@ EventhandlerClass.prototype.executeEvent = function (sender, event) {
 			console.log("# Could not find a valid session for id " + sender.id);
 			return false;
 		}
-	}
+	}	
 
 	// calling the actual module and action
 	console.log("# Calling " + eventSourcePath + " with data \"" + event.data + "\"");

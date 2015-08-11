@@ -15,8 +15,6 @@ var uuid = require('node-uuid');
 // merge
 var merge = require('merge');
 
-var util = require('util');
-
 // file system
 var fileSystem = require('fs');
 var filePath = require('path');
@@ -26,6 +24,9 @@ var gamedataHandler = new GamedatahandlerClass();
 // Class function that gets the prototype methods
 function GamedatahandlerClass() {
 	this.gameData = new Array();
+	this.gameAssemblages = new Array();
+	this.gameComponents = new Array();
+	this.gameStructures = new Array();
 }
 
 GamedatahandlerClass.prototype.loadData = function () {
@@ -45,7 +46,10 @@ GamedatahandlerClass.prototype.loadData = function () {
 		
 		// read assemblage
 		var gameDataAssemblage = gameDataContent.meta.assemblage;
-			
+
+		// add assemblage to global storage
+		this.gameAssemblages.push(gameDataAssemblage);
+
 		// get assemblage components
 		var assemblageStructure = this.getStructureForAssemblage(gameDataAssemblage);
 
@@ -53,10 +57,18 @@ GamedatahandlerClass.prototype.loadData = function () {
 		var dataStructure = {};
 		for (var j = 0, jlen = assemblageStructure.data.length; j < jlen; j++) {
 			var componentStructure = this.getStructureForComponent(assemblageStructure.data[j]);
+		
+			// add component to global storage
+			this.gameComponents.push(assemblageStructure.data[j]);
+
+			// create new component object
 			var componentObject = {};
 			componentObject[assemblageStructure.data[j]] = componentStructure.data;
 			dataStructure = merge(dataStructure, componentObject);
 		}
+		
+		// add structure to global storage
+		this.gameStructures[gameDataAssemblage] = dataStructure;
 		
 		// iterate through data array
 		for (var k = 0, klen = gameDataContent.data.length; k < klen; k++) {

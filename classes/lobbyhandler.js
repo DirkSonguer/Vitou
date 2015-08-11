@@ -177,6 +177,11 @@ LobbyhandlerClass.prototype.getLobbyData = function (lobbyId) {
 	var lobbyData = this.lobbyStorage.filter(function (el) {
 		return el.id == lobbyId;
 	});
+	
+	// no lobby found
+	if (lobbyData.length < 1) {
+		return false;
+	}
 
 	// done
 	return lobbyData[0];

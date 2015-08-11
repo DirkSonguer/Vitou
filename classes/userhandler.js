@@ -59,6 +59,46 @@ UserhandlerClass.prototype.deleteUser = function (session) {
 	return true;
 }
 
+// get user data
+UserhandlerClass.prototype.getUserData = function (userId) {
+	console.log("# Getting user data for id " + userId + " from user storage");
+
+	// filter out lobby with respective id
+	var userData = this.userStorage.filter(function (el) {
+		return el.id == userId;
+	});
+
+	// no user found
+	if (userData.length < 1) {
+		return false;
+	}
+
+	// done
+	return userData[0].userData;
+}
+
+
+// update user data
+UserhandlerClass.prototype.updateUserData = function (userId, userData) {
+	console.log("# Updating user data for id " + userId);
+
+	// find index of a user with respective id
+	var userPos = this.userStorage.map(function (x) { return x.id; }).indexOf(userId);
+
+	// no matching lobby found
+	if (userPos < 0) {
+		return false;
+	}
+	
+	// set user data
+	this.userStorage[userPos].userData = userData;
+
+	// done
+	return true;
+}
+
+
+
 // Reference object for a user
 function UserObject() {
 	// user id for referencing
