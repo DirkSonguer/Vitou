@@ -2,6 +2,12 @@
 // game handler
 var gameHandler = require('../../classes/gamehandler.js');
 
+// game data handler
+var gamedataHandler = require('../../classes/gamedatahandler.js');
+
+// user handler
+var userHandler = require('../../classes/userhandler.js');
+
 // communication handler
 var communicationHandler = require('../../classes/communicationhandler.js');
 
@@ -26,7 +32,7 @@ var run = function (session, data) {
 	for (var i = 0, len = lobbyData.lobbyParticipantsConfirmed.length; i < len; i++) {
 		gameHandler.addPlayerToGame(lobbyData.lobbyParticipantsConfirmed[i], newGameUUID);
 	}	
-
+	
 	// send lobby update to all clients 
 	event = '{ "module": "lobby", "action": "lobbyclosed", "data": "' + session.lobby + '" };';
 	communicationHandler.sendEventToList(event, lobbyData.lobbyParticipantsConfirmed);

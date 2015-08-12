@@ -39,10 +39,10 @@ EventhandlerClass.prototype.parseEventFromString = function (eventString) {
 
 // build an EventMessage structure based on the
 // input parameters
-EventhandlerClass.prototype.createEventObject = function (eventModule, eventAction, eventData) {
+EventhandlerClass.prototype.createEventObject = function (eventType, eventModule, eventAction, eventData) {
 	
 	// create event structure
-	var eventObject = { "module": eventModule, "action": eventAction, "data": eventData };
+	var eventObject = { "type": eventType, "module": eventModule, "action": eventAction, "data": eventData };
 
 	// done
 	return eventObject;
@@ -50,10 +50,10 @@ EventhandlerClass.prototype.createEventObject = function (eventModule, eventActi
 
 // build an EventMessage string based on the
 // input parameters
-EventhandlerClass.prototype.createEventString = function (eventModule, eventAction, eventData) {
+EventhandlerClass.prototype.createEventString = function (eventType, eventModule, eventAction, eventData) {
 	
 	// create event structure
-	var eventString = '{ "module": "' + eventModule + '", "action": "' + eventAction + '", "data": "' + eventData + '" }';
+	var eventString = '{ "type":"' + eventType + '",  "module": "' + eventModule + '", "action": "' + eventAction + '", "data": "' + eventData + '" }';
 
 	// done
 	return eventString;
@@ -71,8 +71,14 @@ EventhandlerClass.prototype.executeEvent = function (sender, event) {
 
 	// TODO: OMFGWTF SECURITY!!!!
 	
+	// choose respective directory based on event type
+	var eventDirectory = "server_modules";
+	if (event.type == "game") {
+		eventDirectory = "game_modules";
+	}
+	
 	// build path to event source file
-	var eventSourcePath = filePath.join(__dirname, '/../server_modules/' + event.module + '/' + event.action + '.js');
+	var eventSourcePath = filePath.join(__dirname, '/../' + eventDirectory + '/' + event.module + '/' + event.action + '.js');
 
 	// checking if module is on the blacklist
 	if (serverConfiguration.privateServerDirectories.indexOf(event.module) != -1) {

@@ -28,7 +28,7 @@ var run = function (session, data) {
 	// if all participants have already confirmed, start new game
 	if (lobby.lobbyParticipantsConfirmed.length == lobby.lobbyParticipants.length) {
 		// create new game
-		event = eventHandler.createEventObject("game", "game_create", "");
+		event = eventHandler.createEventObject("system", "game", "create", "");
 		eventHandler.executeEvent(session, event);
 	}
 		

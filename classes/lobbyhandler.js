@@ -121,9 +121,9 @@ LobbyhandlerClass.prototype.leaveLobby = function (session, lobbyId) {
 	session.lobby = "";
 
 	// remove session from participants list
-	console.log("# Participants before: " + this.lobbyStorage[lobbyPos].lobbyParticipants.length);
+	// console.log("# Participants before: " + this.lobbyStorage[lobbyPos].lobbyParticipants.length);
 	this.lobbyStorage[lobbyPos].lobbyParticipants.splice(participantIndex, 1);
-	console.log("# Participants after: " + this.lobbyStorage[lobbyPos].lobbyParticipants.length);
+	// console.log("# Participants after: " + this.lobbyStorage[lobbyPos].lobbyParticipants.length);
 	
 	// check if lobby still has participants
 	// if not, then remove

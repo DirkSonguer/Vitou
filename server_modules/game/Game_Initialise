@@ -1,9 +1,0 @@
-Input: None
-
-// set tank entity and turret
-Player.CurrentTankEntity = Lobby.TankEntity;
-Player.CurrentWeaponTurretEntity = Lobby.WeaponTurretEntity;
-
-// initial tank position is random
-Player.CurrentTankEntity.PositionComponent.x = random(0, Game.map.maxX);
-Player.CurrentTankEntity.PositionComponent.y = random(0, Game.map.maxY);
