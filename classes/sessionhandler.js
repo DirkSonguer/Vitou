@@ -7,6 +7,9 @@
 // to a game or user. 
 // *************************************************** //
 
+// log handler
+var logHandler = require('./loghandler.js');
+
 var sessionHandler = new SessionhandlerClass();
 
 // Class function that gets the prototype methods
@@ -15,11 +18,11 @@ function SessionhandlerClass() {
 }
 
 SessionhandlerClass.prototype.createSession = function (socket) {
-	console.log("# Creating a new session for id " + socket.id);
+	logHandler.log('Creating a new session for id ' + socket.id, 0);
 	
 	// check if socket is already known
 	if (this.getClientSessionForSocket(socket)) {
-		console.log("# Session already exists for socket " + socket.id);
+		logHandler.log('Session already exists for socket ' + socket.id, 3);
 		return false;
 	}
 
@@ -32,24 +35,24 @@ SessionhandlerClass.prototype.createSession = function (socket) {
 	var sessionIndex = this.sessionStorage.push(newSession);
 	this.sessionStorage[sessionIndex - 1].index = sessionIndex - 1;
 
-	console.log("# We now have " + sessionIndex + " sessions");
+	logHandler.log('We now have ' + sessionIndex + ' sessions', 0);
 	return true;
 }
 
 SessionhandlerClass.prototype.destroySession = function (socket) {
-	console.log("# Removing session with id " + socket.id + " from session storage");
+	logHandler.log('Removing session with id ' + socket.id + ' from session storage', 0);
 
 	// filter out session with respective id
 	this.sessionStorage = this.sessionStorage.filter(function (el) {
 		return el.id != socket.id;
 	});
 
-	console.log("# We now have " + this.sessionStorage.length + " sessions");
+	logHandler.log('We now have ' + this.sessionStorage.length + ' sessions', 0);
 	return true;
 }
 
 SessionhandlerClass.prototype.getClientSessionForSocket = function (socket) {
-	console.log("# Getting session based on socket id " + socket.id);
+	logHandler.log('Getting session based on socket id ' + socket.id, 0);
 
 	var session = this.sessionStorage.filter(function (el) {
 		return el.id == socket.id;
@@ -57,37 +60,37 @@ SessionhandlerClass.prototype.getClientSessionForSocket = function (socket) {
 	
 	// check if session has been found
 	if (session.length < 1) {
-		console.log("# No matching session found for id " + socket.id);
+		logHandler.log('No matching session found for id ' + socket.id, 3);
 		return false;
 	}
 
-	console.log("# Found session with matching id " + socket.id);
+	logHandler.log('Found session with matching id ' + socket.id, 0);
 	return session[0];
 }
 
 
-// Reference object for a session
+// reference object for a session
 function SessionObject() {
 	// session id
-	this.id = "";
+	this.id = '';
 	
 	// index of the session within the system
-	this.index = "";
+	this.index = '';
 	
 	// io socket attached to this session
-	this.socket = "";
+	this.socket = '';
 
 	// link to user information (id)
-	this.user = "";
+	this.user = '';
 
 	// link to the lobby (id)
-	this.lobby = "";
+	this.lobby = '';
 
 	// link to global game session (id)	
-	this.game = "";
+	this.game = '';
 
 	// player based game data	
-	this.playerState = "";
+	this.playerState = '';
 }
 
 module.exports = sessionHandler;

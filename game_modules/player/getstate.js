@@ -6,7 +6,7 @@ var util = require('util');
 var userHandler = require('../../classes/userhandler.js');
 
 // game data handler
-var gamedataHandler = require('../../classes/gamedatahandler.js');
+var gameHandler = require('../../classes/gamehandler.js');
 
 // communication handler
 var communicationHandler = require('../../classes/communicationhandler.js');
@@ -18,13 +18,19 @@ var run = function (sender, data) {
 		console.log("# No user found in session");
 		return false;
 	}
+
+	// check if session has an attached game
+	if (sender.game == "") {
+		console.log("# No game found in session");
+		return false;
+	}
 	
 	// get the user data via the user handler
-	var userData = userHandler.getUserData(sender.user);
+	var gameData = gameHandler.getGameData(sender.game);
 
 	// send state to client
-	var userDataString = util.inspect(userData);
-	var event = '{ "module": "game", "action": "userstate", "data": "' + userDataString + '" }';
+	var gameDataString = util.inspect(gameData);
+	var event = '{ "module": "game", "action": "userstate", "data": "' + gameDataString + '" }';
 	communicationHandler.sendEventToSession(event, sender);
 	
 	// done

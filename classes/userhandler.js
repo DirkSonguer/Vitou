@@ -12,6 +12,9 @@
 // UUID
 var uuid = require('node-uuid');
 
+// log handler
+var logHandler = require('./loghandler.js');
+
 // session handler
 var sessionHandler = require('./sessionhandler.js');
 
@@ -24,7 +27,7 @@ function UserhandlerClass() {
 
 // create a new user
 UserhandlerClass.prototype.createUser = function (session) {
-	console.log("# Creating a new user");
+	logHandler.log('Creating a new user', 0);
 
 	// create new user object
 	var newUser = new UserObject();
@@ -38,13 +41,13 @@ UserhandlerClass.prototype.createUser = function (session) {
 	sessionHandler.sessionStorage[session.index].user = newUser.id;
 
 	// done
-	console.log("# We now have " + this.userStorage.length + " users (added " + newUser.id + ")");
+	logHandler.log('We now have ' + this.userStorage.length + ' users (added ' + newUser.id + ')', 2);
 	return newUser;
 }
 
 // delete user
 UserhandlerClass.prototype.deleteUser = function (session) {
-	console.log("# Deleting user with id " + session.user + " from user storage");
+	logHandler.log('Deleting user with id ' + session.user + ' from user storage', 0);
 
 	// filter out lobby with respective id
 	this.userStorage = this.userStorage.filter(function (el) {
@@ -52,16 +55,16 @@ UserhandlerClass.prototype.deleteUser = function (session) {
 	});
 
 	// clear user from session	
-	session.user = "";
+	session.user = '';
 
 	// done
-	console.log("# We now have " + this.userStorage.length + " users");
+	logHandler.log('We now have ' + this.userStorage.length + ' users', 2);
 	return true;
 }
 
 // get user data
 UserhandlerClass.prototype.getUserData = function (userId) {
-	console.log("# Getting user data for id " + userId + " from user storage");
+	logHandler.log('Getting user data for id ' + userId + ' from user storage', 0);
 
 	// filter out lobby with respective id
 	var userData = this.userStorage.filter(function (el) {
@@ -77,10 +80,9 @@ UserhandlerClass.prototype.getUserData = function (userId) {
 	return userData[0].userData;
 }
 
-
 // update user data
 UserhandlerClass.prototype.updateUserData = function (userId, userData) {
-	console.log("# Updating user data for id " + userId);
+	logHandler.log('Updating user data for id ' + userId, 0);
 
 	// find index of a user with respective id
 	var userPos = this.userStorage.map(function (x) { return x.id; }).indexOf(userId);
@@ -97,16 +99,15 @@ UserhandlerClass.prototype.updateUserData = function (userId, userData) {
 	return true;
 }
 
-
-
-// Reference object for a user
+// reference object for a user
 function UserObject() {
 	// user id for referencing
-	this.id = "";
+	this.id = '';
 
 	// user specific data
-	// note: this is NOT the game state for a user within a game!
-	this.userData = "";
+	// note: this is NOT the game state for a user within a game
+	// this is user meta data for the platform!
+	this.userData = '';
 }
 
 module.exports = userHandler;

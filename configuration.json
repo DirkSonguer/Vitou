@@ -6,5 +6,10 @@
   "lobby": {
     "minParticipants": 2,
     "maxParticipants": 2
+  },
+  "logging": {
+    "logLevel": 0,
+    "logTarget": "CONSOLE",
+    "logFile": ""
   }
 }

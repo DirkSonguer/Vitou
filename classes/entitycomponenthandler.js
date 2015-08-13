@@ -13,6 +13,9 @@ var uuid = require('node-uuid');
 var fileSystem = require('fs');
 var filePath = require('path');
 
+// log handler
+var logHandler = require('./loghandler.js');
+
 var ecsHandler = new EntityComponentSystemClass();
 
 // Class function that gets the prototype methods
@@ -57,11 +60,11 @@ EntityComponentSystemClass.prototype.getDataForComponent = function (dataFile, d
 	try {
 		var stat = fileSystem.statSync(dataSourcePath);
 		if (!stat.isFile()) {
-			console.log("# Data file does not exist: " + dataSourcePath + " not found (Not a file)");
+			logHandler.log('# Data file does not exist: ' + dataSourcePath + ' not found (Not a file)', 3);
 			return false;
 		}
 	} catch (e) {
-		console.log("# Data file does not exist: " + dataSourcePath + " not found (" + e.code + ")");
+		logHandler.log('# Data file does not exist: ' + dataSourcePath + ' not found (' + e.code + ')', 3);
 		return false;
 	}
 	
@@ -78,10 +81,10 @@ EntityComponentSystemClass.prototype.getDataForComponent = function (dataFile, d
 }
 
 
-// Reference object for a game
+// reference object for a game
 function EntityObject() {
 	// entity id for referencing
-	this.id = "";
+	this.id = '';
 }
 
 module.exports = ecsHandler;

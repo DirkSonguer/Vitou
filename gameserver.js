@@ -13,11 +13,12 @@
 // your head examined! See README for details.
 // *************************************************** //
 
-console.log("# Starting game server");
-
 // io server and interface
 var io = require('socket.io');
 var serverSocket;
+
+// log handler
+var logHandler = require('./classes/loghandler.js');
 
 // configuration handler
 var configurationHandler = require('./classes/configurationhandler.js');
@@ -42,15 +43,16 @@ var serverConfiguration = JSON.parse(fileSystem.readFileSync('./configuration.js
 function init() {
 	// load configuration
 	configurationHandler.loadConfiguration();
+	logHandler.log('Starting game server', 2);
 	
 	// loading game data
 	gamedataHandler.loadData();
-	console.log("# Game data loaded");
+	logHandler.log('Game data loaded', 2);
 	
 	// set up Socket.IO to listen on port 8000
-	serverSocket = io.listen(configurationHandler.configurationStorage.server.connectionPort);	
+	serverSocket = io.listen(configurationHandler.configurationStorage.server.connectionPort);
 	sessionHandler.ioSession = serverSocket;
-	console.log("# Game server is now listening");
+	logHandler.log('Game server is now listening', 2);
 
 	// start listening for events
 	setEventHandlers();
@@ -67,7 +69,7 @@ function init() {
 
 var setEventHandlers = function () {
 	// socket.IO
-	serverSocket.sockets.on("connection", onSocketConnection);
+	serverSocket.sockets.on('connection', onSocketConnection);
 };
 
 // new socket connection
@@ -76,7 +78,7 @@ function onSocketConnection(client) {
 	onClientConnect(client);
 
 	// listen for client disconnected
-	client.on("disconnect", onClientDisconnect);
+	client.on('disconnect', onClientDisconnect);
 	
 	// proper event message was sent to the server  
 	client.on('event', onEventReceived);
@@ -84,20 +86,20 @@ function onSocketConnection(client) {
 
 // socket client has connected
 function onClientConnect(client) {
-	console.log("# New client has connected: " + client.id);
+	logHandler.log('New client has connected: ' + client.id, 1);
 
 	// send connect event
-	var event = eventHandler.createEventObject("system", "session", "connect", "");
+	var event = eventHandler.createEventObject('system', 'session', 'connect', '');
 	eventHandler.executeEvent(client, event);
 }
 
 // socket client has disconnected
 // this = socket client
 function onClientDisconnect() {
-    console.log('# Client has disconnected: ' + this.id);
+	logHandler.log('Client has disconnected: ' + this.id, 1);
 
 	// send disconnection event
-	var event = eventHandler.createEventObject("system", "session", "disconnect", "");
+	var event = eventHandler.createEventObject('system', 'session', 'disconnect', '');
 	eventHandler.executeEvent(this, event);
 };
 
@@ -105,7 +107,7 @@ function onClientDisconnect() {
 // this = socket client
 // msg = message string
 function onEventReceived(eventString) {
-    console.log('# Event received ' + eventString + " from client " + this.id);
+	logHandler.log('Event received ' + eventString + ' from client ' + this.id, 0);
 
 	// parse event
 	var event = eventHandler.parseEventFromString(eventString);

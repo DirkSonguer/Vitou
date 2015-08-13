@@ -19,6 +19,9 @@ var merge = require('merge');
 var fileSystem = require('fs');
 var filePath = require('path');
 
+// log handler
+var logHandler = require('./loghandler.js');
+
 var gamedataHandler = new GamedatahandlerClass();
 
 // Class function that gets the prototype methods
@@ -30,7 +33,7 @@ function GamedatahandlerClass() {
 }
 
 GamedatahandlerClass.prototype.loadData = function () {
-	console.log("# Loading game data");
+	logHandler.log('Loading game data', 0);
 
 	// get list of files in /data/gamedata
 	var dataFilesPath = filePath.join(__dirname, '/../data/gamedata/');
@@ -38,7 +41,7 @@ GamedatahandlerClass.prototype.loadData = function () {
 	
 	// iterate through files
 	for (var i = 0, ilen = dataFilesList.length; i < ilen; i++) {
-		// console.log("# Loading data for file " + dataFilesList[i] + "(" + (i + 1) + "/" + dataFilesList.length + ")");
+		logHandler.log('Loading data for file ' + dataFilesList[i] + '(' + (i + 1) + ' / ' + dataFilesList.length + ')', 0);
 
 		// open file and get data
 		var dataFilePath = filePath.join(__dirname, '/../data/gamedata/' + dataFilesList[i]);
@@ -72,8 +75,6 @@ GamedatahandlerClass.prototype.loadData = function () {
 		
 		// iterate through data array
 		for (var k = 0, klen = gameDataContent.data.length; k < klen; k++) {
-			// console.log("# Data: " + gameDataContent.data[k]);
-			
 			// fill new game data object with standard info
 			var gameDataItem = new GameDataObject();
 			gameDataItem.id = uuid.v1();
@@ -104,11 +105,11 @@ GamedatahandlerClass.prototype.getStructureForAssemblage = function (assemblage)
 	try {
 		var stat = fileSystem.statSync(assemblageSourcePath);
 		if (!stat.isFile()) {
-			console.log("# Assemblage does not exist: " + assemblageSourcePath + " not found (Not a file)");
+			logHandler.log('Assemblage does not exist: ' + assemblageSourcePath + ' not found (Not a file)', 0);
 			return false;
 		}
 	} catch (e) {
-		console.log("# Assemblage does not exist: " + assemblageSourcePath + " not found (" + e.code + ")");
+		logHandler.log('Assemblage does not exist: ' + assemblageSourcePath + ' not found (' + e.code + ')', 0);
 		return false;
 	}
 	
@@ -130,11 +131,11 @@ GamedatahandlerClass.prototype.getStructureForComponent = function (component) {
 	try {
 		var stat = fileSystem.statSync(componentSourcePath);
 		if (!stat.isFile()) {
-			console.log("# Component does not exist: " + componentSourcePath + " not found (Not a file)");
+			logHandler.log('Component does not exist: ' + componentSourcePath + ' not found (Not a file)', 0);
 			return false;
 		}
 	} catch (e) {
-		console.log("# Component does not exist: " + componentSourcePath + " not found (" + e.code + ")");
+		logHandler.log('Component does not exist: ' + componentSourcePath + ' not found (' + e.code + ')', 0);
 		return false;
 	}
 	
@@ -176,13 +177,13 @@ GamedatahandlerClass.prototype.transformData = function (rawData, dataStructure)
 	return dataObject;
 }
 
-// Reference object for a dame data item
+// reference object for a dame data item
 function GameDataObject() {
 	// game data id for referencing
-	this.id = "";
+	this.id = '';
 
 	// contains the assemblage for the data item
-	this.assemblage = "";
+	this.assemblage = '';
 
 	// contains the components for the data item
 	this.components = new Array();

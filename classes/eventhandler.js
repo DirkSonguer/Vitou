@@ -12,6 +12,9 @@
 var fileSystem = require('fs');
 var filePath = require('path');
 
+// log handler
+var logHandler = require('./loghandler.js');
+
 // configuration handler
 var configurationHandler = require('./configurationhandler.js');
 
@@ -42,7 +45,7 @@ EventhandlerClass.prototype.parseEventFromString = function (eventString) {
 EventhandlerClass.prototype.createEventObject = function (eventType, eventModule, eventAction, eventData) {
 	
 	// create event structure
-	var eventObject = { "type": eventType, "module": eventModule, "action": eventAction, "data": eventData };
+	var eventObject = { 'type': eventType, 'module': eventModule, 'action': eventAction, 'data': eventData };
 
 	// done
 	return eventObject;
@@ -64,17 +67,17 @@ EventhandlerClass.prototype.createEventString = function (eventType, eventModule
 // event = object with structure EventMessage 
 EventhandlerClass.prototype.executeEvent = function (sender, event) {
 	// check if there is at least a module + action
-	if ((typeof event === "undefined") || (typeof event.module === "undefined") || (typeof event.action === "undefined")) {
-		console.log("# Event does not seem like a proper event message");
+	if ((typeof event === 'undefined') || (typeof event.module === 'undefined') || (typeof event.action === 'undefined')) {
+		logHandler.log('Event does not seem like a proper event message', 3);
 		return;
 	}
 
 	// TODO: OMFGWTF SECURITY!!!!
 	
 	// choose respective directory based on event type
-	var eventDirectory = "server_modules";
-	if (event.type == "game") {
-		eventDirectory = "game_modules";
+	var eventDirectory = 'server_modules';
+	if (event.type == 'game') {
+		eventDirectory = 'game_modules';
 	}
 	
 	// build path to event source file
@@ -82,7 +85,7 @@ EventhandlerClass.prototype.executeEvent = function (sender, event) {
 
 	// checking if module is on the blacklist
 	if (configurationHandler.configurationStorage.server.privateServerDirectories.indexOf(event.module) != -1) {
-		console.log("# Event calls a module that is on the list of private server directories: " + event.module);
+		logHandler.log('Event calls a module that is on the list of private server directories: ' + event.module, 3);
 		return false
 	}
 
@@ -90,11 +93,11 @@ EventhandlerClass.prototype.executeEvent = function (sender, event) {
 	try {
 		var stat = fileSystem.statSync(eventSourcePath);
 		if (!stat.isFile()) {
-			console.log("# Event is not implemented: " + eventSourcePath + " not found (Not a file)");
+			logHandler.log('Event is not implemented: ' + eventSourcePath + ' not found (Not a file)', 3);
 			return false;
 		}
 	} catch (e) {
-		console.log("# Event is not implemented: " + eventSourcePath + " not found (" + e.code + ")");
+		logHandler.log('Event is not implemented: ' + eventSourcePath + ' not found (' + e.code + ')', 3);
 		return false;
 	}
 
@@ -103,21 +106,21 @@ EventhandlerClass.prototype.executeEvent = function (sender, event) {
 	if (!session) {
 		// note that the reason we can't find a session might be
 		// that this is the connection call
-		if ((event.module == "session") && (event.action == "connect")) {
+		if ((event.module == 'session') && (event.action == 'connect')) {
 			session = sender;
 		} else {
-			console.log("# Could not find a valid session for id " + sender.id);
+			logHandler.log('Could not find a valid session for id ' + sender.id, 2);
 			return false;
 		}
 	}	
 
 	// calling the actual module and action
-	console.log("# Calling " + eventSourcePath + " with data \"" + event.data + "\"");
+	logHandler.log('Calling ' + eventSourcePath + ' with data ' + event.data, 0);
 	var eventAction = require(eventSourcePath);
 	var eventResult = eventAction(session, event.data);
 
 	if (!eventResult) {
-		console.log("# The call " + eventSourcePath + " with data \"" + event.data + "\" went wrong. INVESTIGATE!!!!");
+		logHandler.log('# The call ' + eventSourcePath + ' with data ' + event.data + ' went wrong. INVESTIGATE!!!!', 3);
 	}
 }
 

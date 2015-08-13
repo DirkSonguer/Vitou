@@ -13,6 +13,9 @@
 // UUID
 var uuid = require('node-uuid');
 
+// log handler
+var logHandler = require('./loghandler.js');
+
 // configuration handler
 var configurationHandler = require('./configurationhandler.js');
 
@@ -28,17 +31,17 @@ function LobbyhandlerClass() {
 
 // create a new lobby
 LobbyhandlerClass.prototype.createLobby = function (session) {
-	console.log("# Creating a new lobby initiated by " + session.id);
+	logHandler.log('Creating a new lobby initiated by ' + session.id, 0);
 
 	// check if user already is in a game
-	if (session.game != "") {
-		console.log("# User already in a game (" + session.game + ")");
+	if (session.game != '') {
+		logHandler.log('User already in a game (' + session.game + ')', 3);
 		return false;
 	}
 
 	// check if user already is in a lobby
-	if (session.lobby != "") {
-		console.log("# User already in a lobby (" + session.lobby + ")");
+	if (session.lobby != '') {
+		logHandler.log('User already in a lobby (' + session.lobby + ')', 3);
 		return false;
 	}
 
@@ -46,7 +49,7 @@ LobbyhandlerClass.prototype.createLobby = function (session) {
 	var newLobby = new LobbyObject();
 	newLobby.id = uuid.v1();
 	newLobby.lobbyParticipants.push(session.id);
-	newLobby.lobbyState = "";
+	newLobby.lobbyState = '';
 
 	// add new lobby to list
 	this.lobbyStorage.push(newLobby);
@@ -55,23 +58,23 @@ LobbyhandlerClass.prototype.createLobby = function (session) {
 	sessionHandler.sessionStorage[session.index].lobby = newLobby.id;
 
 	// done
-	console.log("# We now have " + this.lobbyStorage.length + " lobbies (added " + newLobby.id + ")");
+	logHandler.log('We now have ' + this.lobbyStorage.length + ' lobbies (added ' + newLobby.id + ')', 2);
 	return newLobby;
 }
 
 // join an already existing lobby
 LobbyhandlerClass.prototype.joinLobby = function (session, lobbyId) {
-	console.log("# Joining lobby with id " + lobbyId);
+	logHandler.log('Joining lobby with id ' + lobbyId, 0);
 
 	// check if user already is in a game
-	if (session.game != "") {
-		console.log("# User already in a game (" + session.game + ")");
+	if (session.game != '') {
+		logHandler.log('User already in a game (' + session.game + ')', 3);
 		return false;
 	}
 
 	// check if user already is in a lobby
-	if (session.lobby != "") {
-		console.log("# User already in a lobby (" + session.lobby + ")");
+	if (session.lobby != '') {
+		logHandler.log('User already in a lobby (' + session.lobby + ')', 3);
 		return false;
 	}
 		
@@ -85,7 +88,7 @@ LobbyhandlerClass.prototype.joinLobby = function (session, lobbyId) {
 
 	// check if lobby has space for new participants
 	if (this.lobbyStorage[lobbyPos].lobbyParticipants.length >= configurationHandler.configurationStorage.lobby.maxParticipants) {
-		console.log("# Lobby already reached max participants");
+		logHandler.log('Lobby already reached max participants', 3);
 		return false;
 	}	
 
@@ -96,17 +99,17 @@ LobbyhandlerClass.prototype.joinLobby = function (session, lobbyId) {
 	sessionHandler.sessionStorage[session.index].lobby = lobbyId;
 
 	// done
-	console.log("# Session " + session.id + " joined lobby " + lobbyId + ", lobby now has " + this.lobbyStorage[lobbyPos].lobbyParticipants.length + " participants");
+	logHandler.log('Session ' + session.id + ' joined lobby ' + lobbyId + ', lobby now has ' + this.lobbyStorage[lobbyPos].lobbyParticipants.length + ' participants', 2);
 	return this.lobbyStorage[lobbyPos];
 }
 
 // leave a lobby the user is in
 LobbyhandlerClass.prototype.leaveLobby = function (session, lobbyId) {
-	console.log("# Leaving lobby with id " + lobbyId);
+	logHandler.log('Leaving lobby with id ' + lobbyId, 0);
 
 	// check if user is really in the given lobby
 	if (session.lobby != lobbyId) {
-		console.log("# User is not in given lobby (" + lobbyId + " vs " + session.lobby + ")");
+		logHandler.log('User is not in given lobby (' + lobbyId + ' vs ' + session.lobby + ')', 3);
 		return false;
 	}
 	
@@ -127,12 +130,10 @@ LobbyhandlerClass.prototype.leaveLobby = function (session, lobbyId) {
 	}
 
 	// remove lobby id from user session
-	session.lobby = "";
+	session.lobby = '';
 
 	// remove session from participants list
-	// console.log("# Participants before: " + this.lobbyStorage[lobbyPos].lobbyParticipants.length);
 	this.lobbyStorage[lobbyPos].lobbyParticipants.splice(participantIndex, 1);
-	// console.log("# Participants after: " + this.lobbyStorage[lobbyPos].lobbyParticipants.length);
 	
 	// check if lobby still has participants
 	// if not, then remove
@@ -142,18 +143,18 @@ LobbyhandlerClass.prototype.leaveLobby = function (session, lobbyId) {
 	}
 
 	// done
-	console.log("# Session " + session.id + " left lobby " + lobbyId + ", lobby now has " + this.lobbyStorage[lobbyPos].lobbyParticipants.length + " participants");
+	logHandler.log('Session ' + session.id + ' left lobby ' + lobbyId + ', lobby now has ' + this.lobbyStorage[lobbyPos].lobbyParticipants.length + ' participants', 2);
 	return this.lobbyStorage[lobbyPos];
 }
 
 // confirm that the game can start
 // the game will start once all participants in a lobby have confirmed
 LobbyhandlerClass.prototype.confirmLobby = function (session, lobbyId) {
-	console.log("# Confirming lobby with id " + lobbyId);
+	logHandler.log('Confirming lobby with id ' + lobbyId, 0);
 	
 	// check if user is really in the respective lobby
 	if (session.lobby != lobbyId) {
-		console.log("# User not in the given lobby (" + session.lobby + ")");
+		logHandler.log('User not in the given lobby (' + session.lobby + ')', 3);
 		return false;
 	}
 
@@ -172,7 +173,7 @@ LobbyhandlerClass.prototype.confirmLobby = function (session, lobbyId) {
 
 	// check if lobby has reached min participants
 	if (this.lobbyStorage[lobbyPos].lobbyParticipants.length < configurationHandler.configurationStorage.lobby.minParticipants) {
-		console.log("# Lobby has not yet reached min participants");
+		logHandler.log('Lobby has not yet reached min participants', 3);
 		return false;
 	}	
 
@@ -180,13 +181,13 @@ LobbyhandlerClass.prototype.confirmLobby = function (session, lobbyId) {
 	this.lobbyStorage[lobbyPos].lobbyParticipantsConfirmed.push(session.id);
 
 	// done
-	console.log("# Session " + session.id + " confirmed lobby " + lobbyId + ", " + this.lobbyStorage[lobbyPos].lobbyParticipantsConfirmed.length + " / " + this.lobbyStorage[lobbyPos].lobbyParticipants.length);
+	logHandler.log('Session ' + session.id + ' confirmed lobby ' + lobbyId + ', ' + this.lobbyStorage[lobbyPos].lobbyParticipantsConfirmed.length + ' / ' + this.lobbyStorage[lobbyPos].lobbyParticipants.length, 2);
 	return this.lobbyStorage[lobbyPos];
 }
 
 // get lobby data
 LobbyhandlerClass.prototype.getLobbyData = function (lobbyId) {
-	console.log("# Getting lobby data for id " + lobbyId + " from lobby storage");
+	logHandler.log('Getting lobby data for id ' + lobbyId + ' from lobby storage', 0);
 
 	// filter out lobby with respective id
 	var lobbyData = this.lobbyStorage.filter(function (el) {
@@ -204,7 +205,7 @@ LobbyhandlerClass.prototype.getLobbyData = function (lobbyId) {
 
 // destroy lobby
 LobbyhandlerClass.prototype.destroyLobby = function (lobbyId) {
-	console.log("# Removing lobby with id " + lobbyId + " from lobby storage");
+	logHandler.log('Removing lobby with id ' + lobbyId + ' from lobby storage', 0);
 
 	// filter out lobby with respective id
 	this.lobbyStorage = this.lobbyStorage.filter(function (el) {
@@ -212,14 +213,14 @@ LobbyhandlerClass.prototype.destroyLobby = function (lobbyId) {
 	});
 
 	// done
-	console.log("# We now have " + this.lobbyStorage.length + " lobbies");
+	logHandler.log('We now have ' + this.lobbyStorage.length + ' lobbies', 0);
 	return true;
 }
 
-// Reference object for a lobby
+// reference object for a lobby
 function LobbyObject() {
 	// lobby id for referencing
-	this.id = "";
+	this.id = '';
 
 	// contains the session ids of lobby participants
 	this.lobbyParticipants = new Array();
@@ -229,7 +230,7 @@ function LobbyObject() {
 
 	// global state for this lobby
 	// note: this is NOT the game state for a user!
-	this.lobbyState = "";
+	this.lobbyState = '';
 }
 
 module.exports = lobbyHandler;
