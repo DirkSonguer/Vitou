@@ -12,8 +12,8 @@
 var fileSystem = require('fs');
 var filePath = require('path');
 
-// general server configuration
-var serverConfiguration = JSON.parse(fileSystem.readFileSync(filePath.join(__dirname, '../configuration.json')));
+// configuration handler
+var configurationHandler = require('./configurationhandler.js');
 
 // session handler
 var sessionHandler = require('./sessionhandler.js');
@@ -81,7 +81,7 @@ EventhandlerClass.prototype.executeEvent = function (sender, event) {
 	var eventSourcePath = filePath.join(__dirname, '/../' + eventDirectory + '/' + event.module + '/' + event.action + '.js');
 
 	// checking if module is on the blacklist
-	if (serverConfiguration.privateServerDirectories.indexOf(event.module) != -1) {
+	if (configurationHandler.configurationStorage.server.privateServerDirectories.indexOf(event.module) != -1) {
 		console.log("# Event calls a module that is on the list of private server directories: " + event.module);
 		return false
 	}

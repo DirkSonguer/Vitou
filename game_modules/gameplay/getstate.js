@@ -22,12 +22,6 @@ var run = function (sender, data) {
 	// get the user data via the user handler
 	var userData = userHandler.getUserData(sender.user);
 
-	// if user is not initialised, create initial structure	
-	if (userData.length < 1) {
-		userHandler.updateUserData(sender.user, gamedataHandler.gameStructures.player);
-		userData = gamedataHandler.gameStructures.player;
-	}
-	
 	// send state to client
 	var userDataString = util.inspect(userData);
 	var event = '{ "module": "game", "action": "userstate", "data": "' + userDataString + '" }';

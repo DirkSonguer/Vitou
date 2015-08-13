@@ -13,6 +13,9 @@
 // UUID
 var uuid = require('node-uuid');
 
+// configuration handler
+var configurationHandler = require('./configurationhandler.js');
+
 // session handler
 var sessionHandler = require('./sessionhandler.js');
 
@@ -71,7 +74,7 @@ LobbyhandlerClass.prototype.joinLobby = function (session, lobbyId) {
 		console.log("# User already in a lobby (" + session.lobby + ")");
 		return false;
 	}
-	
+		
 	// find index of the lobby with given id
 	var lobbyPos = this.lobbyStorage.map(function (x) { return x.id; }).indexOf(lobbyId);
 
@@ -79,6 +82,12 @@ LobbyhandlerClass.prototype.joinLobby = function (session, lobbyId) {
 	if (lobbyPos < 0) {
 		return false;
 	}
+
+	// check if lobby has space for new participants
+	if (this.lobbyStorage[lobbyPos].lobbyParticipants.length >= configurationHandler.configurationStorage.lobby.maxParticipants) {
+		console.log("# Lobby already reached max participants");
+		return false;
+	}	
 
 	// add session to participants list
 	this.lobbyStorage[lobbyPos].lobbyParticipants.push(session.id);
@@ -158,6 +167,12 @@ LobbyhandlerClass.prototype.confirmLobby = function (session, lobbyId) {
 	
 	// check if the session is really in the lobby
 	if (this.lobbyStorage[lobbyPos].lobbyParticipants.indexOf(session.id) < 0) {
+		return false;
+	}	
+
+	// check if lobby has reached min participants
+	if (this.lobbyStorage[lobbyPos].lobbyParticipants.length < configurationHandler.configurationStorage.lobby.minParticipants) {
+		console.log("# Lobby has not yet reached min participants");
 		return false;
 	}	
 

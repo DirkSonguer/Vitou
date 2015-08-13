@@ -19,6 +19,9 @@ console.log("# Starting game server");
 var io = require('socket.io');
 var serverSocket;
 
+// configuration handler
+var configurationHandler = require('./classes/configurationhandler.js');
+
 // session handler
 var sessionHandler = require('./classes/sessionhandler.js');
 
@@ -37,12 +40,15 @@ var serverConfiguration = JSON.parse(fileSystem.readFileSync('./configuration.js
 // ################################################
 
 function init() {
+	// load configuration
+	configurationHandler.loadConfiguration();
+	
 	// loading game data
 	gamedataHandler.loadData();
 	console.log("# Game data loaded");
 	
 	// set up Socket.IO to listen on port 8000
-	serverSocket = io.listen(serverConfiguration.connectionPort);	
+	serverSocket = io.listen(configurationHandler.configurationStorage.server.connectionPort);	
 	sessionHandler.ioSession = serverSocket;
 	console.log("# Game server is now listening");
 

@@ -1,5 +1,10 @@
 {
-  "connectionPort": "8888",
-  "privateServerDirectories": [
-  ]
+  "server": {
+    "connectionPort": "8888",
+    "privateServerDirectories": []
+  },
+  "lobby": {
+    "minParticipants": 2,
+    "maxParticipants": 2
+  }
 }
