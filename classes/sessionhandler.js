@@ -88,9 +88,6 @@ function SessionObject() {
 
 	// link to global game session (id)	
 	this.game = '';
-
-	// player based game data	
-	this.playerState = '';
 }
 
 module.exports = sessionHandler;

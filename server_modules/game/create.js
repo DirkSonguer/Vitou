@@ -5,9 +5,6 @@ var gameHandler = require('../../classes/gamehandler.js');
 // game data handler
 var gamedataHandler = require('../../classes/gamedatahandler.js');
 
-// user handler
-var userHandler = require('../../classes/userhandler.js');
-
 // communication handler
 var communicationHandler = require('../../classes/communicationhandler.js');
 

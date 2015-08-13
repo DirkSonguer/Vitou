@@ -13,6 +13,9 @@ var uuid = require('node-uuid');
 // log handler
 var logHandler = require('./loghandler.js');
 
+// session handler
+var sessionHandler = require('./sessionhandler.js');
+
 var gameHandler = new GamehandlerClass();
 
 // Class function that gets the prototype methods
@@ -58,11 +61,22 @@ GamehandlerClass.prototype.addPlayerToGame = function (sessionId, gameId) {
 		return false;
 	}
 	
-	// add player
+	// add player to game
 	this.gameStorage[gamePos].gameParticipants.push(sessionId);	
 	
-	// create player state
-	this.gameStorage[gamePos].playerState[sessionId] = {};	
+	// create player state within game
+	this.gameStorage[gamePos].playerStates[sessionId] = {};	
+
+	// find index of a lobby with respective id
+	var sessionPos = sessionHandler.sessionStorage.map(function (x) { return x.id; }).indexOf(sessionId);
+	
+	// no matching session found
+	if (sessionPos < 0) {
+		return false;
+	}
+	
+	// add game to player session
+	sessionHandler.sessionStorage[sessionPos].game = gameId;	
 
 	// done
 	logHandler.log('We now have ' + this.gameStorage[gamePos].gameParticipants.length + ' players in game ' + gameId, 2);
