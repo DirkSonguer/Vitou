@@ -1,7 +1,14 @@
 {
   "server": {
     "connectionPort": "8888",
-    "privateServerDirectories": []
+    "activeModules": [
+      "session",
+      "user",
+      "lobby",
+      "game",
+      "chat"
+    ],
+    "gameDirectory": "game_modules"
   },
   "lobby": {
     "minParticipants": 2,
@@ -11,5 +18,10 @@
     "logLevel": 0,
     "logTarget": "CONSOLE",
     "logFile": ""
-  }
+  },
+  "successors": [
+    { "if": "system/chat/broadcast", "then": "system/lobby/create" },
+    { "if": "system/game/create", "then": "game/successors/ongamecreated" },
+    { "if": "system/user/create", "then": "game/successors/onusercreated" }
+  ]
 }
