@@ -54,7 +54,7 @@ For game details, see documentation in /documentation/examplegame.
 We expect two clients (Player1, Player2) that connect and play together. This is the "script" they might go through from a server view.
 
 1) Player 1: Connect to the server as socket
-2) Player 1: Buy new tank (game/meta_buytank)
+2) Player 1: Buy new tank (game/shop/buytank)
 3) Player 1: Select new tank as main tank, still with default turret (game/meta_selecttank)
 2) Player 2: Connect to the server as socket
 4) Player 2: Buy new weapon turret (game/meta_buyweaponturret)

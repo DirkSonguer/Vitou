@@ -8,6 +8,7 @@ Note that this will spawn a new game once all participants in the lobby have con
 
 ```javascript
 {
+	"type": "system",
 	"module": "lobby",
 	"action": "confirm",
 	"data": "$LOBBY_ID"

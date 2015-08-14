@@ -6,6 +6,7 @@ This indicates that a client wants to leave the given lobby.
 
 ```javascript
 {
+	"type": "system",
 	"module": "lobby",
 	"action": "leave",
 	"data": "$LOBBY_ID"

@@ -6,6 +6,7 @@ Request from the client to create a new lobby with the calling client as first p
 
 ```javascript
 {
+	"type": "system",
 	"module": "lobby",
 	"action": "create",
 	"data": ""

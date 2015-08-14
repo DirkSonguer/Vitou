@@ -131,8 +131,7 @@ function GameObject() {
 	this.gameParticipants = new Array();
 
 	// global state for this game
-	// note: this is NOT the game state for a user!
-	this.gameState = '';
+	this.gameState = {};
 	
 	// individual player states
 	// note: this is an array of player game state objects

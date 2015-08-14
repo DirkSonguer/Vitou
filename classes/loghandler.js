@@ -9,6 +9,9 @@
 // configuration handler
 var configurationHandler = require('./configurationhandler.js');
 
+// node utilities
+var util = require('util');
+
 var logHandler = new LoghandlerClass();
 
 // file system
@@ -22,6 +25,10 @@ function LoghandlerClass() {
 
 // send a message to a specific socket
 LoghandlerClass.prototype.log = function (message, severity) {
+	// convert from object to string	
+	if (typeof message === 'object') {
+		message = util.inspect(message);
+	}
 	
 	if (severity >= configurationHandler.configurationStorage.logging.logLevel) {
 		console.log(Date.now() + ' # ' + process.pid + ' # ' + message);

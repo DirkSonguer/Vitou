@@ -6,6 +6,7 @@ This indicates that a client wants to join the given lobby.
 
 ```javascript
 {
+	"type": "system",
 	"module": "lobby",
 	"action": "join",
 	"data": "$LOBBY_ID"

@@ -8,6 +8,7 @@ Note that the socket connection will be closed after this.
 
 ```javascript
 {
+	"type": "system",
 	"module": "session",
 	"action": "disconnect",
 	"data": ""

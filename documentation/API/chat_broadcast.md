@@ -6,6 +6,7 @@ The client sends a chat message to the server. The message will then be broadcas
 
 ```javascript
 {
+	"type": "system",
 	"module": "chat",
 	"action": "sendmessage",
 	"data": "$CHAT_MESSAGE"

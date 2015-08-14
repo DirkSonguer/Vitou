@@ -5,6 +5,9 @@ var gameHandler = require('../../classes/gamehandler.js');
 // game data handler
 var gamedataHandler = require('../../classes/gamedatahandler.js');
 
+// event handler
+var eventHandler = require('../../classes/eventhandler.js');
+
 // communication handler
 var communicationHandler = require('../../classes/communicationhandler.js');
 
@@ -26,6 +29,7 @@ var run = function (session, data) {
 	// get lobby data
 	var lobbyData = lobbyHandler.getLobbyData(session.lobby);
 
+	// add players to the game
 	for (var i = 0, len = lobbyData.lobbyParticipantsConfirmed.length; i < len; i++) {
 		gameHandler.addPlayerToGame(lobbyData.lobbyParticipantsConfirmed[i], newGameUUID);
 	}	
@@ -40,6 +44,10 @@ var run = function (session, data) {
 
 	// destroy lobby
 	lobbyHandler.destroyLobby(session.lobby);
+
+	// call post game creation hook
+	event = eventHandler.createEventObject("game", "hooks", "ongamecreated", newGameUUID);
+	eventHandler.executeEvent(session, event);
 
 	// done
 	return true;

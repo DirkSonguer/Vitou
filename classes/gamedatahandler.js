@@ -26,7 +26,7 @@ var gamedataHandler = new GamedatahandlerClass();
 
 // Class function that gets the prototype methods
 function GamedatahandlerClass() {
-	this.gameData = new Array();
+	this.gameDataStorage = new Array();
 	this.gameAssemblages = new Array();
 	this.gameComponents = new Array();
 	this.gameStructures = new Array();
@@ -86,7 +86,8 @@ GamedatahandlerClass.prototype.loadData = function () {
 			gameDataItem.data = gameDataObject;
 
 			// push new item on game data array
-			this.gameData.push(gameDataItem);
+			this.gameDataStorage.push(gameDataItem);
+			logHandler.log(gameDataItem, 0);
 		}
 	}
 	
@@ -94,6 +95,16 @@ GamedatahandlerClass.prototype.loadData = function () {
 	return true;
 }
 
+// get game data with a given assemblage
+GamedatahandlerClass.prototype.getGameDataByAssemblage = function (assemblage) {
+	// filter out game data with respective assemblage
+	var gameDataArray = this.gameDataStorage.filter(function (el) {
+		return el.assemblage == assemblage;
+	});
+
+	// done
+	return gameDataArray;
+}
 
 
 // load a given assemblage into an object

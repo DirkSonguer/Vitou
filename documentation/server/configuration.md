@@ -1,10 +1,12 @@
-# game server configuration
+# Game server configuration
 
 The condiguration file /configuration.json in the server root contains definitions for the individual behaviour of the server.
 
 ## Server
 
 * connectionPort: The port the game server is listening for clients
+* activeModules: Array that contains the server modules that are active
+* gameDirectory: The directory the game modules are located
 
 ## Lobby
 

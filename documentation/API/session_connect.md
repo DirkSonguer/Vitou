@@ -8,6 +8,7 @@ Note that while the action can be called explicitly by the client, it will be im
 
 ```javascript
 {
+	"type": "system",
 	"module": "session",
 	"action": "connect",
 	"data": ""
