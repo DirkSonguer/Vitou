@@ -29,9 +29,16 @@ LoghandlerClass.prototype.log = function (message, severity) {
 	if (typeof message === 'object') {
 		message = util.inspect(message);
 	}
-	
+
 	if (severity >= configurationHandler.configurationStorage.logging.logLevel) {
-		console.log(Date.now() + ' # ' + process.pid + ' # ' + message);
+		// define colours
+		var messagecolor = "\x1b[0m";
+		if (severity == 2) messagecolor = "\x1b[32m";
+		if (severity == 3) messagecolor = "\x1b[35m";
+		if (severity > 3) messagecolor = "\x1b[31m";
+
+		// write message		
+		console.log(messagecolor + 'L' + severity + ' # ' + Date.now() + ' # ' + process.pid + ' # ' + message);
 	}
 
 	// done

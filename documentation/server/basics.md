@@ -73,6 +73,13 @@ The game module provides the following actions:
 
 ### Chat module
 
+The game server provides simple chat functionalities.
+
+The chat module provides the following actions:
+
+* broadcast: Send a message to every connected session
+* group: Send a message to a set of given sessions
+* private: Send a message to one specific session
 
 ## Successors
 
@@ -83,9 +90,20 @@ Generally a successor is executed after a defined event, basically creating an i
 Here is an example how to add a successor, defined as type/module/action. This executes game->successors->ongamecreated after system->game->create is finsihed. Note that the return value of the if-action is handed to the then-action as data and not the origintal data values.
 
 ```javascript
-    { "if": "system/game/create", "then": "game/successors/ongamecreated" },
+    { "if": "system/game/create", "then": "game/successors/ongamecreated" }
 ```
 
 Note that each event can only have one successor.
 
 Oh, and be careful not to create infinite loops with this.
+
+## How the server handles game data
+
+The server handles game data as small collections of data elements called components. Each component should represent a capability of an object that inherits this component. An example component could be "CanMove" while the elements within the component might describe how the object can move (speed, vector etc.).
+
+Then there are assemblages, which act as templates for objects, aggregating a number of components into logical types. An example would be the type "tank", which might contain the components "CanMove", "HasArmor", "CanAttack" and so on.
+
+The component approach allows you to act based on capabilities of objects, cross-cutting through conventional object structures. In that sense it acts as a very dynamic multiple-inheritance approach.
+
+Then there is the actual game data, as defined in data files. While assemblages act as the object structures, the game data files contain individual data items for specific assemblages. Each data file will be loaded on startup as instances of their respective assemblage. For example a data file might contain 10 definitions for tanks that are then available in the game. This is usually used to define sets of in-game items, units etc.
+

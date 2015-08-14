@@ -3,7 +3,7 @@
 		"comment":"A tank in the game"
 	},
 	"data":[
-		"NameComponent",
+		"HasNameComponent",
 		"HitboxComponent",
 		"HitpointComponent",
 		"PositionComponent",

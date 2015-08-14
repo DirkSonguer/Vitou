@@ -3,7 +3,7 @@
 		"comment":"Player structure for the game"
 	},
 	"data":[
-		["NameComponent"],
+		["HasNameComponent"],
 		["HasMoneyComponent"],
 		["GarageComponent"],
 		["HasActiveTankComponent"]

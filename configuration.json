@@ -20,7 +20,6 @@
     "logFile": ""
   },
   "successors": [
-    { "if": "system/chat/broadcast", "then": "system/lobby/create" },
     { "if": "system/game/create", "then": "game/successors/ongamecreated" },
     { "if": "system/user/create", "then": "game/successors/onusercreated" }
   ]
