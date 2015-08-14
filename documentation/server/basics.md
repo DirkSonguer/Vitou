@@ -93,17 +93,54 @@ Here is an example how to add a successor, defined as type/module/action. This e
     { "if": "system/game/create", "then": "game/successors/ongamecreated" }
 ```
 
-Note that each event can only have one successor.
-
-Oh, and be careful not to create infinite loops with this.
+Note that each event can _only have one successor_. Oh, and be careful not to create infinite loops with this (A succeeds B which succeeds A).
 
 ## How the server handles game data
 
 The server handles game data as small collections of data elements called components. Each component should represent a capability of an object that inherits this component. An example component could be "CanMove" while the elements within the component might describe how the object can move (speed, vector etc.).
 
+```javascript
+{
+	"meta":{
+		"comment":"An object can move with a given speed"
+	},
+	"data":{
+		"speed":0
+	}
+}
+```
+
 Then there are assemblages, which act as templates for objects, aggregating a number of components into logical types. An example would be the type "tank", which might contain the components "CanMove", "HasArmor", "CanAttack" and so on.
+
+```javascript
+{
+	"meta":{
+		"comment":"A tank in the game"
+	},
+	"data":[
+		"HasNameComponent",
+		"HitboxComponent",
+		"HitpointComponent",
+		"PositionComponent",
+		"CanMoveComponent",
+		"PriceComponent"
+	]
+}
+```
 
 The component approach allows you to act based on capabilities of objects, cross-cutting through conventional object structures. In that sense it acts as a very dynamic multiple-inheritance approach.
 
 Then there is the actual game data, as defined in data files. While assemblages act as the object structures, the game data files contain individual data items for specific assemblages. Each data file will be loaded on startup as instances of their respective assemblage. For example a data file might contain 10 definitions for tanks that are then available in the game. This is usually used to define sets of in-game items, units etc.
 
+```javascript
+{
+	"meta":{
+		"assemblage":"tank"
+	},
+	"data":[
+		["Brutus",10,100,0,0,5,1000],
+		["Spike",5,40,0,0,8,1200],
+		["Tower",20,220,0,0,2,800]
+	]
+}
+```
