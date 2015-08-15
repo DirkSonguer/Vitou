@@ -45,12 +45,8 @@ var run = function (session, data) {
 	// destroy lobby
 	lobbyHandler.destroyLobby(session.lobby);
 
-	// call post game creation hook
-	event = eventHandler.createEventObject("game", "hooks", "ongamecreated", newGameUUID);
-	eventHandler.executeEvent(session, event);
-
 	// done
-	return true;
+	return newGameUUID;
 };
 
 module.exports = run;

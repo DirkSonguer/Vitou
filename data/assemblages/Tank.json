@@ -1,13 +1,13 @@
 {
-	"meta":{
+	"meta": {
 		"comment":"A tank in the game"
 	},
-	"data":[
+	"components": [
 		"HasNameComponent",
 		"HitboxComponent",
 		"HitpointComponent",
 		"PositionComponent",
 		"CanMoveComponent",
-		"PriceComponent"
+		"HasPriceComponent"
 	]
 }

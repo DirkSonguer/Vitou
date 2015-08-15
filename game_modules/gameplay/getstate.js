@@ -30,7 +30,7 @@ var run = function (sender, data) {
 
 	// send state to client
 	var gameDataString = util.inspect(gameData);
-	var event = '{ "module": "game", "action": "userstate", "data": "' + gameDataString + '" }';
+	var event = '{ "module": "game", "action": "state", "data": "' + gameDataString + '" }';
 	communicationHandler.sendEventToSession(event, sender);
 	
 	// done

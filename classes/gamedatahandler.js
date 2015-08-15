@@ -45,52 +45,53 @@ GamedatahandlerClass.prototype.loadData = function () {
 
 		// open file and get data
 		var dataFilePath = filePath.join(__dirname, '/../data/gamedata/' + dataFilesList[i]);
-		var gameDataContent = JSON.parse(fileSystem.readFileSync(dataFilePath, 'utf8'));
-		
-		// read assemblage
-		var gameDataAssemblage = gameDataContent.meta.assemblage;
+		var dataFileContent = JSON.parse(fileSystem.readFileSync(dataFilePath, 'utf8'));
+				
+		// read assemblage type from data file
+		// this will define what assemblage to use
+		var dataFileAssemblage = dataFileContent.meta.assemblage;
 
-		// add assemblage to global storage
-		this.gameAssemblages.push(gameDataAssemblage);
+		// add assemblage for current data file to global storage
+		this.gameAssemblages.push(dataFileAssemblage);
 
-		// get assemblage components
-		var assemblageStructure = this.getStructureForAssemblage(gameDataAssemblage);
+		// get assemblage structure, basically the list of components
+		var dataFileAssemblageStructure = this.getStructureForAssemblage(dataFileAssemblage);
 
-		// get structure for each component
-		var dataStructure = {};
-		for (var j = 0, jlen = assemblageStructure.data.length; j < jlen; j++) {
-			var componentStructure = this.getStructureForComponent(assemblageStructure.data[j]);
-		
+		// this will hold the data structure for the entire assembly
+		var dataStructureForAssembly = {};
+
+		// get structure for each component and add them to the data structure to use
+		for (var j = 0, jlen = dataFileAssemblageStructure.components.length; j < jlen; j++) {
+			var componentStructure = this.getStructureForComponent(dataFileAssemblageStructure.components[j]);
+
 			// add component to global storage
-			this.gameComponents.push(assemblageStructure.data[j]);
+			this.gameComponents.push(dataFileAssemblageStructure.components[j]);
 
-			// create new component object
-			var componentObject = {};
-			componentObject[assemblageStructure.data[j]] = componentStructure.data;
-			dataStructure = merge(dataStructure, componentObject);
+			// add component data structure into assemblage data structure
+			dataStructureForAssembly = merge(dataStructureForAssembly, componentStructure.data);
 		}
-		
+
 		// add structure to global storage
-		this.gameStructures[gameDataAssemblage] = dataStructure;
-		
-		// iterate through data array
-		for (var k = 0, klen = gameDataContent.data.length; k < klen; k++) {
+		this.gameStructures[dataFileAssemblage] = dataStructureForAssembly;
+
+		// iterate through data array in the data file
+		for (var k = 0, klen = dataFileContent.data.length; k < klen; k++) {
 			// fill new game data object with standard info
 			var gameDataItem = new GameDataObject();
 			gameDataItem.id = uuid.v1();
-			gameDataItem.assemblage = gameDataAssemblage;
-			gameDataItem.components = assemblageStructure.data;
-			
+			gameDataItem.assemblage = dataFileAssemblage;
+			gameDataItem.components = dataFileAssemblageStructure.components;
+					
 			// transform the raw data into the component based structure
-			var gameDataObject = this.transformData(gameDataContent.data[k], dataStructure);
+			var gameDataObject = this.transformData(dataFileContent.data[k], dataStructureForAssembly);
 			gameDataItem.data = gameDataObject;
-
+		
 			// push new item on game data array
 			this.gameDataStorage.push(gameDataItem);
 			logHandler.log(gameDataItem, 0);
 		}
 	}
-	
+
 	// done
 	return true;
 }
@@ -168,20 +169,15 @@ GamedatahandlerClass.prototype.transformData = function (rawData, dataStructure)
 	// the first layer is the component
 	var i = 0;
 	for (var key in dataStructure) {
-		// check that this is objects own property 
-		// not from prototype prop inherited
-		if (dataStructure.hasOwnProperty(key)) {
-			var obj = dataStructure[key];
-			for (var prop in obj) {
-				// if correct property, add it to structure and proceed
-				if (obj.hasOwnProperty(prop)) {
-					// this would keep the key -> value structure of the components
-					// dataStructure[key][prop] = rawData[i];
-					dataObject[prop] = rawData[i];
-					i++;
-				}
-			}
-		}
+		dataObject[key] = rawData[i];
+		i++;
+	}
+	// iterate through the data structure
+	// the first layer is the component
+	var i = 0;
+	for (var key in dataStructure) {
+		dataObject[key] = rawData[i];
+		i++;
 	}
 	
 	// done
