@@ -27,7 +27,7 @@ The proof of concept tries to implement a simple tanks*like game as example.
 
 ## Meta - Game start
 * Players connect and either join a game or create a lobby
-* Once they 2 players connected via the lobby, the game is started
+* Once 2 players connected via the lobby, they can confirm to start the game
 
 ## Main Game - Tank fight
 * Each player is represented one of his his personl tanks he choses in the lobby
