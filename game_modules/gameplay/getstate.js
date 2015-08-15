@@ -12,7 +12,6 @@ var gameHandler = require('../../classes/gamehandler.js');
 var communicationHandler = require('../../classes/communicationhandler.js');
 
 var run = function (session, data) {
-
 	// check if session has an attached user
 	if (session.user == "") {
 		console.log("# No user found in session");

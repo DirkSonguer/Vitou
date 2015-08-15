@@ -72,7 +72,15 @@ The call returns the list of open and available lobbies to the requesting user.
 
 ## Player 2: Join the lobby created by player 1 (system/lobby/join/$lobby_id)
 
+Player 2 selects the lobby of player 1 and joins it.
+
+This will add player 2 to the participants list of the respective lobby id. All players already in the lobby get a message that a new player has joined.
+
 ## Player 1: Confirms the match (system/lobby/confirm/lobby_id)
+
+Participants in a lobby have to confirm that they want to play with each other. Player 1 confirms first.
+
+This will send send a message to all other participants in the lobby that player 1 has confirmed.
 
 ## Player 2: Also confirms the match (system/lobby/confirm/lobby_id)
 

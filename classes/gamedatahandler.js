@@ -184,6 +184,24 @@ GamedatahandlerClass.prototype.transformData = function (rawData, dataStructure)
 	return dataObject;
 }
 
+// get data item
+GamedatahandlerClass.prototype.getDataItem = function (itemId) {
+	logHandler.log('Getting data item with id ' + itemId + ' from game data storage', 0);
+
+	// filter out item with respective id
+	var gameItemData = this.gameDataStorage.filter(function (el) {
+		return el.id == itemId;
+	});
+	
+	// no lobby found
+	if (gameItemData.length < 1) {
+		return false;
+	}
+
+	// done
+	return gameItemData[0];
+}
+
 // reference object for a dame data item
 function GameDataObject() {
 	// game data id for referencing
