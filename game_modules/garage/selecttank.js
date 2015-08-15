@@ -15,7 +15,7 @@ var run = function (session, data) {
 		return false;
 	}
 	
-	// get object of current user
+	// get object for current user
 	var userObject = userHandler.getUserObject(session.user);
 		
 	// get all item ids in the users garage
@@ -36,7 +36,7 @@ var run = function (session, data) {
 
 	// set user data
 	userObject.userData.activeTank = data;
-	userHandler.updateUserData(userObject, session.user);
+	userHandler.updateUserData(userObject.userData, session.user);
 
 	// send confirmation to client
 	var event = '{ "module": "garage", "action": "selecttank", "data": "' + data + '" }';
