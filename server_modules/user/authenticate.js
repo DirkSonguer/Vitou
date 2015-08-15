@@ -13,7 +13,7 @@ var run = function (session, data) {
 
 	// check if user exists
 	if ((!userObject) || (typeof userObject.id === 'undefined')) {
-		console.log("# No user found in storage");
+		// no user found in storage
 		return false;
 	}
 	

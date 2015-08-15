@@ -185,7 +185,7 @@ GamedatahandlerClass.prototype.transformData = function (rawData, dataStructure)
 }
 
 // get data item
-GamedatahandlerClass.prototype.getDataItem = function (itemId) {
+GamedatahandlerClass.prototype.getDataItemById = function (itemId) {
 	logHandler.log('Getting data item with id ' + itemId + ' from game data storage', 0);
 
 	// filter out item with respective id

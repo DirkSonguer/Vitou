@@ -14,7 +14,7 @@ var communicationHandler = require('../../classes/communicationhandler.js');
 var run = function (session, data) {
 	// check if session has an attached user
 	if (session.user == "") {
-		console.log("# No user found in session");
+		// no user found in session
 		return false;
 	}
 	
@@ -29,7 +29,7 @@ var run = function (session, data) {
 	
 	// get actual data for garage items
 	for (var i = 0, len = garageItemIds.length; i < len; i++) {
-		garageItems.push(gamedataHandler.getDataItem(garageItemIds[i]));
+		garageItems.push(gamedataHandler.getDataItemById(garageItemIds[i]));
 	}
 
 	// send garage items to client

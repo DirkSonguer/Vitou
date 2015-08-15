@@ -23,6 +23,7 @@ The server will answer with the id of the newly created lobby.
 	"action": "created",
 	"data": "$NEW_LOBBY_ID"
 }
+```
 
 ## To Do
 
