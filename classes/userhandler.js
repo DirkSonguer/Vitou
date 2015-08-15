@@ -46,16 +46,13 @@ UserhandlerClass.prototype.createUser = function (session) {
 }
 
 // delete user
-UserhandlerClass.prototype.deleteUser = function (session) {
-	logHandler.log('Deleting user with id ' + session.user + ' from user storage', 0);
+UserhandlerClass.prototype.deleteUser = function (userId) {
+	logHandler.log('Deleting user with id ' + userId + ' from user storage', 0);
 
 	// filter out lobby with respective id
 	this.userStorage = this.userStorage.filter(function (el) {
-		return el.id != session.user;
+		return el.id != userId;
 	});
-
-	// clear user from session	
-	session.user = '';
 
 	// done
 	logHandler.log('We now have ' + this.userStorage.length + ' users', 2);
@@ -63,8 +60,8 @@ UserhandlerClass.prototype.deleteUser = function (session) {
 }
 
 // get user data
-UserhandlerClass.prototype.getUserData = function (userId) {
-	logHandler.log('Getting user data for id ' + userId + ' from user storage', 0);
+UserhandlerClass.prototype.getUserObject = function (userId) {
+	logHandler.log('Getting user object for id ' + userId + ' from user storage', 0);
 
 	// filter out lobby with respective id
 	var userData = this.userStorage.filter(function (el) {
@@ -77,7 +74,7 @@ UserhandlerClass.prototype.getUserData = function (userId) {
 	}
 
 	// done
-	return userData[0].userData;
+	return userData[0];
 }
 
 // update user data

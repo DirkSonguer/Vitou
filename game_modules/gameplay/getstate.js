@@ -11,27 +11,27 @@ var gameHandler = require('../../classes/gamehandler.js');
 // communication handler
 var communicationHandler = require('../../classes/communicationhandler.js');
 
-var run = function (sender, data) {
+var run = function (session, data) {
 
 	// check if session has an attached user
-	if (sender.user == "") {
+	if (session.user == "") {
 		console.log("# No user found in session");
 		return false;
 	}
 
 	// check if session has an attached game
-	if (sender.game == "") {
+	if (session.game == "") {
 		console.log("# No game found in session");
 		return false;
 	}
 	
 	// get the user data via the user handler
-	var gameData = gameHandler.getGameData(sender.game);
+	var gameData = gameHandler.getGameData(session.game);
 
 	// send state to client
 	var gameDataString = util.inspect(gameData);
 	var event = '{ "module": "game", "action": "state", "data": "' + gameDataString + '" }';
-	communicationHandler.sendEventToSession(event, sender);
+	communicationHandler.sendEventToSession(event, session);
 	
 	// done
 	return true;

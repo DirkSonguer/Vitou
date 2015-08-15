@@ -16,11 +16,11 @@ var run = function (session, data) {
 		return false;
 	}
 	
-	// get the user data via the user handler
-	var userData = userHandler.getUserData(session.user);
+	// get the user onject via the user handler
+	var userObject = userHandler.getUserObject(session.user);
 
 	// send state to client
-	var userDataString = util.inspect(userData);
+	var userDataString = util.inspect(userObject.userData);
 	var event = '{ "module": "user", "action": "state", "data": "' + userDataString + '" }';
 	communicationHandler.sendEventToSession(event, session);
 	

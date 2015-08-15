@@ -11,10 +11,10 @@ var gamedataHandler = require('../../classes/gamedatahandler.js');
 // communication handler
 var communicationHandler = require('../../classes/communicationhandler.js');
 
-var run = function (sender, data) {
+var run = function (session, data) {
 
 	// check if session has an attached user
-	if (sender.user == "") {
+	if (session.user == "") {
 		console.log("# No user found in session");
 		return false;
 	}
@@ -30,7 +30,7 @@ var run = function (sender, data) {
 	// send state to client
 	var availableItemsString = util.inspect(availableItems);
 	var event = '{ "module": "shop", "action": "items", "data": "' + availableItemsString + '" }';
-	communicationHandler.sendEventToSession(event, sender);
+	communicationHandler.sendEventToSession(event, session);
 	
 	// done
 	return true;
