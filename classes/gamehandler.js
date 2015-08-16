@@ -88,7 +88,7 @@ GamehandlerClass.prototype.removePlayerFromGame = function () {
 
 // get the game data for a given game
 // note: this is not only the state, but the entire game object
-GamehandlerClass.prototype.getGameData = function (gameId) {
+GamehandlerClass.prototype.getGameObject = function (gameId) {
 	logHandler.log('Getting game data for game with id ' + gameId, 0);
 
 	// find index of a game with respective id
@@ -117,6 +117,25 @@ GamehandlerClass.prototype.setGameState = function (gameId, gameState) {
 	
 	// set new game state object
 	this.gameStorage[gamePos].gameState = gameState;
+	
+	// done
+	return true;
+}
+
+// set the player state for a given game and player
+GamehandlerClass.prototype.setPlayerState = function (gameId, playerId, playerState) {
+	logHandler.log('Setting player state for player with id ' + playerId + ' and game with id ' + gameId, 0);
+
+	// find index of a game with respective id
+	var gamePos = this.gameStorage.map(function (x) { return x.id; }).indexOf(gameId);
+
+	// no matching game found
+	if (gamePos < 0) {
+		return false;
+	}
+	
+	// set new game state object
+	this.gameStorage[gamePos].playerState[playerId] = playerState;
 	
 	// done
 	return true;
