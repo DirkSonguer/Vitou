@@ -35,7 +35,7 @@ var run = function (session, data) {
 	}
 
 	// set user data
-	if (garageItem.assemblage != 'tank') {
+	if (garageItem.assemblage == 'tank') {
 		userObject.userData.activeTank = data;
 	} else {
 		userObject.userData.activeWeaponTurret = data;
@@ -43,7 +43,7 @@ var run = function (session, data) {
 	userHandler.updateUserData(userObject.userData, session.user);
 
 	// send confirmation to client
-	var event = '{ "module": "garage", "action": "selectitem", "data": "' + data + '" }';
+	var event = '{ "module": "garage", "action": "selecteditem", "data": "' + data + '" }';
 	communicationHandler.sendEventToSession(event, session);
 
 	// done

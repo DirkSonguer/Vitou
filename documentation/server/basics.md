@@ -121,9 +121,9 @@ Then there are assemblages, which act as templates for objects, aggregating a nu
 		"HasNameComponent",
 		"HitboxComponent",
 		"HitpointComponent",
-		"PositionComponent",
+		"HasPositionComponent",
 		"CanMoveComponent",
-		"PriceComponent"
+		"HasPriceComponent"
 	]
 }
 ```
