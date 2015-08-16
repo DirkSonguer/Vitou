@@ -30,7 +30,7 @@ The player chooses a tank from the list of available items and buys it.
 
 The server will handle the transaction including validating and updating bank accounts.
 
-## Player 1: Select new tank as main tank (game/garage/selecttank/$tank_id)
+## Player 1: Select new tank as main tank (game/garage/selectitem/$tank_id)
 
 The player selects the new tank as his main tank to play with.
 
@@ -52,7 +52,7 @@ Let's assume player 2 also wants to buy a new item, so he requests all available
 
 The player chooses a weapon turret from the list of available items and buys it.
 
-## Player 2: Use new turret with current tank (game/garage/selectweaponturret/$weaponturret_id)
+## Player 2: Use new turret with current tank (game/garage/selectitem/$weaponturret_id)
 
 The player selects the new weapon turret as his main turret to play with.
 

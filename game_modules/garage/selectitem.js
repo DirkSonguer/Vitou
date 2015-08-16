@@ -29,17 +29,21 @@ var run = function (session, data) {
 
 	// check if item is actually a tank
 	var garageItem = gamedataHandler.getDataItemById(data);
-	if ((typeof garageItem === 'undefined') && (garageItem.assemblage != 'tank')) {
+	if ((typeof garageItem === 'undefined') && ((garageItem.assemblage != 'tank') || (garageItem.assemblage != 'weaponturret'))) {
 		// item not a tank
 		return false;
 	}
 
 	// set user data
-	userObject.userData.activeTank = data;
+	if (garageItem.assemblage != 'tank') {
+		userObject.userData.activeTank = data;
+	} else {
+		userObject.userData.activeWeaponTurret = data;
+	}
 	userHandler.updateUserData(userObject.userData, session.user);
 
 	// send confirmation to client
-	var event = '{ "module": "garage", "action": "selecttank", "data": "' + data + '" }';
+	var event = '{ "module": "garage", "action": "selectitem", "data": "' + data + '" }';
 	communicationHandler.sendEventToSession(event, session);
 
 	// done

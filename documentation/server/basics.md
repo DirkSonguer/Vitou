@@ -13,7 +13,7 @@ The game server was developed based on a couple of design assumptions:
 
 ## How the server "thinks"
 
-The server works as one big event handler. You trigger something, it does something. It does not run on his own, does not have a "tick", does do anything without an external trigger.
+The server works as one big event handler. You trigger something, it does something. It does not run on his own, does not have a "tick", does not do anything without an external trigger.
 
 The notation of each input event is: type + module + action + data.
 
@@ -69,7 +69,7 @@ The game module provides the following actions:
 
 * create: Creates a new game.
 * destroy: Destroys an existing game.
-* addsession: Adds a session to an existing game.
+* addsession: Adds a session to an existing game, basically .
 
 ### Chat module
 
@@ -83,9 +83,9 @@ The chat module provides the following actions:
 
 ## Successors
 
-The game server allows chaining of actions as dynamic successory, which are defined in the server configuration file. This way hard-coded chains are avoided and the developer can extend the core actions with game specific actions. One example would be the initialisation with game-specific data once a new player connects to a game.
+The game server allows chaining of actions as dynamic successor, which are defined in the server configuration file. This way hard-coded chains are avoided and the developer can extend the core actions with game specific actions. One example would be the initialisation with game-specific data once a new player connects to a game.
 
-Generally a successor is executed after a defined event, basically creating an if-then chain of actions. A new successor can be added to the game by adding it in the ./configuration.json in the successors-section.
+Generally a successor is executed after a defined event, creating an if-then chain of actions. A new successor can be added to the game by adding it in the ./configuration.json in the successors-section.
 
 Here is an example how to add a successor, defined as type/module/action. This executes game->successors->ongamecreated after system->game->create is finsihed. Note that the return value of the if-action is handed to the then-action as data and not the origintal data values.
 
