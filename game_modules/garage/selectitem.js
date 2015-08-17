@@ -1,22 +1,28 @@
 
-// user handler
-var userHandler = require('../../classes/userhandler.js');
-
-// game data handler
-var gamedataHandler = require('../../classes/gamedatahandler.js');
+// storage handler
+var storageHandler = require('../../classes/storagehandler.js');
 
 // communication handler
 var communicationHandler = require('../../classes/communicationhandler.js');
 
 var run = function (session, data) {
+ 	// get session object
+	var sessionObject = storageHandler.get(session.id);
+	
 	// check if session has an attached user
-	if (session.user == "") {
-		// no user found in session
+	if (sessionObject.user == "") {
+		// user not authenticated
 		return false;
 	}
 	
-	// get object for current user
-	var userObject = userHandler.getUserObject(session.user);
+	// get user object
+	var userObject = storageHandler.get(sessionObject.user);
+		
+	// check if session has an attached user
+	if ((!userObject) || (userObject.type != "UserObject")) {
+		// this is not a user object
+		return false;
+	}
 		
 	// get all item ids in the users garage
 	var garageItemIds = userObject.userData.garage;
@@ -28,9 +34,17 @@ var run = function (session, data) {
 	}
 
 	// check if item is actually a tank
-	var garageItem = gamedataHandler.getDataItemById(data);
-	if ((typeof garageItem === 'undefined') && ((garageItem.assemblage != 'tank') || (garageItem.assemblage != 'weaponturret'))) {
-		// item not a tank
+	var garageItem = storageHandler.get(data);
+	
+	// check if garage item is really a game data object
+	if ((!garageItem) || (garageItem.type != "GameDataObject")) {
+		// this is not a game data object
+		return false;
+	}
+
+	// check if item is either a tank or weaponturret
+	if ((garageItem.assemblage != 'tank') && (garageItem.assemblage != 'weaponturret')) {
+		// item neither a tank nor weapon turret
 		return false;
 	}
 
@@ -40,11 +54,12 @@ var run = function (session, data) {
 	} else {
 		userObject.userData.activeWeaponTurret = data;
 	}
-	userHandler.updateUserData(userObject.userData, session.user);
+	
+	storageHandler.set(userObject.id, userObject);
 
 	// send confirmation to client
 	var event = '{ "module": "garage", "action": "selecteditem", "data": "' + data + '" }';
-	communicationHandler.sendEventToSession(event, session);
+	communicationHandler.sendToSession(event, sessionObject);
 
 	// done
 	return true;
