@@ -1,30 +1,32 @@
 
-// user handler
-var userHandler = require('../../classes/userhandler.js');
-
-// game data handler
-var gamedataHandler = require('../../classes/gamedatahandler.js');
+// storage handler
+var storageHandler = require('../../classes/storagehandler.js');
 
 // communication handler
 var communicationHandler = require('../../classes/communicationhandler.js');
 
 var run = function (session, data) {
-	// check if session has an attached user
-	if (session.user == "") {
-		// no user found in session
-		return false;
-	}
+ 	// get session object
+	var sessionObject = storageHandler.get(session.id);
 	
-	// get object for current user
-	var userObject = userHandler.getUserObject(session.user);
-	if (!userObject) {
-		// no user found
+	// check if session has an attached user
+	if (sessionObject.user == "") {
+		// user not authenticated
 		return false;
 	}
 
+	// get user object
+	var userObject = storageHandler.get(sessionObject.user);
+		
+	// check if session has an attached user
+	if ((!userObject) || (userObject.type != "UserObject")) {
+		// this is not a user object
+		return false;
+	}	
+
 	// get item that should be bought
-	var requestedItem = gamedataHandler.getDataItemById(data);
-	if (!requestedItem) {
+	var requestedItem = storageHandler.get(data);
+	if ((!requestedItem) || (requestedItem.type != "GameDataObject")) {
 		// no item found
 		return false;
 	}
@@ -44,11 +46,11 @@ var run = function (session, data) {
 	// TODO: Make transaction safe
 	userObject.userData.money -= requestedItem.data.price;
 	userObject.userData.garage.push(data);
-	userHandler.updateUserData(userObject.userData, session.user);
+	storageHandler.set(userObject.id, userObject);
 	
 	// send confirmation to client
 	var event = '{ "module": "shop", "action": "buyitem", "data": "' + data + '" }';
-	communicationHandler.sendEventToSession(event, session);
+	communicationHandler.sendToSession(event, sessionObject);
 
 	// done
 	return true;
