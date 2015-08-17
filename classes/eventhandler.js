@@ -103,7 +103,7 @@ EventhandlerClass.prototype.executeEvent = function (sender, event) {
 	}
 
 	// get full session object for socket connection
-	var session = storageHandler.retrieve(sender.id);
+	var session = storageHandler.get(sender.id);
 	if (!session) {
 		// note that the reason we can't find a session might be
 		// that this is the connection call

@@ -15,14 +15,14 @@ var storageHandler = new StoragehandlerClass();
 
 // class function that gets the prototype methods
 function StoragehandlerClass() {
-	this.dataStorage = {};
+	this.dataStorage = new Array();
 }
 
 // store a new data item
-StoragehandlerClass.prototype.store = function (key, value) {
+StoragehandlerClass.prototype.set = function (key, value) {
 	logHandler.log('Storing data for key ' + key, 0);
-	
-	// yes, that's pretty much it
+
+	// add object to storage	
 	this.dataStorage[key] = value;
 
 	// done
@@ -30,18 +30,38 @@ StoragehandlerClass.prototype.store = function (key, value) {
 }
 
 // retrieve a data item
-StoragehandlerClass.prototype.retrieve = function (key) {
+StoragehandlerClass.prototype.get = function (key) {
 	logHandler.log('Retrieving data for key ' + key, 0);
 
-	// yes, that's pretty much it
+	// return object from storage	
 	return this.dataStorage[key];
+}
+
+// retrieve all data items with a specific property
+StoragehandlerClass.prototype.getByProperty = function (property, key) {
+	logHandler.log('Retrieving data that has property ' + property + '=' + key, 0);
+	
+	// create return object
+	var returnData = new Array();
+	
+	// this is appallingly ineffective
+	var allKeys = Object.keys(this.dataStorage);
+	for (var i = 0, len = allKeys.length; i < len; i++) {
+		var el = this.dataStorage[allKeys[i]];
+		if (el[property] == key) {
+			returnData.push(el);
+		}
+	}
+	
+	// return objects from storage	
+	return returnData;
 }
 
 // check if a data item exists
 StoragehandlerClass.prototype.exists = function (key) {
 	logHandler.log('Checking if data exists for key ' + key, 0);
 
-	// yes, that's pretty much it
+	// if item exists, it's not undefined
 	if (typeof this.dataStorage[key] === 'undefined') {
 		return false;
 	}
@@ -54,7 +74,7 @@ StoragehandlerClass.prototype.exists = function (key) {
 StoragehandlerClass.prototype.delete = function (key) {
 	logHandler.log('Deleting data with key ' + key, 0);
 
-	// yes, that's pretty much it
+	// remove object from storage
 	delete this.dataStorage[key];
 
 	// done

@@ -19,14 +19,14 @@ var run = function (session, data) {
 	}
 
 	// get user object
-	var userObject = storageHandler.retrieve(session.user);
+	var userObject = storageHandler.get(session.user);
 
 	logHandler.log(userObject, 4);
 
 	// send state to client
 	var userDataString = util.inspect(userObject);
 	var event = '{ "module": "user", "action": "state", "data": "' + userDataString + '" }';
-	communicationHandler.sendEventToSession(event, session);
+	communicationHandler.sendToSession(session, event);
 	
 	// done
 	return true;

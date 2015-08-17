@@ -4,7 +4,7 @@ var storageHandler = require('../../classes/storagehandler.js');
 
 var run = function (session, data) {
 	// get session object
-	var sessionObject = storageHandler.retrieve(session.id);
+	var sessionObject = storageHandler.get(session.id);
 	
 	// check if session has an attached user
 	if (sessionObject.user != "") {
@@ -13,7 +13,7 @@ var run = function (session, data) {
 	}
 
 	// get user object
-	var userObject = storageHandler.retrieve(data);
+	var userObject = storageHandler.get(data);
 		
 	// check if session has an attached user
 	if (userObject.type != "UserObject") {
@@ -23,7 +23,7 @@ var run = function (session, data) {
 
 	// bind user object to session
 	sessionObject.user = userObject.id;
-	storageHandler.store(session.id, sessionObject);
+	storageHandler.set(session.id, sessionObject);
 
 	// send confirmation to user
 	session.socket.emit('message', '{ "module": "user", "action": "authenticated", "data": "' + userObject.id + '" }');

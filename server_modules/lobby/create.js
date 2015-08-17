@@ -1,22 +1,60 @@
 
-// lobby handler
-var lobbyHandler = require('../../classes/lobbyhandler.js');
+// UUID
+var uuid = require('node-uuid');
+
+// storage handler
+var storageHandler = require('../../classes/storagehandler.js');
 
 var run = function (session, data) {
-	// create a new game via the gamehandler
-	var newLobby = lobbyHandler.createLobby(session);
+	// get session object
+	var sessionObject = storageHandler.get(session.id);
 	
-	// check if new lobby was created
-	if (!newLobby) {
-		// lobby creation failed
-		return false
+	// check if session has an attached user
+	if (sessionObject.user == "") {
+		// user not authenticated
+		return false;
 	}
-	
+
+	// get user object
+	var userObject = storageHandler.get(sessionObject.user);
+		
+	// check if session has an attached user
+	if (userObject.type != "UserObject") {
+		// this is not a user object
+		return false;
+	}
+
+	// check if user already is in a game
+	if (userObject.game != '') {
+		// User already in a game
+		return false;
+	}
+
+	// check if user already is in a lobby
+	if (userObject.lobby != '') {
+		// User already in a lobby
+		return false;
+	}
+
+	// create new lobby object
+	var LobbyObject = require('../../structures/lobby.js');
+	var newLobby = new LobbyObject();
+	newLobby.id = uuid.v1();
+	newLobby.lobbyParticipants.push(userObject.id);
+	newLobby.lobbyState = '';
+
+	// add new lobby to storage
+	storageHandler.set(newLobby.id, newLobby);
+
+	// add lobby state to user
+	userObject.lobby = newLobby.id;
+	storageHandler.set(userObject.id, userObject);
+
 	// send confirmation to creator
 	session.socket.emit('message', '{ "module": "lobby", "action": "created", "data": "' + newLobby.id + '" }');
 
 	// done
-	return true;
+	return newLobby;
 };
 
 module.exports = run;

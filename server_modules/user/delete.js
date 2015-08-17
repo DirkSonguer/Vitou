@@ -4,7 +4,7 @@ var storageHandler = require('../../classes/storagehandler.js');
 
 var run = function (session, data) {
 	// get session object
-	var sessionObject = storageHandler.retrieve(session.id);
+	var sessionObject = storageHandler.get(session.id);
 	
 	// check if session has an attached user
 	if (sessionObject.user == "") {
@@ -20,7 +20,7 @@ var run = function (session, data) {
 
 	// remove user from current session
 	sessionObject.user = '';
-	storageHandler.store(session.id, sessionObject);
+	storageHandler.set(session.id, sessionObject);
 
 	// done
 	return true;

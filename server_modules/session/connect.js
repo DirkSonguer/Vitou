@@ -1,16 +1,34 @@
 
-// session handler
-var sessionHandler = require('../../classes/sessionhandler.js');
+// storage handler
+var storageHandler = require('../../classes/storagehandler.js');
 
-var run = function (sender, data) {
-	// create new session for new client
-	sessionHandler.createSession(sender);
+// communication handler
+var communicationHandler = require('../../classes/communicationhandler.js');
 
-	// send confirmation to creator
-	sender.emit('message', '{ "module": "session", "action": "connected", "data": "' + sender.id + '" }');
+var run = function (session, data) {
+	// get session object
+	var sessionObject = storageHandler.get(session.id);
+	
+	// check if session is already known
+	if (sessionObject) {
+		// session already exists
+		return false;
+	}
+
+	// create new session object
+	var SessionObject = require('../../structures/session.js');
+	var newSession = new SessionObject();
+	newSession.id = session.id;
+	newSession.socket = session;
+
+	// add new session to storage
+	storageHandler.set(newSession.id, newSession);
+
+	var event = '{ "module": "session", "action": "connected", "data": "' + session.id + '" }';
+	communicationHandler.sendToSession(newSession, event);
 
 	// done
-	return true;
+	return newSession;
 };
 
 module.exports = run;
