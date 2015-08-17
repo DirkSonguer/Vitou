@@ -18,7 +18,6 @@ var run = function (session, data) {
 	// check if session has an attached user
 	if (sessionObject.user == "") {
 		// user not authenticated
-		console.log("1");
 		return false;
 	}
 
@@ -26,16 +25,14 @@ var run = function (session, data) {
 	var userObject = storageHandler.get(sessionObject.user);
 		
 	// check if session has an attached user
-	if (userObject.type != "UserObject") {
+	if ((!userObject) || (userObject.type != "UserObject")) {
 		// this is not a user object
-		console.log("2");
 		return false;
 	}
 
 	// check if user already is in a lobby
 	if (userObject.lobby == '') {
 		// User is not in a lobby
-		console.log("3");
 		return false;
 	}
 	
@@ -45,7 +42,6 @@ var run = function (session, data) {
 	// check if given object really is a lobby
 	if ((lobbyObject) && (lobbyObject.type != "LobbyObject")) {
 		// this is not a lobby object
-		console.log("4");
 		return false;
 	}
 

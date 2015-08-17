@@ -1,9 +1,6 @@
 
-// user handler
-var userHandler = require('../../classes/userhandler.js');
-
-// game data handler
-var gameHandler = require('../../classes/gamehandler.js');
+// storage handler
+var storageHandler = require('../../classes/storagehandler.js');
 
 // game data handler
 var gamedataHandler = require('../../classes/gamedatahandler.js');
@@ -13,51 +10,44 @@ var communicationHandler = require('../../classes/communicationhandler.js');
 
 var run = function (session, data) {
 	// get initial data structure for the new game
-	// var gameData = gamedataHandler.gameStructures.user;
-	
-var logHandler = require('../../classes/loghandler.js');
-	
-	var gameObject = gameHandler.getGameObject(data);
+	// this should be handed over by the system create game function
+	var gameObject = data;
+
+	var logHandler = require('../../classes/loghandler.js');
 	logHandler.log(gameObject, 4);
+
+	// check if given object is really a game
+	if ((!gameObject) || (gameObject.type != "GameObject")) {
+		// this is not a user object
+		return false;
+	}
 
 	// define start states for all players
 	for (var i = 0, len = gameObject.gameParticipants.length; i < len; i++) {
 		var playerState = {};
 		
-		// get current player object
-		var playerObject = userHandler.getUserObject(gameObject.gameParticipants[i]);
-		logHandler.log(playerObject, 4);
+		// get current player object (= user object)
+		var playerObject = storageHandler.get(gameObject.gameParticipants[i]);
 		
-		// set initial positions
-		playerObject.userData.activeTank.x = Math.floor(Math.random() * 100)+1;
-		playerObject.userData.activeTank.y = Math.floor(Math.random() * 100)+1;
+		// check if given object is really a user
+		if ((!playerObject) || (playerObject.type != "UserObject")) {
+			// this is not a user object
+			return false;
+		}
+/*
+		var tankData = gamedataHandler.getDataItemById(playerObject.activeTank);
+		logHandler.log(tankData, 4);
+		tankData.x = Math.floor(Math.random() * 100) + 1;
+		tankData.y = Math.floor(Math.random() * 100) + 1;
+		playerState['tank'] = tankData;
 
-		// set tank objects to state
-		playerState['tank'] = playerObject.userData.activeTank;
-		playerState['weaponturret'] = playerObject.userData.activeWeaponTurret;
+		var weaponturretData = gamedataHandler.getDataItemById(playerObject.activeWeaponTurret);
+		playerState['weaponturret'] = weaponturretData;
 
+		gameObject.playerStates[gameObject.gameParticipants[i]] = playerState;
 		logHandler.log(playerState, 4);
+*/
 	}
-
-/*	
-
-
-	var playerState = {};
-
-	playerState['tank'];
-	playerState['weaponturret'];
-	
-	/*
-		// contains the session ids of game participants
-		this.gameParticipants = new Array();
-	
-		// global state for this game
-		this.gameState = {};
-		
-		// individual player states
-		// note: this is an array of player game state objects
-		this.playerStates = new Array();
-	*/
 	
 	// done
 	return true;

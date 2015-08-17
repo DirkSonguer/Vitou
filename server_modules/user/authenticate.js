@@ -18,14 +18,8 @@ var run = function (session, data) {
 	// get user object
 	var userObject = storageHandler.get(data);
 
-	// check if user object does exist
-	if (!userObject) {
-		// no user object found
-		return false;
-	}
-		
-	// check if object is really a user object
-	if (userObject.type != "UserObject") {
+	// check if object was found
+	if ((!userObject) || (userObject.type != "UserObject")) {
 		// this is not a user object
 		return false;
 	}

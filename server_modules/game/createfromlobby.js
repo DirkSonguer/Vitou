@@ -25,7 +25,7 @@ var run = function (session, data) {
 	var userObject = storageHandler.get(sessionObject.user);
 		
 	// check if session has an attached user
-	if (userObject.type != "UserObject") {
+	if ((!userObject) || (userObject.type != "UserObject")) {
 		// this is not a user object
 		return false;
 	}

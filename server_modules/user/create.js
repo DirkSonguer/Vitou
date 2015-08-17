@@ -29,7 +29,7 @@ var run = function (session, data) {
 	communicationHandler.sendToSession(event, sessionObject);
 
 	// done
-	return true;
+	return newUser;
 };
 
 module.exports = run;
