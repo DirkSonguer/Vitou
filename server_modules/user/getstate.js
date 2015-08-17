@@ -24,7 +24,7 @@ var run = function (session, data) {
 	// send state to client
 	var userDataString = util.inspect(userObject);
 	var event = '{ "module": "user", "action": "state", "data": "' + userDataString + '" }';
-	communicationHandler.sendToSession(sessionObject, event);
+	communicationHandler.sendToSession(event, sessionObject);
 	
 	// done
 	return true;

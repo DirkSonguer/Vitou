@@ -19,7 +19,7 @@ var run = function (session, data) {
 	storageHandler.delete(session.id);
 
 	var event = '{ "module": "session", "action": "connected", "data": "' + session.id + '" }';
-	communicationHandler.sendToSession(sessionObject, event);
+	communicationHandler.sendToSession(event, sessionObject);
 
 	// done
 	return true;

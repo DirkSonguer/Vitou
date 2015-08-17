@@ -25,7 +25,7 @@ var run = function (session, data) {
 	storageHandler.set(newSession.id, newSession);
 
 	var event = '{ "module": "session", "action": "connected", "data": "' + session.id + '" }';
-	communicationHandler.sendToSession(newSession, event);
+	communicationHandler.sendToSession(event, newSession);
 
 	// done
 	return newSession;

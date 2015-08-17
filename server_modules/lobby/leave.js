@@ -40,7 +40,8 @@ var run = function (session, data) {
 	}
 
 	// remove user from participants list
-	lobbyObject.lobbyParticipants.splice(userObject.id, 1);
+	var cutIndex = lobbyObject.lobbyParticipants.indexOf(userObject.id);
+	lobbyObject.lobbyParticipants.splice(cutIndex, 1);
 	storageHandler.set(lobbyObject.id, lobbyObject);
 	
 	// remove lobby state from session
@@ -49,8 +50,12 @@ var run = function (session, data) {
 	
 	// send update event to all clients still in lobby
 	if (lobbyObject.lobbyParticipants.length > 0) {
-		var event = '{ "module": "lobby", "action": "playerleft", "data": "' + session.id + '" }';
-		communicationHandler.sendToList(event, lobbyObject.lobbyParticipants);
+		// send to remaining participants
+		var event = '{ "module": "lobby", "action": "playerleft", "data": "' + userObject.id + '" }';
+		communicationHandler.sendToUserList(event, lobbyObject.lobbyParticipants);
+		
+		// send to user
+		communicationHandler.sendToSession(event, sessionObject);		
 	}
 			
 	// done

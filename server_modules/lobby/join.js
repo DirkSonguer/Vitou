@@ -63,8 +63,8 @@ var run = function (session, data) {
 	storageHandler.set(userObject.id, userObject);
 
 	// send update event to all clients in lobby
-	var event = '{ "module": "lobby", "action": "playerjoined", "data": "' + session.id + '" }';
-	communicationHandler.sendToList(event, lobbyObject.lobbyParticipants);
+	var event = '{ "module": "lobby", "action": "playerjoined", "data": "' + userObject.id + '" }';
+	communicationHandler.sendToUserList(event, lobbyObject.lobbyParticipants);
 			
 	// done
 	return true;

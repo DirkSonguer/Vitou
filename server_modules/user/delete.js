@@ -20,7 +20,7 @@ var run = function (session, data) {
 	
 	// send confirmation to creator
 	var event = '{ "module": "user", "action": "deleted", "data": "' + sessionObject.id + '" }';
-	communicationHandler.sendToSession(sessionObject, event);
+	communicationHandler.sendToSession(event, sessionObject);
 
 	// remove user from current session
 	sessionObject.user = '';

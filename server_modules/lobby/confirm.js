@@ -15,6 +15,7 @@ var run = function (session, data) {
 	// check if session has an attached user
 	if (sessionObject.user == "") {
 		// user not authenticated
+		console.log("1");
 		return false;
 	}
 
@@ -24,27 +25,24 @@ var run = function (session, data) {
 	// check if session has an attached user
 	if (userObject.type != "UserObject") {
 		// this is not a user object
+		console.log("2");
 		return false;
 	}
 
 	// check if user already is in a lobby
 	if (userObject.lobby == '') {
 		// User is not in a lobby
+		console.log("3");
 		return false;
 	}
 	
 	// get lobby object
-	var lobbyObject = storageHandler.get(data);
+	var lobbyObject = storageHandler.get(userObject.lobby);
 		
 	// check if given object really is a lobby
 	if (lobbyObject.type != "LobbyObject") {
 		// this is not a lobby object
-		return false;
-	}
-
-	// check if lobby has space for new participants
-	if (lobbyObject.lobbyParticipants.length >= configurationHandler.configurationStorage.lobby.minParticipants) {
-		// lobby does not have minimum amount of players
+		console.log("4");
 		return false;
 	}
 
@@ -53,8 +51,8 @@ var run = function (session, data) {
 	storageHandler.set(lobbyObject.id, lobbyObject);
 	
 	// send update event to all clients in lobby
-	var event = '{ "module": "lobby", "action": "playerconfirmed", "data": "' + session.id + '" }';
-	communicationHandler.sendToList(event, lobbyObject.lobbyParticipants);
+	var event = '{ "module": "lobby", "action": "playerconfirmed", "data": "' + userObject.id + '" }';
+	communicationHandler.sendToUserList(event, lobbyObject.lobbyParticipants);
 		
 	// done
 	return true;
