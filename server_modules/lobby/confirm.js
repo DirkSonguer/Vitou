@@ -2,6 +2,9 @@
 // storage handler
 var storageHandler = require('../../classes/storagehandler.js');
 
+// event handler
+var eventHandler = require('../../classes/eventhandler.js');
+
 // communication handler
 var communicationHandler = require('../../classes/communicationhandler.js');
 
@@ -40,7 +43,7 @@ var run = function (session, data) {
 	var lobbyObject = storageHandler.get(userObject.lobby);
 		
 	// check if given object really is a lobby
-	if (lobbyObject.type != "LobbyObject") {
+	if ((lobbyObject) && (lobbyObject.type != "LobbyObject")) {
 		// this is not a lobby object
 		console.log("4");
 		return false;
@@ -53,6 +56,13 @@ var run = function (session, data) {
 	// send update event to all clients in lobby
 	var event = '{ "module": "lobby", "action": "playerconfirmed", "data": "' + userObject.id + '" }';
 	communicationHandler.sendToUserList(event, lobbyObject.lobbyParticipants);
+		
+	// if all participants have already confirmed, start new game
+	if (lobbyObject.lobbyParticipantsConfirmed.length == lobbyObject.lobbyParticipants.length) {
+		// create new game
+		event = eventHandler.createEventObject("system", "game", "createfromlobby", "");
+		eventHandler.executeEvent(session, event);
+	}		
 		
 	// done
 	return true;

@@ -34,7 +34,7 @@ var run = function (session, data) {
 	var lobbyObject = storageHandler.get(userObject.lobby);
 		
 	// check if given object really is a lobby
-	if (lobbyObject.type != "LobbyObject") {
+	if ((lobbyObject) && (lobbyObject.type != "LobbyObject")) {
 		// this is not a lobby object
 		return false;
 	}

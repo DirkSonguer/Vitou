@@ -7,6 +7,7 @@
 // instances.
 // *************************************************** //
 
+/*
 // UUID
 var uuid = require('node-uuid');
 
@@ -140,6 +141,7 @@ GamehandlerClass.prototype.setPlayerState = function (gameId, playerId, playerSt
 	// done
 	return true;
 }
+*/
 
 // reference object for a game
 function GameObject() {
@@ -157,4 +159,4 @@ function GameObject() {
 	this.playerStates = new Array();
 }
 
-module.exports = gameHandler;
+module.exports = GameObject;
