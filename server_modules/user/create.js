@@ -5,6 +5,9 @@ var uuid = require('node-uuid');
 // storage handler
 var storageHandler = require('../../classes/storagehandler.js');
 
+// communication handler
+var communicationHandler = require('../../classes/communicationhandler.js');
+
 var run = function (session, data) {
 	// create new user object
 	var UserObject = require('../../structures/user.js');
@@ -22,7 +25,8 @@ var run = function (session, data) {
 	storageHandler.set(session.id, sessionObject);
 	
 	// send confirmation to creator
-	session.socket.emit('message', '{ "module": "user", "action": "created", "data": "' + newUser.id + '" }');
+	var event = '{ "module": "user", "action": "created", "data": "' + newUser.id + '" }';
+	communicationHandler.sendToSession(sessionObject, event);
 
 	// done
 	return true;

@@ -2,9 +2,6 @@
 // node utilities
 var util = require('util');
 
-// log handler
-var logHandler = require('../../classes/loghandler.js');
-
 // storage handler
 var storageHandler = require('../../classes/storagehandler.js');
 
@@ -12,21 +9,22 @@ var storageHandler = require('../../classes/storagehandler.js');
 var communicationHandler = require('../../classes/communicationhandler.js');
 
 var run = function (session, data) {
+	// get session object
+	var sessionObject = storageHandler.get(session.id);
+	
 	// check if session has an attached user
-	if (session.user == "") {
+	if (sessionObject.user == "") {
 		// no user found in session
 		return false;
 	}
 
 	// get user object
-	var userObject = storageHandler.get(session.user);
-
-	logHandler.log(userObject, 4);
+	var userObject = storageHandler.get(sessionObject.user);
 
 	// send state to client
 	var userDataString = util.inspect(userObject);
 	var event = '{ "module": "user", "action": "state", "data": "' + userDataString + '" }';
-	communicationHandler.sendToSession(session, event);
+	communicationHandler.sendToSession(sessionObject, event);
 	
 	// done
 	return true;

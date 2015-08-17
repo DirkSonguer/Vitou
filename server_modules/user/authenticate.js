@@ -2,6 +2,9 @@
 // storage handler
 var storageHandler = require('../../classes/storagehandler.js');
 
+// communication handler
+var communicationHandler = require('../../classes/communicationhandler.js');
+
 var run = function (session, data) {
 	// get session object
 	var sessionObject = storageHandler.get(session.id);
@@ -14,8 +17,14 @@ var run = function (session, data) {
 
 	// get user object
 	var userObject = storageHandler.get(data);
+
+	// check if user object does exist
+	if (!userObject) {
+		// no user object found
+		return false;
+	}
 		
-	// check if session has an attached user
+	// check if object is really a user object
 	if (userObject.type != "UserObject") {
 		// this is not a user object
 		return false;
@@ -25,8 +34,9 @@ var run = function (session, data) {
 	sessionObject.user = userObject.id;
 	storageHandler.set(session.id, sessionObject);
 
-	// send confirmation to user
-	session.socket.emit('message', '{ "module": "user", "action": "authenticated", "data": "' + userObject.id + '" }');
+	// send confirmation to creator
+	var event = '{ "module": "user", "action": "authenticated", "data": "' + userObject.id + '" }';
+	communicationHandler.sendToSession(sessionObject, event);
 			
 	// done
 	return true;
