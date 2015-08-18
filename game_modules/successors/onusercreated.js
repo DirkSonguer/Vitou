@@ -1,4 +1,7 @@
 
+// log handler
+var logHandler = require('../../classes/loghandler.js');
+
 // storage handler
 var storageHandler = require('../../classes/storagehandler.js');
 
@@ -12,7 +15,7 @@ var run = function (session, data) {
 
 	// check if given object is really a user
 	if ((!userObject) || (userObject.type != "UserObject")) {
-		// this is not a user object
+		logHandler.log('Could not create user (successor): User is not authenticated', 3);
 		return false;
 	}
 	

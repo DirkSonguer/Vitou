@@ -1,4 +1,7 @@
 
+// log handler
+var logHandler = require('../../classes/loghandler.js');
+
 // storage handler
 var storageHandler = require('../../classes/storagehandler.js');
 
@@ -11,7 +14,7 @@ var run = function (session, data) {
 	
 	// check if session has an attached user
 	if (sessionObject.user == "") {
-		// user not authenticated
+		logHandler.log('Could not select garage items: User is not authenticated', 3);
 		return false;
 	}
 	
@@ -20,7 +23,7 @@ var run = function (session, data) {
 		
 	// check if session has an attached user
 	if ((!userObject) || (userObject.type != "UserObject")) {
-		// this is not a user object
+		logHandler.log('Could not select garage items: No user object found', 3);
 		return false;
 	}
 		
@@ -29,7 +32,7 @@ var run = function (session, data) {
 	
 	// check if the given tank is actually in the users garage
 	if (garageItemIds.indexOf(data) < 0) {
-		// item not in garage
+		logHandler.log('Could not select garage items: Item not in garage', 3);
 		return false;
 	}
 
@@ -38,13 +41,13 @@ var run = function (session, data) {
 	
 	// check if garage item is really a game data object
 	if ((!garageItem) || (garageItem.type != "GameDataObject")) {
-		// this is not a game data object
+		logHandler.log('Could not select garage items: No game data object found', 3);
 		return false;
 	}
 
 	// check if item is either a tank or weaponturret
 	if ((garageItem.assemblage != 'tank') && (garageItem.assemblage != 'weaponturret')) {
-		// item neither a tank nor weapon turret
+		logHandler.log('Could not select garage items: Item is neither tank nor weapon turret', 3);
 		return false;
 	}
 

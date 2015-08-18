@@ -1,4 +1,7 @@
 
+// log handler
+var logHandler = require('../../classes/loghandler.js');
+
 // node utilities
 var util = require('util');
 
@@ -14,7 +17,7 @@ var run = function (session, data) {
 	
 	// check if session has an attached user
 	if (sessionObject.user == "") {
-		// user not authenticated
+		logHandler.log('Could not get game state: User is not authenticated', 3);
 		return false;
 	}
 	
@@ -23,7 +26,7 @@ var run = function (session, data) {
 		
 	// check if session has an attached user
 	if ((!userObject) || (userObject.type != "UserObject")) {
-		// this is not a user object
+		logHandler.log('Could not get game state: No user object found', 3);
 		return false;
 	}	
 	

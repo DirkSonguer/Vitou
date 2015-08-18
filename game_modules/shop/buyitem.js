@@ -1,4 +1,7 @@
 
+// log handler
+var logHandler = require('../../classes/loghandler.js');
+
 // storage handler
 var storageHandler = require('../../classes/storagehandler.js');
 
@@ -11,35 +14,35 @@ var run = function (session, data) {
 	
 	// check if session has an attached user
 	if (sessionObject.user == "") {
-		// user not authenticated
+		logHandler.log('Could not buy item: User is not authenticated', 3);
 		return false;
 	}
-
+	
 	// get user object
 	var userObject = storageHandler.get(sessionObject.user);
 		
 	// check if session has an attached user
 	if ((!userObject) || (userObject.type != "UserObject")) {
-		// this is not a user object
+		logHandler.log('Could not buy item: No user object found', 3);
 		return false;
-	}	
+	}
 
 	// get item that should be bought
 	var requestedItem = storageHandler.get(data);
 	if ((!requestedItem) || (requestedItem.type != "GameDataObject")) {
-		// no item found
+		logHandler.log('Could not buy item: No game data object found', 3);
 		return false;
 	}
 
 	// check if item is really for sale	
 	if (requestedItem.components.indexOf('HasPriceComponent') < 0) {
-		// item is not for sale
+		logHandler.log('Could not buy item: Item is not for sale', 3);
 		return false;
 	}
 	
 	// check if user has enough money
 	if (userObject.userData.money < requestedItem.data.price) {
-		// user does not have enough money
+		logHandler.log('Could not buy item: User does not have enough money', 3);
 		return false;
 	}
 	

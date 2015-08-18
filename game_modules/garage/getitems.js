@@ -2,6 +2,9 @@
 // node utilities
 var util = require('util');
 
+// log handler
+var logHandler = require('../../classes/loghandler.js');
+
 // storage handler
 var storageHandler = require('../../classes/storagehandler.js');
 
@@ -14,7 +17,7 @@ var run = function (session, data) {
 	
 	// check if session has an attached user
 	if (sessionObject.user == "") {
-		// user not authenticated
+		logHandler.log('Could not get garage items: User is not authenticated', 3);
 		return false;
 	}
 	
@@ -23,7 +26,7 @@ var run = function (session, data) {
 		
 	// check if session has an attached user
 	if ((!userObject) || (userObject.type != "UserObject")) {
-		// this is not a user object
+		logHandler.log('Could not get garage items: No user object found', 3);
 		return false;
 	}
 		
