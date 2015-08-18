@@ -5,40 +5,38 @@
 // outgoing events.
 // *************************************************** //
 
-var communicationHandler = new CommunicationhandlerClass();
+// storage handler
+var storageHandler = require('./storagehandler.js');
 
-// session handler
-var sessionHandler = require('./sessionhandler.js');
+// log handler
+var logHandler = require('./loghandler.js');
+
+var communicationHandler = new CommunicationhandlerClass();
 
 // Class function that gets the prototype methods
 function CommunicationhandlerClass() {
 }
 
 // send a message to a specific socket
-CommunicationhandlerClass.prototype.sendEventToSession = function (event, session) {
+CommunicationhandlerClass.prototype.sendToSession = function (message, session) {
 	// emit message
-	session.socket.emit('message', event);
+	session.socket.emit('message', message);
 
 	// done
 	return true;
 }
 
 // send event to a list of users
-CommunicationhandlerClass.prototype.sendEventToList = function (event, receiverList) {
-	// check if receivers were given	
+CommunicationhandlerClass.prototype.sendToUserList = function (message, receiverList) {
+	// check if receivers were given
 	if (receiverList.length < 1) {
 		return false;
 	}
-
+	
 	// send message to all participants
 	for (var i = 0, len = receiverList.length; i < len; i++) {
-		// filter out session with respective id
-		var clientSession = sessionHandler.sessionStorage.filter(function (el) {
-			return el.id == receiverList[i];
-		});
-
-		// emit to found session
-		this.sendEventToSession(event, clientSession[0]);
+		var userSession = storageHandler.getByProperty('user', receiverList[i]);
+		this.sendToSession(message, userSession[0]);
 	}
 
 	// done
@@ -46,7 +44,7 @@ CommunicationhandlerClass.prototype.sendEventToList = function (event, receiverL
 }
 
 // broadcast event to all
-CommunicationhandlerClass.prototype.sendEventToAll = function (event) {
+CommunicationhandlerClass.prototype.sendToAll = function (message) {
 
 	// done
 	return true;

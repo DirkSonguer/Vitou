@@ -2,17 +2,23 @@
 // node utilities
 var util = require('util');
 
-// lobby handler
-var lobbyHandler = require('../../classes/lobbyhandler.js');
+// storage handler
+var storageHandler = require('../../classes/storagehandler.js');
 
 // communication handler
 var communicationHandler = require('../../classes/communicationhandler.js');
 
 var run = function (session, data) {
+	// get session object
+	var sessionObject = storageHandler.get(session.id);
+
+	// get lobby object
+	var lobbyObjects = storageHandler.getByProperty('type', 'LobbyObject');	
+	
 	// send list of lobbies to client
-	var availableLobbiesString = util.inspect(lobbyHandler.lobbyStorage);
+	var availableLobbiesString = util.inspect(lobbyObjects);
 	var event = '{ "module": "lobby", "action": "list", "data": "' + availableLobbiesString + '" }';
-	communicationHandler.sendEventToSession(event, session);
+	communicationHandler.sendToSession(event, sessionObject);
 			
 	// done
 	return true;

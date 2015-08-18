@@ -1,31 +1,33 @@
 
-// user handler
-var userHandler = require('../../classes/userhandler.js');
+// log handler
+var logHandler = require('../../classes/loghandler.js');
 
-// session handler
-var sessionHandler = require('../../sessionhandler.js');
+// storage handler
+var storageHandler = require('../../classes/storagehandler.js');
+
+// communication handler
+var communicationHandler = require('../../classes/communicationhandler.js');
 
 var run = function (session, data) {
+	// get session object
+	var sessionObject = storageHandler.get(session.id);
+	
 	// check if session has an attached user
-	if (session.user == "") {
-		// no user found in session
+	if (sessionObject.user == "") {
+		logHandler.log('Could not delete user: No user found in session', 3);
 		return false;
 	}
 
-	// delete user from storage
-	var user = userHandler.deleteUser(session.user)
-
-	// check if player was deleted
-	if (!user) {
-		// player could not be deleted
-		return false
-	}
+	// delete user object from storage
+	storageHandler.delete(sessionObject.user);
 	
-	// send confirmation to user
-	session.socket.emit('message', '{ "module": "user", "action": "deleted", "data": "' + session.user + '" }');
+	// send confirmation to creator
+	var event = '{ "module": "user", "action": "deleted", "data": "' + sessionObject.id + '" }';
+	communicationHandler.sendToSession(event, sessionObject);
 
 	// remove user from current session
-	sessionHandler.sessionStorage[session.index].user = '';
+	sessionObject.user = '';
+	storageHandler.set(session.id, sessionObject);
 
 	// done
 	return true;

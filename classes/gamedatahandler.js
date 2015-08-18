@@ -19,6 +19,9 @@ var merge = require('merge');
 var fileSystem = require('fs');
 var filePath = require('path');
 
+// storage handler
+var storageHandler = require('./storagehandler.js');
+
 // log handler
 var logHandler = require('./loghandler.js');
 
@@ -26,10 +29,9 @@ var gamedataHandler = new GamedatahandlerClass();
 
 // Class function that gets the prototype methods
 function GamedatahandlerClass() {
-	this.gameDataStorage = new Array();
 	this.gameAssemblages = new Array();
 	this.gameComponents = new Array();
-	this.gameStructures = new Array();
+	this.gameDataStructures = new Array();
 }
 
 GamedatahandlerClass.prototype.loadData = function () {
@@ -72,7 +74,10 @@ GamedatahandlerClass.prototype.loadData = function () {
 		}
 
 		// add structure to global storage
-		this.gameStructures[dataFileAssemblage] = dataStructureForAssembly;
+		this.gameDataStructures[dataFileAssemblage] = dataStructureForAssembly;
+
+		// load game data template
+		var GameDataObject = require('../structures/gamedata.js');
 
 		// iterate through data array in the data file
 		for (var k = 0, klen = dataFileContent.data.length; k < klen; k++) {
@@ -87,7 +92,9 @@ GamedatahandlerClass.prototype.loadData = function () {
 			gameDataItem.data = gameDataObject;
 		
 			// push new item on game data array
-			this.gameDataStorage.push(gameDataItem);
+			storageHandler.set(gameDataItem.id, gameDataItem);
+			
+			// game object done
 			logHandler.log(gameDataItem, 0);
 		}
 	}
@@ -95,18 +102,6 @@ GamedatahandlerClass.prototype.loadData = function () {
 	// done
 	return true;
 }
-
-// get game data with a given assemblage
-GamedatahandlerClass.prototype.getGameDataByAssemblage = function (assemblage) {
-	// filter out game data with respective assemblage
-	var gameDataArray = this.gameDataStorage.filter(function (el) {
-		return el.assemblage == assemblage;
-	});
-
-	// done
-	return gameDataArray;
-}
-
 
 // load a given assemblage into an object
 GamedatahandlerClass.prototype.getStructureForAssemblage = function (assemblage) {
@@ -182,39 +177,6 @@ GamedatahandlerClass.prototype.transformData = function (rawData, dataStructure)
 	
 	// done
 	return dataObject;
-}
-
-// get data item
-GamedatahandlerClass.prototype.getDataItemById = function (itemId) {
-	logHandler.log('Getting data item with id ' + itemId + ' from game data storage', 0);
-
-	// filter out item with respective id
-	var gameItemData = this.gameDataStorage.filter(function (el) {
-		return el.id == itemId;
-	});
-	
-	// no lobby found
-	if (gameItemData.length < 1) {
-		return false;
-	}
-
-	// done
-	return gameItemData[0];
-}
-
-// reference object for a dame data item
-function GameDataObject() {
-	// game data id for referencing
-	this.id = '';
-
-	// contains the assemblage for the data item
-	this.assemblage = '';
-
-	// contains the components for the data item
-	this.components = new Array();
-
-	// contains the actual data
-	this.data = new Array();
 }
 
 module.exports = gamedataHandler;

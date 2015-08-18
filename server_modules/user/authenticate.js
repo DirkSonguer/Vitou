@@ -1,27 +1,39 @@
 
-// user handler
-var userHandler = require('../../classes/userhandler.js');
+// log handler
+var logHandler = require('../../classes/loghandler.js');
 
-// session handler
-var sessionHandler = require('../../classes/sessionhandler.js');
+// storage handler
+var storageHandler = require('../../classes/storagehandler.js');
+
+// communication handler
+var communicationHandler = require('../../classes/communicationhandler.js');
 
 var run = function (session, data) {
-	// get user object
-	var userObject = userHandler.getUserObject(data);
-
-	// TODO: Well, proper authentication via oauth or something
-
-	// check if user exists
-	if ((!userObject) || (typeof userObject.id === 'undefined')) {
-		// no user found in storage
+	// get session object
+	var sessionObject = storageHandler.get(session.id);
+	
+	// check if session has an attached user
+	if (sessionObject.user != "") {
+		logHandler.log('# Could not authenticate user: User already authenticated', 3);
 		return false;
 	}
-	
-	// add user to current session
-	sessionHandler.sessionStorage[session.index].user = userObject.id;
 
-	// send confirmation to user
-	session.socket.emit('message', '{ "module": "user", "action": "authenticated", "data": "' + userObject.id + '" }');
+	// get user object
+	var userObject = storageHandler.get(data);
+
+	// check if object was found
+	if ((!userObject) || (userObject.type != "UserObject")) {
+		logHandler.log('# Could not authenticate user: Given data does not match to a user session', 3);
+		return false;
+	}
+
+	// bind user object to session
+	sessionObject.user = userObject.id;
+	storageHandler.set(session.id, sessionObject);
+
+	// send confirmation to creator
+	var event = '{ "module": "user", "action": "authenticated", "data": "' + userObject.id + '" }';
+	communicationHandler.sendToSession(event, sessionObject);
 			
 	// done
 	return true;

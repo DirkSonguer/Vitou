@@ -23,9 +23,6 @@ var logHandler = require('./classes/loghandler.js');
 // configuration handler
 var configurationHandler = require('./classes/configurationhandler.js');
 
-// session handler
-var sessionHandler = require('./classes/sessionhandler.js');
-
 // event handler
 var eventHandler = require('./classes/eventhandler.js');
 
@@ -51,7 +48,7 @@ function init() {
 	
 	// set up Socket.IO to listen on port 8000
 	serverSocket = io.listen(configurationHandler.configurationStorage.server.connectionPort);
-	sessionHandler.ioSession = serverSocket;
+	// sessionHandler.ioSession = serverSocket;
 	logHandler.log('Game server is now listening', 2);
 
 	// start listening for events

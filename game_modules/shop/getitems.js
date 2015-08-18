@@ -2,34 +2,37 @@
 // node utilities
 var util = require('util');
 
-// user handler
-var userHandler = require('../../classes/userhandler.js');
+// log handler
+var logHandler = require('../../classes/loghandler.js');
 
-// game data handler
-var gamedataHandler = require('../../classes/gamedatahandler.js');
+// storage handler
+var storageHandler = require('../../classes/storagehandler.js');
 
 // communication handler
 var communicationHandler = require('../../classes/communicationhandler.js');
 
 var run = function (session, data) {
+ 	// get session object
+	var sessionObject = storageHandler.get(session.id);
+	
 	// check if session has an attached user
-	if (session.user == "") {
-		// no user found in session
+	if (sessionObject.user == "") {
+		logHandler.log('Could not get shop items: User is not authenticated', 3);
 		return false;
 	}
 	
 	var availableItems = new Array();
 	// get the user data via the user handler
 	if (data != '') {
-		availableItems = gamedataHandler.getGameDataByAssemblage(data);
+		availableItems = storageHandler.getByProperty('assemblage', data);
 	} else {
-		availableItems = gamedataHandler.gameDataStorage;
+		availableItems = storageHandler.getByProperty('type', 'GameDataObject');
 	}
 
 	// send state to client
 	var availableItemsString = util.inspect(availableItems);
 	var event = '{ "module": "shop", "action": "items", "data": "' + availableItemsString + '" }';
-	communicationHandler.sendEventToSession(event, session);
+	communicationHandler.sendToSession(event, sessionObject);
 	
 	// done
 	return true;
