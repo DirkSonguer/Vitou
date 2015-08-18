@@ -1,4 +1,7 @@
 
+// log handler
+var logHandler = require('../../classes/loghandler.js');
+
 // storage handler
 var storageHandler = require('../../classes/storagehandler.js');
 
@@ -14,7 +17,7 @@ var run = function (session, data) {
 	
 	// check if session has an attached user
 	if (sessionObject.user == "") {
-		// user not authenticated
+		logHandler.log('Could not join lobby: User is not authenticated', 3);
 		return false;
 	}
 
@@ -23,19 +26,19 @@ var run = function (session, data) {
 		
 	// check if session has an attached user
 	if ((!userObject) || (userObject.type != "UserObject")) {
-		// this is not a user object
+		logHandler.log('Could not join lobby: No user object found', 3);
 		return false;
 	}
 
 	// check if user already is in a game
 	if (userObject.game != '') {
-		// User already in a game
+		logHandler.log('Could not join lobby: User is already in a game', 3);
 		return false;
 	}
 
 	// check if user already is in a lobby
 	if (userObject.lobby != '') {
-		// User already in a lobby
+		logHandler.log('Could not join lobby: User is already in a lobby', 3);
 		return false;
 	}
 	
@@ -44,13 +47,13 @@ var run = function (session, data) {
 		
 	// check if given object really is a lobby
 	if ((!lobbyObject) || (lobbyObject.type != "LobbyObject")) {
-		// this is not a lobby object
+		logHandler.log('Could not join lobby: Lobby object could not be found', 3);
 		return false;
 	}
 
 	// check if lobby has space for new participants
 	if (lobbyObject.lobbyParticipants.length >= configurationHandler.configurationStorage.lobby.maxParticipants) {
-		// lobby already reached max participants
+		logHandler.log('Could not join lobby: Lobby reached maximum members', 3);
 		return false;
 	}
 

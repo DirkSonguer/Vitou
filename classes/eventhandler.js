@@ -123,26 +123,26 @@ EventhandlerClass.prototype.executeEvent = function (sender, event) {
 	// done
 	if (!eventResult) {
 		logHandler.log('# The call ' + eventSourcePath + ' with data ' + event.data + ' went wrong. INVESTIGATE!!!!', 3);
-	}
+	} else {
+		// check for relevant successors
+		var eventString = event.type + '/' + event.module + '/' + event.action;
+		var relevantSuccessors = configurationHandler.configurationStorage.successors.filter(function (el) {
+			return el.if == eventString;
+		});
 
-	// check for relevant successors
-	var eventString = event.type + '/' + event.module + '/' + event.action;
-	var relevantSuccessors = configurationHandler.configurationStorage.successors.filter(function (el) {
-		return el.if == eventString;
-	});
-
-	// if successors were found, execute the first one
-	if (relevantSuccessors.length > 0) {
-		logHandler.log('Found successor for ' + eventString + ', calling ' + relevantSuccessors[0].then, 2);
-		var successorEventArray = relevantSuccessors[0].then.split('/');
-		if (successorEventArray.length != 3) {
-			logHandler.log('Successor has wrong format: ' + relevantSuccessors[0].then, 3);
-			return false;
-		}
+		// if successors were found, execute the first one
+		if (relevantSuccessors.length > 0) {
+			logHandler.log('Found successor for ' + eventString + ', calling ' + relevantSuccessors[0].then, 2);
+			var successorEventArray = relevantSuccessors[0].then.split('/');
+			if (successorEventArray.length != 3) {
+				logHandler.log('Successor has wrong format: ' + relevantSuccessors[0].then, 3);
+				return false;
+			}
 		
-		// build and execute successor event
-		var successorEvent = eventHandler.createEventObject(successorEventArray[0], successorEventArray[1], successorEventArray[2], eventResult);
-		eventHandler.executeEvent(session, successorEvent);
+			// build and execute successor event
+			var successorEvent = eventHandler.createEventObject(successorEventArray[0], successorEventArray[1], successorEventArray[2], eventResult);
+			eventHandler.executeEvent(session, successorEvent);
+		}
 	}
 }
 

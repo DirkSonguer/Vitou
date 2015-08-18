@@ -1,4 +1,7 @@
 
+// log handler
+var logHandler = require('../../classes/loghandler.js');
+
 // storage handler
 var storageHandler = require('../../classes/storagehandler.js');
 
@@ -17,7 +20,7 @@ var run = function (session, data) {
 	
 	// check if session has an attached user
 	if (sessionObject.user == "") {
-		// user not authenticated
+		logHandler.log('Could not confirm lobby: User is not authenticated', 3);
 		return false;
 	}
 
@@ -26,13 +29,13 @@ var run = function (session, data) {
 		
 	// check if session has an attached user
 	if ((!userObject) || (userObject.type != "UserObject")) {
-		// this is not a user object
+		logHandler.log('Could not confirm lobby: No user object found', 3);
 		return false;
 	}
 
 	// check if user already is in a lobby
 	if (userObject.lobby == '') {
-		// User is not in a lobby
+		logHandler.log('Could not confirm lobby: User is not in a lobby', 3);
 		return false;
 	}
 	
@@ -41,7 +44,7 @@ var run = function (session, data) {
 		
 	// check if given object really is a lobby
 	if ((lobbyObject) && (lobbyObject.type != "LobbyObject")) {
-		// this is not a lobby object
+		logHandler.log('Could not confirm lobby: Lobby object could not be found', 3);
 		return false;
 	}
 

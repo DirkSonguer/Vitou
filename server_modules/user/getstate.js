@@ -1,4 +1,7 @@
 
+// log handler
+var logHandler = require('../../classes/loghandler.js');
+
 // node utilities
 var util = require('util');
 
@@ -14,7 +17,7 @@ var run = function (session, data) {
 	
 	// check if session has an attached user
 	if (sessionObject.user == "") {
-		// no user found in session
+		logHandler.log('Could not get state for user: No user found in session', 3);
 		return false;
 	}
 

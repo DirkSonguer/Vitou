@@ -1,4 +1,7 @@
 
+// log handler
+var logHandler = require('../../classes/loghandler.js');
+
 // storage handler
 var storageHandler = require('../../classes/storagehandler.js');
 
@@ -11,7 +14,7 @@ var run = function (session, data) {
 	
 	// check if session has an attached user
 	if (sessionObject.user == "") {
-		// no user found in session
+		logHandler.log('Could not delete user: No user found in session', 3);
 		return false;
 	}
 

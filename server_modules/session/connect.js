@@ -1,4 +1,7 @@
 
+// log handler
+var logHandler = require('../../classes/loghandler.js');
+
 // storage handler
 var storageHandler = require('../../classes/storagehandler.js');
 
@@ -11,7 +14,7 @@ var run = function (session, data) {
 	
 	// check if session is already known
 	if (sessionObject) {
-		// session already exists
+		logHandler.log('Could not create session: Session already exists for client socket id', 3);
 		return false;
 	}
 

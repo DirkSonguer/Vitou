@@ -2,35 +2,38 @@
 // node utilities
 var util = require('util');
 
-// user handler
-var userHandler = require('../../classes/userhandler.js');
-
-// game data handler
-var gameHandler = require('../../classes/gamehandler.js');
+// storage handler
+var storageHandler = require('../../classes/storagehandler.js');
 
 // communication handler
 var communicationHandler = require('../../classes/communicationhandler.js');
 
 var run = function (session, data) {
+ 	// get session object
+	var sessionObject = storageHandler.get(session.id);
+	
 	// check if session has an attached user
-	if (session.user == "") {
-		// no user found in session
-		return false;
-	}
-
-	// check if session has an attached game
-	if (session.game == "") {
-		// no game found in session
+	if (sessionObject.user == "") {
+		// user not authenticated
 		return false;
 	}
 	
-	// get the user data via the user handler
-	var gameData = gameHandler.getGameData(session.game);
+	// get user object
+	var userObject = storageHandler.get(sessionObject.user);
+		
+	// check if session has an attached user
+	if ((!userObject) || (userObject.type != "UserObject")) {
+		// this is not a user object
+		return false;
+	}	
+	
+	// get the game object
+	var gameObject = storageHandler.get(userObject.game);
 
 	// send state to client
-	var gameDataString = util.inspect(gameData);
-	var event = '{ "module": "game", "action": "state", "data": "' + gameDataString + '" }';
-	communicationHandler.sendEventToSession(event, session);
+	var gameObjectString = util.inspect(gameObject);
+	var event = '{ "module": "game", "action": "state", "data": "' + gameObjectString + '" }';
+	communicationHandler.sendToSession(event, sessionObject);
 	
 	// done
 	return true;

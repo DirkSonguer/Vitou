@@ -1,4 +1,7 @@
 
+// log handler
+var logHandler = require('../../classes/loghandler.js');
+
 // storage handler
 var storageHandler = require('../../classes/storagehandler.js');
 
@@ -13,12 +16,9 @@ var run = function (session, data) {
 	// this should be handed over by the system create game function
 	var gameObject = data;
 
-	var logHandler = require('../../classes/loghandler.js');
-	logHandler.log(gameObject, 4);
-
 	// check if given object is really a game
 	if ((!gameObject) || (gameObject.type != "GameObject")) {
-		// this is not a user object
+		logHandler.log('Could not create game (successor): No game object received', 3);
 		return false;
 	}
 
@@ -28,26 +28,29 @@ var run = function (session, data) {
 		
 		// get current player object (= user object)
 		var playerObject = storageHandler.get(gameObject.gameParticipants[i]);
-		
+
 		// check if given object is really a user
 		if ((!playerObject) || (playerObject.type != "UserObject")) {
-			// this is not a user object
+			logHandler.log('Could not create game (successor): No user object found', 3);
 			return false;
 		}
-/*
-		var tankData = gamedataHandler.getDataItemById(playerObject.activeTank);
-		logHandler.log(tankData, 4);
-		tankData.x = Math.floor(Math.random() * 100) + 1;
-		tankData.y = Math.floor(Math.random() * 100) + 1;
-		playerState['tank'] = tankData;
+		
+		// set initial position for tank
+		var tankData = storageHandler.get(playerObject.userData.activeTank);
+		tankData.data.x = Math.floor(Math.random() * 100) + 1;
+		tankData.data.y = Math.floor(Math.random() * 100) + 1;
+		playerState['tank'] = tankData.data;
+		
+		// add weapon turret
+		var weaponturretData = storageHandler.get(playerObject.userData.activeWeaponTurret);
+		playerState['weaponturret'] = weaponturretData.data;
 
-		var weaponturretData = gamedataHandler.getDataItemById(playerObject.activeWeaponTurret);
-		playerState['weaponturret'] = weaponturretData;
-
+		// add player object to game object
 		gameObject.playerStates[gameObject.gameParticipants[i]] = playerState;
-		logHandler.log(playerState, 4);
-*/
 	}
+	
+	// store updated game object
+	storageHandler.set(gameObject.id, gameObject);
 	
 	// done
 	return true;

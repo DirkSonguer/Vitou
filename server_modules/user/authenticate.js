@@ -1,4 +1,7 @@
 
+// log handler
+var logHandler = require('../../classes/loghandler.js');
+
 // storage handler
 var storageHandler = require('../../classes/storagehandler.js');
 
@@ -11,7 +14,7 @@ var run = function (session, data) {
 	
 	// check if session has an attached user
 	if (sessionObject.user != "") {
-		// user already authenticated
+		logHandler.log('# Could not authenticate user: User already authenticated', 3);
 		return false;
 	}
 
@@ -20,7 +23,7 @@ var run = function (session, data) {
 
 	// check if object was found
 	if ((!userObject) || (userObject.type != "UserObject")) {
-		// this is not a user object
+		logHandler.log('# Could not authenticate user: Given data does not match to a user session', 3);
 		return false;
 	}
 

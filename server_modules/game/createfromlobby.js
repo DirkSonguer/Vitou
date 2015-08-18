@@ -2,6 +2,9 @@
 // UUID
 var uuid = require('node-uuid');
 
+// log handler
+var logHandler = require('../../classes/loghandler.js');
+
 // storage handler
 var storageHandler = require('../../classes/storagehandler.js');
 
@@ -17,7 +20,7 @@ var run = function (session, data) {
 	
 	// check if session has an attached user
 	if (sessionObject.user == "") {
-		// user not authenticated
+		logHandler.log('Could not create game: User is not authenticated', 3);
 		return false;
 	}
 	
@@ -26,13 +29,13 @@ var run = function (session, data) {
 		
 	// check if session has an attached user
 	if ((!userObject) || (userObject.type != "UserObject")) {
-		// this is not a user object
+		logHandler.log('Could not create game: No user object found', 3);
 		return false;
 	}
 
 	// check if user was in a lobby when game was initiated
 	if (userObject.lobby == '') {
-		// User not in lobby
+		logHandler.log('Could not create game: User is not in a lobby', 3);
 		return false;
 	}
 			
@@ -46,7 +49,7 @@ var run = function (session, data) {
 	var lobbyObject = storageHandler.get(userObject.lobby);
 
 	// add players to the game
-	for (var i = 0, len = lobbyObject.lobbyParticipantsConfirmed.length; i < len; i++) {	
+	for (var i = 0, len = lobbyObject.lobbyParticipantsConfirmed.length; i < len; i++) {
 		// add player to game
 		newGame.gameParticipants.push(lobbyObject.lobbyParticipantsConfirmed[i]);	
 	
@@ -55,6 +58,7 @@ var run = function (session, data) {
 	
 		// add game to player session
 		var participantObject = storageHandler.get(lobbyObject.lobbyParticipantsConfirmed[i]);
+		participantObject.lobby = '';
 		participantObject.game = newGame.id;
 		storageHandler.set(participantObject.id, participantObject);
 	}
@@ -71,7 +75,7 @@ var run = function (session, data) {
 	communicationHandler.sendToUserList(event, lobbyObject.lobbyParticipantsConfirmed);
 
 	// destroy lobby
-	storageHandler.delete(participantObject.id);
+	storageHandler.delete(userObject.lobby);
 
 	// done
 	return newGame;
