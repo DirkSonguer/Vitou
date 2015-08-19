@@ -45,9 +45,17 @@ var run = function (session, data) {
 		var weaponturretData = storageHandler.get(playerObject.userData.activeWeaponTurret);
 		playerState['weaponturret'] = weaponturretData.data;
 
-		// add player object to game object
+		// add player state to game object
 		gameObject.playerStates[gameObject.gameParticipants[i]] = playerState;
 	}
+	
+	// set global game states
+	var gameState = {};
+	gameState['activePlayer'] = 0;
+	gameState['round'] = 1;
+	
+	// add game state to game object
+	gameObject.gameState = gameState;
 	
 	// store updated game object
 	storageHandler.set(gameObject.id, gameObject);

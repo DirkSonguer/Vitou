@@ -1,9 +1,9 @@
 
-// log handler
-var logHandler = require('../../classes/loghandler.js');
-
 // node utilities
 var util = require('util');
+
+// log handler
+var logHandler = require('../../classes/loghandler.js');
 
 // storage handler
 var storageHandler = require('../../classes/storagehandler.js');
