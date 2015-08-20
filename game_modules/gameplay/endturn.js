@@ -8,9 +8,6 @@ var logHandler = require('../../classes/loghandler.js');
 // storage handler
 var storageHandler = require('../../classes/storagehandler.js');
 
-// game data handler
-var gamedataHandler = require('../../classes/gamedatahandler.js');
-
 // communication handler
 var communicationHandler = require('../../classes/communicationhandler.js');
 

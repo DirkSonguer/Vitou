@@ -21,6 +21,8 @@
   },
   "successors": [
     { "if": "system/game/createfromlobby", "then": "game/successors/ongamecreated" },
-    { "if": "system/user/create", "then": "game/successors/onusercreated" }
+    { "if": "system/user/create", "then": "game/successors/onusercreated" },
+    { "if": "game/gameplay/move", "then": "game/gameplay/endturn" },
+    { "if": "system/gameplay/shoot", "then": "game/gameplay/endturn" }
   ]
 }
