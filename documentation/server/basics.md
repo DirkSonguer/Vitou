@@ -1,6 +1,6 @@
-# Game server basics
+# Kotahace basics
 
-This document explains how the game server and it's core components works.
+This document explains how the Kotahace server and it's core components work.
 
 ## Basic assumptions
 
