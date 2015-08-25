@@ -1,9 +1,9 @@
 // *************************************************** //
-// Game server proof of concept 
+// Kotahace proof of concept 
 //
 // This script is the main file that is given to node
-// to start the game server. It will start up and
-// listen to input events send by a connected client.
+// to start the kotahace game server. It will start up
+// and listen to input events send by a connected client.
 //
 // Note that all general configuration data iscan be
 // found in ./configuration.json.
