@@ -1,9 +1,7 @@
 
-# Vitou Proof of Concept
+# Vitou
 
-This is a proof of concept for a game server middleware.
-
-Proof of concept means: It is a really, really bad idea to use this thing in any way productive. For example it only runs in memory. There is no data storage attached and if it crashes, all is gone. Also, there is no real security and it's full of things that will affect performance in a very, very bad way. There is no caching. At all. And there is no queueing. In other words I tried to add TODOs as a blacklist but gave up since there would be too many. Got it?
+This is a proof of concept for a game server middleware. Proof of concept means: It is a really, really bad idea to use this thing in any way productive. For example it only runs in memory. There is no data storage attached and if it crashes, all is gone. Also, there is no real security and it's full of things that will affect performance in a very, very bad way. And there is no queueing. In other words I tried to add TODOs as a blacklist but gave up since there would be too many. Got it?
 
 The name does not mean anything, it was randomly created by a phonetic password generator. I was fed up calling the thing just "gameserver" all the time.
 
@@ -12,15 +10,17 @@ You should start reading the documentation in /documentation/vitou_documentation
 ## Installation
 
 ### Prerequisites
-- Get node.js: https://nodejs.org/download/
-- Change in the project root and get all dependencies with "npm install"
+
+* Get node.js: https://nodejs.org/download/
+* Change in the project root and get all dependencies with "npm install"
 
 ### Run servers
-- "node ./vitou.js" in project root runs the game server 
 
-- "node ./testserver.js" in project root runs a server that provides a demo interface
-- You can open it via browser at "http://localhost:8887/"
-- It will send a test client that allows you to send events to the server
+* "node ./vitou.js" in project root runs the game server 
+
+* "node ./testserver.js" in project root runs a server that provides a demo interface
+* You can open it via browser at "http://localhost:8887/"
+* It will send a test client that allows you to send events to the server
 
 See server documentation in /documentation/server.
 

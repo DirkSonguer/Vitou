@@ -19,8 +19,9 @@ Vitou was developed based on a couple of design assumptions:
 * /server/howto shows you how to implement your own game
 * /server/configuration contains details on how to configure the server
 
+* /API/ contains all individual Vitou core API calls
+
 * /examplegame/game_description contains a desciption for an example game that Vitou implements
 * /examplegame/game_scenario shows an example scenario of two clients playing the example game
+* /examplegame/API/ contains all individual calls for the example game
 
-* /API/ contains all individual Vitou core API calls
-* /game_API/ contains all individual calls for the example game
