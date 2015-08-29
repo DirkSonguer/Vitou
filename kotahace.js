@@ -1,8 +1,8 @@
 // *************************************************** //
-// Kotahace proof of concept 
+// Vitou proof of concept 
 //
 // This script is the main file that is given to node
-// to start the kotahace game server. It will start up
+// to start the Vitou game server. It will start up
 // and listen to input events send by a connected client.
 //
 // Note that all general configuration data iscan be

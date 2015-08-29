@@ -1,6 +1,6 @@
-# Kotahace basics
+# Vitou basics
 
-This document explains how the Kotahace server and it's core components work.
+This document explains how the Vitou server and it's core components work.
 
 ## Basic assumptions
 

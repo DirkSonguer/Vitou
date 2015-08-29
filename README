@@ -1,5 +1,5 @@
 
-# Kotahace Proof of Concept
+# Vitou Proof of Concept
 
 This is a proof of concept for a game server middleware.
 
@@ -14,7 +14,7 @@ The name does not mean anything, it was randomly created by a phonetic password 
 - Change in the project root and get all dependencies with "npm install"
 
 ### Run servers
-- "node ./kotahace.js" in project root runs the game server 
+- "node ./vitou.js" in project root runs the game server 
 
 - "node ./testserver.js" in project root runs a server that provides a demo interface
 - You can open it via browser at "http://localhost:8887/"
