@@ -29,10 +29,6 @@ var eventHandler = require('./classes/eventhandler.js');
 // game data handler
 var gamedataHandler = require('./classes/gamedatahandler.js');
 
-// general server configuration
-var fileSystem = require('fs');
-var serverConfiguration = JSON.parse(fileSystem.readFileSync('./configuration.json'));
-
 // ################################################
 // initialise game server
 // ################################################
