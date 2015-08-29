@@ -5,8 +5,6 @@ This is a proof of concept for a game server middleware. Proof of concept means:
 
 The name does not mean anything, it was randomly created by a phonetic password generator. I was fed up calling the thing just "gameserver" all the time.
 
-You should start reading the documentation in /documentation/vitou_documentation.md
-
 ## Installation
 
 ### Prerequisites
@@ -43,4 +41,3 @@ Example: { "type": "system", "module": "lobby", "action": "joinlobby", "data": "
 A similar structure is also send back to the client, but without the type. Yes, lazy. Will change. Maybe.
 
 See API documentation in /documentation/API.
-
