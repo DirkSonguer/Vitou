@@ -1,6 +1,6 @@
 # Example Game: Tanks
 
-The proof of concept tries to implement a simple tanks*like game as example.
+The proof of concept tries to implement a simple tanks-like game as example.
 
 ## Meta - General
 * 2 player vs. game
