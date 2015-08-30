@@ -5,7 +5,7 @@
 // to start the Vitou game server. It will start up
 // and listen to input events send by a connected client.
 //
-// Note that all general configuration data iscan be
+// Note that all general configuration data can be
 // found in ./configuration.json.
 //
 // Also note: This is a proof of concept. If you use
@@ -42,10 +42,9 @@ function init() {
 	gamedataHandler.loadData();
 	logHandler.log('Game data loaded', 2);
 	
-	// set up Socket.IO to listen on port 8000
+	// set up Socket.IO to listen on defined port
 	serverSocket = io.listen(configurationHandler.configurationStorage.server.connectionPort);
-	// sessionHandler.ioSession = serverSocket;
-	logHandler.log('Game server is now listening', 2);
+	logHandler.log('Game server is now listening on port ' + configurationHandler.configurationStorage.server.connectionPort, 2);
 
 	// start listening for events
 	setEventHandlers();

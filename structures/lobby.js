@@ -15,7 +15,7 @@ function LobbyObject() {
 
 	// global state for this lobby
 	// note: this is NOT the game state for a user!
-	this.lobbyState = '';
+	this.lobbyState = {};
 }
 
 module.exports = LobbyObject;

@@ -16,7 +16,7 @@ function UserObject() {
 	// user specific data
 	// note: this is NOT the game state for a user within a game
 	// this is user meta data for the platform!
-	this.userData = '';
+	this.userData = {};
 }
 
 module.exports = UserObject;
