@@ -11,8 +11,8 @@
     "gameDirectory": "game_modules"
   },
   "lobby": {
-    "minParticipants": 2,
-    "maxParticipants": 2
+    "minParticipants": 0,
+    "maxParticipants": 1
   },
   "logging": {
     "logLevel": 0,
@@ -20,9 +20,6 @@
     "logFile": ""
   },
   "successors": [
-    { "if": "system/game/createfromlobby", "then": "game/successors/ongamecreated" },
-    { "if": "system/user/create", "then": "game/successors/onusercreated" },
-    { "if": "game/gameplay/move", "then": "game/gameplay/endturn" },
-    { "if": "system/gameplay/shoot", "then": "game/gameplay/endturn" }
+    { "if": "if", "then": "then" }
   ]
 }
