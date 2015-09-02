@@ -27,7 +27,7 @@ function LoghandlerClass() {
 LoghandlerClass.prototype.log = function (message, severity) {
 	// convert from object to string	
 	if (typeof message === 'object') {
-		message = util.inspect(message);
+		message = util.inspect(message, { depth: null });
 	}
 
 	if (severity >= configurationHandler.configurationStorage.logging.logLevel) {

@@ -25,7 +25,7 @@ var run = function (session, data) {
 	var userObject = storageHandler.get(sessionObject.user);
 
 	// send state to client
-	var userDataString = util.inspect(userObject);
+	var userDataString = util.inspect(userObject, { depth: null });
 	var event = '{ "module": "user", "action": "state", "data": "' + userDataString + '" }';
 	communicationHandler.sendToSession(event, sessionObject);
 	

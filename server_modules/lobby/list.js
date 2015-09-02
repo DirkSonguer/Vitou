@@ -16,7 +16,7 @@ var run = function (session, data) {
 	var lobbyObjects = storageHandler.getByProperty('type', 'LobbyObject');	
 	
 	// send list of lobbies to client
-	var availableLobbiesString = util.inspect(lobbyObjects);
+	var availableLobbiesString = util.inspect(lobbyObjects, { depth: null });
 	var event = '{ "module": "lobby", "action": "list", "data": "' + availableLobbiesString + '" }';
 	communicationHandler.sendToSession(event, sessionObject);
 			
