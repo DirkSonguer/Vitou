@@ -5,6 +5,12 @@ This is a proof of concept for a game server middleware. Proof of concept means:
 
 The name does not mean anything, it was randomly created by a phonetic password generator. I was fed up calling the thing just "gameserver" all the time.
 
+# Vitou projects
+
+* Vitou server: https://github.com/DirkSonguer/Vitou
+* Vitou example game: https://github.com/DirkSonguer/Vitou-examplegame
+* Vitou UI: https://github.com/DirkSonguer/Vitou-ui
+
 ## Installation
 
 ### Prerequisites
@@ -15,10 +21,6 @@ The name does not mean anything, it was randomly created by a phonetic password 
 ### Run servers
 
 * "node ./vitou.js" in project root runs the game server 
-
-* "node ./testserver.js" in project root runs a server that provides a demo interface
-* You can open it via browser at "http://localhost:8887/"
-* It will send a test client that allows you to send events to the server
 
 See server documentation in /documentation/server.
 

@@ -25,6 +25,9 @@ var storageHandler = require('./storagehandler.js');
 // log handler
 var logHandler = require('./loghandler.js');
 
+// configuration handler
+var configurationHandler = require('./configurationhandler.js');
+
 var gamedataHandler = new GamedatahandlerClass();
 
 // Class function that gets the prototype methods
@@ -37,10 +40,99 @@ function GamedatahandlerClass() {
 GamedatahandlerClass.prototype.loadData = function () {
 	logHandler.log('Loading game data', 0);
 
-	// get list of files in /data/gamedata
-	var dataFilesPath = filePath.join(__dirname, '/../data/gamedata/');
-	var dataFilesList = fileSystem.readdirSync(dataFilesPath);
+	// import all component structures
+	this.importComponents();
+
+	// import all assemblage structures
+	this.importAssemblages();
+
+	// import the actual game data
+	this.importGameData();
 	
+	// done
+	return true;
+}
+
+// import components
+GamedatahandlerClass.prototype.importComponents = function () {
+	logHandler.log('Importing all components', 1);
+
+	// get list of component files
+	var componentFilesPath = filePath.join(__dirname, '/../' + configurationHandler.configurationStorage.server.gameDataDirectory + '/components/');
+	var componentFilesList = fileSystem.readdirSync(componentFilesPath);
+	
+	// iterate through component files
+	for (var i = 0, len = componentFilesList.length; i < len; i++) {
+		logHandler.log('Loading component data for file ' + componentFilesList[i] + ' (' + (i + 1) + ' / ' + componentFilesList.length + ')', 0);
+		
+		// build path to component source file
+		var componentSourcePath = filePath.join(__dirname, '/../' + configurationHandler.configurationStorage.server.gameDataDirectory + '/components/' + componentFilesList[i]);
+
+		// checking if the component actually exists in the system
+		try {
+			var stat = fileSystem.statSync(componentSourcePath);
+			if (!stat.isFile()) {
+				logHandler.log('Component does not exist: ' + componentSourcePath + ' not found (Not a file)', 0);
+				return false;
+			}
+		} catch (e) {
+			logHandler.log('Component does not exist: ' + componentSourcePath + ' not found (' + e.code + ')', 0);
+			return false;
+		}
+		
+		// load component structure from file system
+		var componentObject = JSON.parse(fileSystem.readFileSync(componentSourcePath, 'utf8'));
+
+		// add component to global storage
+		this.gameComponents[componentObject.meta.name] = componentObject;
+		logHandler.log('Component added: ' + componentObject.meta.name, 0);
+	}
+}
+
+// import assemblages
+GamedatahandlerClass.prototype.importAssemblages = function () {
+	logHandler.log('Importing all assemblages', 1);
+
+	// get list of assemblage files
+	var assemblageFilesPath = filePath.join(__dirname, '/../' + configurationHandler.configurationStorage.server.gameDataDirectory + '/assemblages/');
+	var assemblageFilesList = fileSystem.readdirSync(assemblageFilesPath);
+	
+	// iterate through component files
+	for (var i = 0, len = assemblageFilesList.length; i < len; i++) {
+		logHandler.log('Loading assemblage data for file ' + assemblageFilesList[i] + ' (' + (i + 1) + ' / ' + assemblageFilesList.length + ')', 0);
+	
+		// build path to component source file
+		var assemblageSourcePath = filePath.join(__dirname, '/../' + configurationHandler.configurationStorage.server.gameDataDirectory + '/assemblages/' + assemblageFilesList[i]);
+
+		// checking if the assemblage actually exists in the system
+		try {
+			var stat = fileSystem.statSync(assemblageSourcePath);
+			if (!stat.isFile()) {
+				logHandler.log('Assemblage does not exist: ' + assemblageSourcePath + ' not found (Not a file)', 0);
+				return false;
+			}
+		} catch (e) {
+			logHandler.log('Assemblage does not exist: ' + assemblageSourcePath + ' not found (' + e.code + ')', 0);
+			return false;
+		}
+	
+		// load assemblage structure from file system
+		var assemblageObject = JSON.parse(fileSystem.readFileSync(assemblageSourcePath, 'utf8'));
+	
+		// add assemblage to global storage
+		this.gameAssemblages[assemblageObject.meta.name] = assemblageObject;
+		logHandler.log('Assemblage added: ' + assemblageObject.meta.name, 0);
+	}
+}
+
+// import game data
+GamedatahandlerClass.prototype.importGameData = function () {
+	logHandler.log('Importing game data', 1);
+
+	// get list of game data files
+	var dataFilesPath = filePath.join(__dirname, '/../' + configurationHandler.configurationStorage.server.gameDataDirectory + '/gamedata/');
+	var dataFilesList = fileSystem.readdirSync(dataFilesPath);
+		
 	// iterate through files
 	for (var i = 0, ilen = dataFilesList.length; i < ilen; i++) {
 		logHandler.log('Loading data for file ' + dataFilesList[i] + '(' + (i + 1) + ' / ' + dataFilesList.length + ')', 0);
@@ -48,111 +140,42 @@ GamedatahandlerClass.prototype.loadData = function () {
 		// open file and get data
 		var dataFilePath = filePath.join(__dirname, '/../data/gamedata/' + dataFilesList[i]);
 		var dataFileContent = JSON.parse(fileSystem.readFileSync(dataFilePath, 'utf8'));
-				
-		// read assemblage type from data file
-		// this will define what assemblage to use
-		var dataFileAssemblage = dataFileContent.meta.assemblage;
-
-		// add assemblage for current data file to global storage
-		this.gameAssemblages.push(dataFileAssemblage);
-
-		// get assemblage structure, basically the list of components
-		var dataFileAssemblageStructure = this.getStructureForAssemblage(dataFileAssemblage);
 
 		// this will hold the data structure for the entire assembly
 		var dataStructureForAssembly = {};
-
+	
 		// get structure for each component and add them to the data structure to use
-		for (var j = 0, jlen = dataFileAssemblageStructure.components.length; j < jlen; j++) {
-			var componentStructure = this.getStructureForComponent(dataFileAssemblageStructure.components[j]);
-
-			// add component to global storage
-			this.gameComponents.push(dataFileAssemblageStructure.components[j]);
-
+		for (var j = 0, jlen = this.gameAssemblages[dataFileContent.meta.assemblage].components.length; j < jlen; j++) {
 			// add component data structure into assemblage data structure
-			dataStructureForAssembly = merge(dataStructureForAssembly, componentStructure.data);
+			dataStructureForAssembly = merge(dataStructureForAssembly, this.gameComponents[this.gameAssemblages[dataFileContent.meta.assemblage].components[j]].data);
 		}
-
+		
 		// add structure to global storage
-		this.gameDataStructures[dataFileAssemblage] = dataStructureForAssembly;
+		this.gameDataStructures[dataFileContent.meta.assemblage] = dataStructureForAssembly;
 
 		// load game data template
 		var GameDataObject = require('../structures/gamedata.js');
-
+		
 		// iterate through data array in the data file
+		// this will create new entities in the storage based on the recognised structures
 		for (var k = 0, klen = dataFileContent.data.length; k < klen; k++) {
 			// fill new game data object with standard info
 			var gameDataItem = new GameDataObject();
 			gameDataItem.id = uuid.v1();
-			gameDataItem.assemblage = dataFileAssemblage;
-			gameDataItem.components = dataFileAssemblageStructure.components;
-					
+			gameDataItem.assemblage = dataFileContent.meta.assemblage;
+			gameDataItem.components = this.gameAssemblages[dataFileContent.meta.assemblage].components;
+						
 			// transform the raw data into the component based structure
 			var gameDataObject = this.transformData(dataFileContent.data[k], dataStructureForAssembly);
 			gameDataItem.data = gameDataObject;
-		
+			
 			// push new item on game data array
 			storageHandler.set(gameDataItem.id, gameDataItem);
-			
+				
 			// game object done
 			logHandler.log(gameDataItem, 0);
 		}
 	}
-
-	// done
-	return true;
-}
-
-// load a given assemblage into an object
-GamedatahandlerClass.prototype.getStructureForAssemblage = function (assemblage) {
-	// build path to assemblage source file
-	var assemblageSourcePath = filePath.join(__dirname, '/../data/assemblages/' + assemblage + '.json');
-
-	// checking if the assemblage actually exists in the system
-	try {
-		var stat = fileSystem.statSync(assemblageSourcePath);
-		if (!stat.isFile()) {
-			logHandler.log('Assemblage does not exist: ' + assemblageSourcePath + ' not found (Not a file)', 0);
-			return false;
-		}
-	} catch (e) {
-		logHandler.log('Assemblage does not exist: ' + assemblageSourcePath + ' not found (' + e.code + ')', 0);
-		return false;
-	}
-	
-	// TODO: WTFCACHING!
-	
-	// load assemblage structure from file system
-	var assemblageObject = JSON.parse(fileSystem.readFileSync(assemblageSourcePath, 'utf8'));
-
-	// done
-	return assemblageObject;
-}
-
-// load a given component into an object
-GamedatahandlerClass.prototype.getStructureForComponent = function (component) {
-	// build path to component source file
-	var componentSourcePath = filePath.join(__dirname, '/../data/components/' + component + '.json');
-
-	// checking if the component actually exists in the system
-	try {
-		var stat = fileSystem.statSync(componentSourcePath);
-		if (!stat.isFile()) {
-			logHandler.log('Component does not exist: ' + componentSourcePath + ' not found (Not a file)', 0);
-			return false;
-		}
-	} catch (e) {
-		logHandler.log('Component does not exist: ' + componentSourcePath + ' not found (' + e.code + ')', 0);
-		return false;
-	}
-	
-	// TODO: WTFCACHING!
-	
-	// load component structure from file system
-	var componentObject = JSON.parse(fileSystem.readFileSync(componentSourcePath, 'utf8'));
-	
-	// done
-	return componentObject;
 }
 
 // transform given raw data into the given component based structure
