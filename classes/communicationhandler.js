@@ -44,7 +44,9 @@ CommunicationhandlerClass.prototype.sendToUserList = function (message, receiver
 }
 
 // broadcast event to all
-CommunicationhandlerClass.prototype.sendToAll = function (message) {
+CommunicationhandlerClass.prototype.sendToAll = function (message, session) {
+	// emit message
+	session.socket.broadcast.emit('message', message);	
 
 	// done
 	return true;

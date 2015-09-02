@@ -15,8 +15,8 @@ var run = function (session, data) {
 	var chatMessage = eventHandler.createEventString("system", "chat", "message", data);
 	
 	// broadcast data
-	session.socket.broadcast.emit('message', chatMessage);	
-	communicationHandler.sendEventToSession(chatMessage, session);
+	communicationHandler.sendToAll(chatMessage, session);
+	communicationHandler.sendToSession(chatMessage, session);
 
 	// done		
 	return true;
