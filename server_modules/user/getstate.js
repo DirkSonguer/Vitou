@@ -2,9 +2,6 @@
 // log handler
 var logHandler = require('../../classes/loghandler.js');
 
-// node utilities
-var util = require('util');
-
 // storage handler
 var storageHandler = require('../../classes/storagehandler.js');
 
@@ -25,8 +22,8 @@ var run = function (session, data) {
 	var userObject = storageHandler.get(sessionObject.user);
 
 	// send state to client
-	var userDataString = util.inspect(userObject, { depth: null });
-	var event = '{ "module": "user", "action": "state", "data": "' + userDataString + '" }';
+	var userDataString = JSON.stringify(userObject);
+	var event = '{ "module": "user", "action": "state", "data": ' + userDataString + ' }';
 	communicationHandler.sendToSession(event, sessionObject);
 	
 	// done

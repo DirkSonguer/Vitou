@@ -1,7 +1,4 @@
 
-// node utilities
-var util = require('util');
-
 // storage handler
 var storageHandler = require('../../classes/storagehandler.js');
 
@@ -16,8 +13,8 @@ var run = function (session, data) {
 	var lobbyObjects = storageHandler.getByProperty('type', 'LobbyObject');	
 	
 	// send list of lobbies to client
-	var availableLobbiesString = util.inspect(lobbyObjects, { depth: null });
-	var event = '{ "module": "lobby", "action": "list", "data": "' + availableLobbiesString + '" }';
+	var availableLobbiesString = JSON.stringify(lobbyObjects);
+	var event = '{ "module": "lobby", "action": "list", "data": ' + availableLobbiesString + ' }';
 	communicationHandler.sendToSession(event, sessionObject);
 			
 	// done
