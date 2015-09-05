@@ -67,7 +67,7 @@ var run = function (session, data) {
 	storageHandler.set(newGame.id, newGame);
 	
 	// send lobby update to all clients 
-	event = '{ "module": "lobby", "action": "losed", "data": "' + lobbyObject.id + '" }';
+	event = '{ "module": "lobby", "action": "closed", "data": "' + lobbyObject.id + '" }';
 	communicationHandler.sendToUserList(event, lobbyObject.lobbyParticipantsConfirmed);
 	
 	// send game update to all clients 
