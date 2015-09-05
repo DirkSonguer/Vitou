@@ -67,11 +67,11 @@ var run = function (session, data) {
 	storageHandler.set(newGame.id, newGame);
 	
 	// send lobby update to all clients 
-	event = '{ "module": "lobby", "action": "lobbyclosed", "data": "' + lobbyObject.id + '" };';
+	event = '{ "module": "lobby", "action": "losed", "data": "' + lobbyObject.id + '" }';
 	communicationHandler.sendToUserList(event, lobbyObject.lobbyParticipantsConfirmed);
 	
 	// send game update to all clients 
-	var event = '{ "module": "game", "action": "gamecreated", "data": "' + newGame.id + '" };';
+	var event = '{ "module": "game", "action": "created", "data": "' + newGame.id + '" }';
 	communicationHandler.sendToUserList(event, lobbyObject.lobbyParticipantsConfirmed);
 
 	// destroy lobby
