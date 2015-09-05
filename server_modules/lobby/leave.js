@@ -52,13 +52,15 @@ var run = function (session, data) {
 	storageHandler.set(userObject.id, userObject);
 	
 	// send update event to all clients still in lobby
-	if (lobbyObject.lobbyParticipants.length > 0) {
-		// send to remaining participants
-		var event = '{ "module": "lobby", "action": "playerleft", "data": "' + userObject.id + '" }';
-		communicationHandler.sendToUserList(event, lobbyObject.lobbyParticipants);
-		
-		// send to user
-		communicationHandler.sendToSession(event, sessionObject);		
+	var event = '{ "module": "lobby", "action": "playerleft", "data": "' + userObject.id + '" }';
+	communicationHandler.sendToUserList(event, lobbyObject.lobbyParticipants);
+	
+	// send to user
+	communicationHandler.sendToSession(event, sessionObject);		
+
+	// destroy lobby if no users are in it anymore
+	if (lobbyObject.lobbyParticipants.length == 0) {
+		storageHandler.delete(lobbyObject.id);		
 	}
 			
 	// done

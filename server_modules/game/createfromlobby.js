@@ -75,7 +75,7 @@ var run = function (session, data) {
 	communicationHandler.sendToUserList(event, lobbyObject.lobbyParticipantsConfirmed);
 
 	// destroy lobby
-	storageHandler.delete(userObject.lobby);
+	storageHandler.delete(lobbyObject.id);
 
 	// done
 	return newGame;
