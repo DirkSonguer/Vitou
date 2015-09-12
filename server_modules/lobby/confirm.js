@@ -48,6 +48,12 @@ var run = function (session, data) {
 		return false;
 	}
 
+	// check if lobby has reached min participants
+	if (lobbyObject.lobbyParticipants.length < configurationHandler.configurationStorage.lobby.minParticipants) {
+		logHandler.log('Could not confirm lobby: Lobby has not reached minimum members', 3);
+		return false;
+	}
+
 	// add user to participants confirmed list
 	lobbyObject.lobbyParticipantsConfirmed.push(userObject.id);
 	storageHandler.set(lobbyObject.id, lobbyObject);

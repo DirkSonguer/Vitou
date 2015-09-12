@@ -33,8 +33,14 @@ StoragehandlerClass.prototype.set = function (key, value) {
 StoragehandlerClass.prototype.get = function (key) {
 	logHandler.log('Retrieving data for key ' + key, 0);
 
+	var returnData = this.dataStorage[key];
+
+	if ((typeof returnData == 'object') && (returnData.type != 'SessionObject')) {
+		returnData = (JSON.parse(JSON.stringify(this.dataStorage[key])));
+	}
+
 	// return object from storage	
-	return this.dataStorage[key];
+	return returnData;
 }
 
 // retrieve all data items with a specific property

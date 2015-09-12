@@ -15,7 +15,7 @@ function GameObject() {
 	
 	// individual player states
 	// note: those are properties for player game state objects
-	this.playerStates = {};
+	this.playerStates = new Array();
 }
 
 module.exports = GameObject;
