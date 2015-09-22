@@ -10,7 +10,7 @@
 //
 // Also note: This is a proof of concept. If you use
 // this thing in any way productive, you should get
-// your head examined! See README for details.
+// your head examined! See README.md for details.
 // *************************************************** //
 
 // io server and interface
@@ -29,18 +29,18 @@ var eventHandler = require('./classes/eventhandler.js');
 // game data handler
 var gamedataHandler = require('./classes/gamedatahandler.js');
 
-// ################################################
 // initialise game server
-// ################################################
-
 function init() {
 	// load configuration
 	configurationHandler.loadConfiguration();
+	
+	// with the configuration loaded, we can actually start loading everything else
 	logHandler.log('Starting game server', 2);
 	
 	// loading game data
+	// this means that every instance of the game server loads the data by itself and keeps it in its memory
+	// that means data changes for one server in-memory will not affect other, newly created instances
 	gamedataHandler.loadData();
-	logHandler.log('Game data loaded', 2);
 	
 	// set up Socket.IO to listen on defined port
 	serverSocket = io.listen(configurationHandler.configurationStorage.server.connectionPort);
@@ -51,28 +51,28 @@ function init() {
 };
 
 
-// ################################################
 // socket input handling
 // note - this only handles connect, disconnect
 // and general message input. The actual message
 // processing will be handled by the message
 // handler (= queue).
-// ################################################
-
 var setEventHandlers = function () {
 	// socket.IO
 	serverSocket.sockets.on('connection', onSocketConnection);
 };
 
-// new socket connection
+// new socket connection occured
+// note that there are only 3 relevant things to listen for:
+// the actual connect, the the disconnect and events
 function onSocketConnection(client) {
 	// new client has connected
 	onClientConnect(client);
 
-	// listen for client disconnected
+	// listen for client disconnect
 	client.on('disconnect', onClientDisconnect);
 	
-	// proper event message was sent to the server  
+	// proper event message was sent to the server
+	// this is sent to the event handler
 	client.on('event', onEventReceived);
 };
 
@@ -101,10 +101,8 @@ function onClientDisconnect() {
 function onEventReceived(eventString) {
 	logHandler.log('Event received ' + eventString + ' from client ' + this.id, 0);
 
-	// parse event
-	var event = eventHandler.parseEventFromString(eventString);
-
 	// execute event
+	var event = eventHandler.parseEventFromString(eventString);
 	eventHandler.executeEvent(this, event);
 }
 

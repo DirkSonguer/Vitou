@@ -38,7 +38,7 @@ function GamedatahandlerClass() {
 }
 
 GamedatahandlerClass.prototype.loadData = function () {
-	logHandler.log('Loading game data', 0);
+	logHandler.log('Loading game data', 2);
 
 	// import all component structures
 	this.importComponents();
@@ -50,6 +50,7 @@ GamedatahandlerClass.prototype.loadData = function () {
 	this.importGameData();
 	
 	// done
+	logHandler.log('Game data loaded', 2);
 	return true;
 }
 
