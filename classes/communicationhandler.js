@@ -56,6 +56,4 @@ CommunicationhandlerClass.prototype.sendToAll = function (message, session) {
 	return true;
 }
 
-
-
 module.exports = communicationHandler;
