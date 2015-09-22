@@ -12,7 +12,10 @@ var run = function (session, data) {
 	}
 	
 	// create message
-	var chatMessage = eventHandler.createEventString("system", "chat", "message", data);
+	var messageAuthor = "anonymous";
+	if (session.user) messageAuthor = session.user;
+	var chatEvent = '{ "from": "' + messageAuthor + '", "message": "' + data + '" }';
+	var chatMessage = '{ "module": "chat", "action": "message", "data": ' + chatEvent + ' }';
 	
 	// broadcast data
 	communicationHandler.sendToAll(chatMessage, session);

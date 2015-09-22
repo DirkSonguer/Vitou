@@ -1,8 +1,12 @@
 // *************************************************** //
 // Communicationhandler class
 //
-// This script takes care of handling incoming and
-// outgoing events.
+// This script takes care of handling outgoing
+// communication.
+// Note that this is not just "a chat", but every message
+// sent to any client should be using this. Hence the
+// message / payload formatting needs to be provided by
+// the calling class.
 // *************************************************** //
 
 // storage handler

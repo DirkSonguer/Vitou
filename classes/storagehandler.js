@@ -5,7 +5,7 @@
 // Basically a super simple key / value database.
 // Usually you should use something like Redis or
 // another storage / cache, but this class acts as
-// a simple in-storage database for this PoC.
+// an in-storage database for this PoC.
 // *************************************************** //
 
 // log handler
