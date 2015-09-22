@@ -55,7 +55,7 @@ var run = function (session, data) {
 	}
 
 	// check if user has already confirmed
-	if (lobbyObject.lobbyParticipants.indexOf(userObject.id) < 0) {
+	if (lobbyObject.lobbyParticipantsConfirmed.indexOf(userObject.id) >= 0) {
 		logHandler.log('Could not confirm lobby: User has already confirmed', 3);
 		return false;
 	}
