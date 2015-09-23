@@ -8,7 +8,7 @@ The client sends a chat message to the server. The message will then be broadcas
 {
 	"type": "system",
 	"module": "chat",
-	"action": "sendmessage",
+	"action": "broadcast",
 	"data": "$CHAT_MESSAGE"
 }
 ```
