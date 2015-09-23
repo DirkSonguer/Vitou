@@ -15,13 +15,13 @@ This creates a new user and adds it to the storage. The current session will be 
 
 ## Result
 
-The server will answer with the id of the newly created user.
+The server will answer with the object of the newly created user.
 
 ```javascript
 {
 	"module": "user",
 	"action": "created",
-	"data": "$USER_ID"
+	"data": "$USER_OBJECT"
 }
 ```
 

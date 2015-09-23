@@ -31,8 +31,9 @@ var run = function (session, data) {
 	sessionObject.user = userObject.id;
 	storageHandler.set(session.id, sessionObject);
 
-	// send confirmation to creator
-	var event = '{ "module": "user", "action": "authenticated", "data": "' + userObject.id + '" }';
+	// send confirmation to authenticator
+	var userDataString = JSON.stringify(userObject);
+	var event = '{ "module": "user", "action": "authenticated", "data": ' + userDataString + ' }';
 	communicationHandler.sendToSession(event, sessionObject);
 			
 	// done

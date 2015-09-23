@@ -17,13 +17,13 @@ Note that this only returns the user data for the user the client session is bou
 
 ## Result
 
-The server will answer with the id of the newly created user.
+The server will answer with the object of the respective user.
 
 ```javascript
 {
 	"module": "user",
-	"action": "created",
-	"data": "$USER_DATA_OBJECT"
+	"action": "state",
+	"data": "$USER_OBJECT"
 }
 ```
 

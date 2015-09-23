@@ -17,13 +17,13 @@ Note that no proper authentication and user handling is implemented, so you just
 
 ## Result
 
-The server will answer with the id of the bound user as confirmation.
+The server will answer with the object of the user that is now bound to the session.
 
 ```javascript
 {
 	"module": "user",
 	"action": "authenticated",
-	"data": "$USER_ID"
+	"data": "$USER_OBJECT"
 }
 ```
 

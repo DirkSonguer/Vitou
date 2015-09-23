@@ -25,7 +25,8 @@ var run = function (session, data) {
 	storageHandler.set(session.id, sessionObject);
 	
 	// send confirmation to creator
-	var event = '{ "module": "user", "action": "created", "data": "' + newUser.id + '" }';
+	var userDataString = JSON.stringify(newUser);
+	var event = '{ "module": "user", "action": "created", "data": ' + userDataString + ' }';
 	communicationHandler.sendToSession(event, sessionObject);
 
 	// done
