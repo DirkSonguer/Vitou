@@ -8,8 +8,8 @@ Open ./configuration.json and set the basic definitions for the server.
 
 * Define the connection port the clients will connect at
 * Activate all modules your game would need from the server (delete the rest from activeModules)
-* Define the directory you will place your game modules in
-* Optional: Set configurations for respective modules
+* Define the directories you will place your game modules and data in
+* Optional: Define successors and set configuration for respective modules
 
 ## Create a new directory for your game
 
@@ -23,9 +23,22 @@ The server handles game data as small collections of data elements called compon
 
 Try to be as atomic as possible when creating your components, meaning that components should be meaningful but only contain a limited amount of properties within them.
 
-Add components as individual .js files inside the /data/components folder and they will be automatically loaded.
+Add components as individual .json files inside the /data/components folder and they will be automatically loaded.
+
+TBD
 
 ### Define your assemblages
 
+TBD
+
 ## Define data for your game
 
+TBD
+
+## Create actions for your game
+
+TBD
+
+## Run the server
+
+TBD
