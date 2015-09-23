@@ -13,11 +13,13 @@ Vitou was developed based on a couple of design assumptions:
 * Data structures should be super simple to define
 * Game based data should be super simple to import
 
+In short: Take away the tedious tasks, concentrate on what you need, be able to iterate on game balancing easily.
+
 ## Documentation overview
 
-* /server/basics should give you a good overview on how the server works and where everything is
-* /server/howto shows you how to implement your own game
-* /server/configuration contains details on how to configure the server
+* [./server/basics](should give you a good overview on how the server works and where everything is)
+* [./server/howto](shows you how to implement your own game)
+* [./server/configuration](contains details on how to configure the server)
 
 * /API/ contains all individual Vitou core API calls
 
