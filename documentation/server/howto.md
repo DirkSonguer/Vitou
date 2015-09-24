@@ -25,11 +25,11 @@ Try to be as atomic as possible when creating your components, meaning that comp
 
 Add components as individual .json files inside the /data/components folder and they will be automatically loaded.
 
-TBD
-
 ### Define your assemblages
 
-TBD
+Assemblages act as templates for objects, aggregating a number of components into logical types. An example would be the type "tank", which might contain the components "CanMove", "HasArmor", "CanAttack" and so on.
+
+Note that components can only attached once to assemblages. While you could actually add the same component multiple times to the assemblage array, it will be only added once.
 
 ## Define data for your game
 
