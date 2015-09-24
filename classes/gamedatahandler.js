@@ -209,7 +209,6 @@ class GamedatahandlerClass {
 	}
 }
 
-
 // export default new GamedatahandlerClass();
 var gamedataHandler = new GamedatahandlerClass();
 module.exports = gamedataHandler;
