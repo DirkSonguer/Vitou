@@ -30,7 +30,9 @@ Btw: The name does not mean anything, it was randomly created by a phonetic pass
 
 ### Run servers
 
-* "node ./vitou.js" in project root runs the game server 
+* "node --use_strict ./vitou.js" in project root runs the game server .
+
+Note that strict mode is needed as Vitou uses ES6 features like classes.
 
 See server documentation in /documentation/server.
 
