@@ -17,7 +17,6 @@ var logHandler = require('./loghandler.js');
 
 class CommunicationhandlerClass {
     constructor() {
-        this.configurationStorage = {};
     }
 	
 	// send a message to a specific socket
