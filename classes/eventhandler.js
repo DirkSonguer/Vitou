@@ -28,7 +28,6 @@ class EventhandlerClass {
 	// build an EventMessage string based on the
 	// input parameters
 	createEventString(eventType, eventModule, eventAction, eventData) {
-	
 		// create event structure
 		var eventString = '{ "type":"' + eventType + '",  "module": "' + eventModule + '", "action": "' + eventAction + '", "data": "' + eventData + '" }';
 
@@ -52,7 +51,6 @@ class EventhandlerClass {
 	// build an EventMessage structure based on the
 	// input parameters
 	createEventObject(eventType, eventModule, eventAction, eventData) {
-	
 		// create event structure
 		var eventObject = { 'type': eventType, 'module': eventModule, 'action': eventAction, 'data': eventData };
 
