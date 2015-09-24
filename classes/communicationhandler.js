@@ -15,45 +15,47 @@ var storageHandler = require('./storagehandler.js');
 // log handler
 var logHandler = require('./loghandler.js');
 
-var communicationHandler = new CommunicationhandlerClass();
-
-// Class function that gets the prototype methods
-function CommunicationhandlerClass() {
-}
-
-// send a message to a specific socket
-CommunicationhandlerClass.prototype.sendToSession = function (message, session) {
-	// emit message
-	session.socket.emit('message', message);
-
-	// done
-	return true;
-}
-
-// send event to a list of users
-CommunicationhandlerClass.prototype.sendToUserList = function (message, receiverList) {
-	// check if receivers were given
-	if (receiverList.length < 1) {
-		return false;
-	}
+class CommunicationhandlerClass {
+    constructor() {
+        this.configurationStorage = {};
+    }
 	
-	// send message to all participants
-	for (var i = 0, len = receiverList.length; i < len; i++) {
-		var userSession = storageHandler.getByProperty('user', receiverList[i]);
-		this.sendToSession(message, userSession[0]);
+	// send a message to a specific socket
+	sendToSession(message, session) {
+		// emit message
+		session.socket.emit('message', message);
+
+		// done
+		return true;
+	}	
+
+	// send event to a list of users
+	sendToUserList(message, receiverList) {
+		// check if receivers were given
+		if (receiverList.length < 1) {
+			return false;
+		}
+	
+		// send message to all participants
+		for (var i = 0, len = receiverList.length; i < len; i++) {
+			var userSession = storageHandler.getByProperty('user', receiverList[i]);
+			this.sendToSession(message, userSession[0]);
+		}
+
+		// done
+		return true;
 	}
 
-	// done
-	return true;
+	// broadcast event to all
+	sendToAll(message, session) {
+		// emit message
+		session.socket.broadcast.emit('message', message);	
+
+		// done
+		return true;
+	}
 }
 
-// broadcast event to all
-CommunicationhandlerClass.prototype.sendToAll = function (message, session) {
-	// emit message
-	session.socket.broadcast.emit('message', message);	
-
-	// done
-	return true;
-}
-
+// export default new CommunicationhandlerClass();
+var communicationHandler = new CommunicationhandlerClass();
 module.exports = communicationHandler;
