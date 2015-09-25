@@ -61,7 +61,6 @@ class StoragehandlerClass {
 		return returnData;
 	}
 
-
 	// check if a data item exists
 	exists(key) {
 		logHandler.log('Checking if data exists for key ' + key, 0);

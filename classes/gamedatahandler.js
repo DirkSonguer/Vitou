@@ -89,7 +89,6 @@ class GamedatahandlerClass {
 		}
 	}
 
-
 	// import assemblages
 	importAssemblages() {
 		logHandler.log('Importing all assemblages', 1);
@@ -125,8 +124,6 @@ class GamedatahandlerClass {
 			logHandler.log('Assemblage imported: ' + assemblageObject.meta.name, 0);
 		}
 	}
-
-
 
 	// import game data
 	importGameData() {
