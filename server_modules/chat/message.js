@@ -33,7 +33,7 @@ var run = function (session, data) {
 	var chatEvent = '{ "from": "' + messageAuthor + '", "message": "' + data.message + '" }';
 	var chatMessage = '{ "module": "chat", "action": "message", "data": ' + chatEvent + ' }';
 
-	// send data
+	// send data to recipient
 	communicationHandler.sendToSession(chatMessage, sessionObject[0]);
 
 	// done		
