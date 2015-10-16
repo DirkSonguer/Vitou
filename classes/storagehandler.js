@@ -13,7 +13,7 @@ var logHandler = require('./loghandler.js');
 
 class StoragehandlerClass {
     constructor() {
-		this.dataStorage = new Array();
+		this.dataStorage = new Map();
 	}
 	
 	// store a new data item
@@ -21,7 +21,7 @@ class StoragehandlerClass {
 		logHandler.log('Storing data for key ' + key, 0);
 
 		// add object to storage	
-		this.dataStorage[key] = value;
+		this.dataStorage.set(key, value);
 
 		// done
 		return true;
@@ -31,10 +31,11 @@ class StoragehandlerClass {
 	get(key) {
 		logHandler.log('Retrieving data for key ' + key, 0);
 
-		var returnData = this.dataStorage[key];
+		// get actual value
+		var returnData = this.dataStorage.get(key);
 
 		if ((typeof returnData == 'object') && (returnData.type != 'SessionObject')) {
-			returnData = (JSON.parse(JSON.stringify(this.dataStorage[key])));
+			returnData = (JSON.parse(JSON.stringify(returnData)));
 		}
 
 		// return object from storage	
@@ -47,16 +48,15 @@ class StoragehandlerClass {
 	
 		// create return object
 		var returnData = new Array();
-	
+				
 		// this is appallingly ineffective
-		var allKeys = Object.keys(this.dataStorage);
-		for (var i = 0, len = allKeys.length; i < len; i++) {
-			var el = this.dataStorage[allKeys[i]];
-			if (el[property] == key) {
-				returnData.push(el);
+		// TODO: Get rid of forEach and use proper for loop
+		this.dataStorage.forEach(function (storageobject, storagekey) {
+			if (storageobject[property] == key) {
+				returnData.push(storageobject);
 			}
-		}
-	
+		});
+
 		// return objects from storage	
 		return returnData;
 	}
@@ -64,14 +64,9 @@ class StoragehandlerClass {
 	// check if a data item exists
 	exists(key) {
 		logHandler.log('Checking if data exists for key ' + key, 0);
-
-		// if item exists, it's not undefined
-		if (typeof this.dataStorage[key] === 'undefined') {
-			return false;
-		}
 	
 		// done
-		return true;
+		return this.dataStorage.has(key);
 	}
 
 	// delete a data item
@@ -79,7 +74,7 @@ class StoragehandlerClass {
 		logHandler.log('Deleting data with key ' + key, 0);
 
 		// remove object from storage
-		delete this.dataStorage[key];
+		this.dataStorage.delete(key);
 
 		// done
 		return true;
