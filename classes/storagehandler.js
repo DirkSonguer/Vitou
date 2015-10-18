@@ -43,19 +43,19 @@ class StoragehandlerClass {
 	}
 
 	// retrieve all data items with a specific property
-	getByProperty(property, key) {
-		logHandler.log('Retrieving data that has property ' + property + '=' + key, 0);
+	getByProperty(property, value) {
+		logHandler.log('Retrieving data that has property ' + property + '=' + value, 0);
 	
 		// create return object
 		var returnData = new Array();
-				
-		// this is appallingly ineffective
-		// TODO: Get rid of forEach and use proper for loop
-		this.dataStorage.forEach(function (storageobject, storagekey) {
-			if (storageobject[property] == key) {
-				returnData.push(storageobject);
+
+		// iterate through all data objects
+		var dataItem = new Map();
+		for (dataItem of this.dataStorage.values()) {
+			if (dataItem[property] == value) {
+				returnData.push(dataItem);
 			}
-		});
+		}
 
 		// return objects from storage	
 		return returnData;
