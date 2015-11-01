@@ -7,6 +7,10 @@
 // defined beforehand by game design. This class does NOT
 // handle the individual instances of the data. This is
 // the entitycomponenthandler.
+//
+// Author: Dirk Songuer
+// License: CC BY-NC 3.0
+// License: https://creativecommons.org/licenses/by-nc/3.0
 // *************************************************** //
 
 // UUID

@@ -1,3 +1,12 @@
+// *************************************************** //
+// User create event
+//
+// This event creates a new user within the system.
+//
+// Author: Dirk Songuer
+// License: CC BY-NC 3.0
+// License: https://creativecommons.org/licenses/by-nc/3.0
+// *************************************************** //
 
 // log handler
 var logHandler = require('../../classes/loghandler.js');

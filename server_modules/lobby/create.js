@@ -1,3 +1,13 @@
+// *************************************************** //
+// Lobby create event
+//
+// This event create a new lobby.
+// This will also add the creating player to the lobby.
+//
+// Author: Dirk Songuer
+// License: CC BY-NC 3.0
+// License: https://creativecommons.org/licenses/by-nc/3.0
+// *************************************************** //
 
 // UUID
 var uuid = require('node-uuid');

@@ -1,3 +1,12 @@
+// *************************************************** //
+// Lobby list event
+//
+// This event lists the existing lobbies.
+//
+// Author: Dirk Songuer
+// License: CC BY-NC 3.0
+// License: https://creativecommons.org/licenses/by-nc/3.0
+// *************************************************** //
 
 // storage handler
 var storageHandler = require('../../classes/storagehandler.js');

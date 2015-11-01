@@ -1,3 +1,12 @@
+// *************************************************** //
+// User structure
+//
+// This structure reflects a user within the system.
+//
+// Author: Dirk Songuer
+// License: CC BY-NC 3.0
+// License: https://creativecommons.org/licenses/by-nc/3.0
+// *************************************************** //
 
 // reference object for a user
 function UserObject() {

@@ -11,6 +11,10 @@
 // Also note: This is a proof of concept. If you use
 // this thing in any way productive, you should get
 // your head examined! See README.md for details.
+//
+// Author: Dirk Songuer
+// License: CC BY-NC 3.0
+// License: https://creativecommons.org/licenses/by-nc/3.0
 // *************************************************** //
 
 // io server and interface

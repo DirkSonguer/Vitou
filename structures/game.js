@@ -1,3 +1,15 @@
+// *************************************************** //
+// Game structure
+//
+// This structure reflects a default game within
+// the system.
+// Note that there is no real game specific data attached
+// to this yet.
+//
+// Author: Dirk Songuer
+// License: CC BY-NC 3.0
+// License: https://creativecommons.org/licenses/by-nc/3.0
+// *************************************************** //
 
 // reference object for a game
 function GameObject() {

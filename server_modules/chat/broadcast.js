@@ -1,3 +1,14 @@
+// *************************************************** //
+// Chat broadcast event
+//
+// This event sends a given chat message to all connected
+// sessions.
+//
+// Author: Dirk Songuer
+// License: CC BY-NC 3.0
+// License: https://creativecommons.org/licenses/by-nc/3.0
+// *************************************************** //
+
 // event handler
 var eventHandler = require('../../classes/eventhandler.js');
 

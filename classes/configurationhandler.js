@@ -3,6 +3,10 @@
 //
 // This script takes care of loading and providing the
 // general configuration.
+//
+// Author: Dirk Songuer
+// License: CC BY-NC 3.0
+// License: https://creativecommons.org/licenses/by-nc/3.0
 // *************************************************** //
 
 var fileSystem = require('fs');

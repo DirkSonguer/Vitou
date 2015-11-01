@@ -1,3 +1,13 @@
+// *************************************************** //
+// Chat group event
+//
+// This event sends a given chat message to a list of
+// connected sessions.
+//
+// Author: Dirk Songuer
+// License: CC BY-NC 3.0
+// License: https://creativecommons.org/licenses/by-nc/3.0
+// *************************************************** //
 
 // log handler
 var logHandler = require('../../classes/loghandler.js');

@@ -1,3 +1,13 @@
+// *************************************************** //
+// Game create event
+//
+// This event creates a new game with the default
+// structure based on the lobby information.
+//
+// Author: Dirk Songuer
+// License: CC BY-NC 3.0
+// License: https://creativecommons.org/licenses/by-nc/3.0
+// *************************************************** //
 
 // UUID
 var uuid = require('node-uuid');

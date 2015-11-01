@@ -1,3 +1,13 @@
+// *************************************************** //
+// Lobby confirm event
+//
+// This event confirms a player in a lobby to be ready
+// for the game.
+//
+// Author: Dirk Songuer
+// License: CC BY-NC 3.0
+// License: https://creativecommons.org/licenses/by-nc/3.0
+// *************************************************** //
 
 // log handler
 var logHandler = require('../../classes/loghandler.js');

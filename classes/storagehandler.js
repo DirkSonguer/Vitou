@@ -6,6 +6,10 @@
 // Usually you should use something like Redis or
 // another storage / cache, but this class acts as
 // an in-storage database for this PoC.
+//
+// Author: Dirk Songuer
+// License: CC BY-NC 3.0
+// License: https://creativecommons.org/licenses/by-nc/3.0
 // *************************************************** //
 
 // log handler

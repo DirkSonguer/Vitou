@@ -1,3 +1,13 @@
+// *************************************************** //
+// Authentication structure
+//
+// This structure reflects an authentication within
+// the system.
+//
+// Author: Dirk Songuer
+// License: CC BY-NC 3.0
+// License: https://creativecommons.org/licenses/by-nc/3.0
+// *************************************************** //
 
 // reference object for an authentication
 function AuthenticationObject() {

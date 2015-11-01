@@ -6,6 +6,10 @@
 // proper event objects.
 // TODO: This is not a queue, this just executes what
 // it gets!
+//
+// Author: Dirk Songuer
+// License: CC BY-NC 3.0
+// License: https://creativecommons.org/licenses/by-nc/3.0
 // *************************************************** //
 
 // file system

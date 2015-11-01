@@ -1,3 +1,14 @@
+// *************************************************** //
+// User authenticate event
+//
+// This event lets a user authenticate against the system.
+// After this, the user will get a user object bound to
+// the session.
+//
+// Author: Dirk Songuer
+// License: CC BY-NC 3.0
+// License: https://creativecommons.org/licenses/by-nc/3.0
+// *************************************************** //
 
 // log handler
 var logHandler = require('../../classes/loghandler.js');
@@ -57,9 +68,22 @@ var run = function (session, data) {
 	if ((!userObject) || (userObject.type != "UserObject")) {
 		logHandler.log('# Could not authenticate user: User not found', 3);
 		return false;
-	}	
+	}
+	
+	logHandler.log("# User found, clearing existing sessions", 2);
+	
+	// storageHandler.getByPropertyArray({type: 'SessionObject', user: userObject.id});
+	/*
+	// clear existing sessions for user
+	var userSessions = storageHandler.getByProperty('user', userObject.id);
+	for (var i = 0, len = userSessions.length; i < len; i++) {
+		logHandler.log("# Clearing " + userSessions[i].id + " of type " + userSessions[i].type, 1);
+		storageHandler.delete(userSessions[i]);
+	}
+*/
+	logHandler.log("# Binding new session", 2);
 
-	// bind user object to session
+	// bind user object to current session
 	sessionObject.user = userObject.id;
 	storageHandler.set(session.id, sessionObject);
 

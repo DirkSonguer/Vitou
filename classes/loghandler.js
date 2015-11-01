@@ -4,6 +4,10 @@
 // This script is a super simple logger.
 // Yes, I know I should use Winston or Bunyan, but this
 // is a PoC, ok?
+//
+// Author: Dirk Songuer
+// License: CC BY-NC 3.0
+// License: https://creativecommons.org/licenses/by-nc/3.0
 // *************************************************** //
 
 // configuration handler

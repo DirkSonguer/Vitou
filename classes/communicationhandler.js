@@ -7,6 +7,10 @@
 // sent to any client should be using this. Hence the
 // message / payload formatting needs to be provided by
 // the calling class.
+//
+// Author: Dirk Songuer
+// License: CC BY-NC 3.0
+// License: https://creativecommons.org/licenses/by-nc/3.0
 // *************************************************** //
 
 // storage handler

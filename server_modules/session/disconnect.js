@@ -1,3 +1,12 @@
+// *************************************************** //
+// Session disconnect event
+//
+// This event disconnects a session from the system.
+//
+// Author: Dirk Songuer
+// License: CC BY-NC 3.0
+// License: https://creativecommons.org/licenses/by-nc/3.0
+// *************************************************** //
 
 // log handler
 var logHandler = require('../../classes/loghandler.js');

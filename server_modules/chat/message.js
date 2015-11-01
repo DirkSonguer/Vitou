@@ -1,3 +1,13 @@
+// *************************************************** //
+// Chat send event
+//
+// This event sends a given chat message to one specific
+// connected session.
+//
+// Author: Dirk Songuer
+// License: CC BY-NC 3.0
+// License: https://creativecommons.org/licenses/by-nc/3.0
+// *************************************************** //
 
 // log handler
 var logHandler = require('../../classes/loghandler.js');
