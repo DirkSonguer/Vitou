@@ -17,6 +17,8 @@ class ConfigurationhandlerClass {
         this.configurationStorage = {};
     }
 
+    // load the configuration from server
+    // note the file is always ./configuration.json 
     loadConfiguration() {
         // load general server configuration
         var configurationFilePath = filePath.join(__dirname, '/../' + 'configuration.json');

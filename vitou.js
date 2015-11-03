@@ -110,8 +110,5 @@ function onEventReceived(eventString) {
 	eventHandler.executeEvent(this, event);
 }
 
-
-// ################################################
 // run game server
-// ################################################
 init();
