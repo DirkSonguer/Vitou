@@ -28,5 +28,3 @@ The server will answer with the object of the user that is now bound to the sess
 ```
 
 ## To Do
-
-* Well, proper user management and login

@@ -49,6 +49,5 @@ and
 
 ## To Do
 
-* Lobby.confirm should not handle the new game creation, but it should push a game.create event to the queue
 * Clients should get the full game state on game creation
 * Game state should contain player objects, avoiding additional requests to get the data

@@ -18,8 +18,7 @@ Btw: The name does not mean anything, it was randomly created by a phonetic pass
 # Vitou projects
 
 * Vitou server: https://github.com/DirkSonguer/Vitou
-* Vitou example game: https://github.com/DirkSonguer/Vitou-examplegame
-* Vitou UI: https://github.com/DirkSonguer/Vitou-ui
+* Vitou example game - Arena tanks: https://github.com/DirkSonguer/Vitou-arenatanks
 
 ## Installation
 
