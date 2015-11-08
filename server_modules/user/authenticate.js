@@ -29,12 +29,16 @@ var run = function (session, data) {
 	// check if session has an attached user
 	if (sessionObject.user != "") {
 		logHandler.log('# Could not authenticate user: User already authenticated', 3);
+		var event = '{ "module": "user", "action": "notauthenticated", "data": ""}';
+		communicationHandler.sendToSession(event, sessionObject);
 		return false;
 	}
 
 	// check if data is available
 	if ((!data) || (typeof data.login == 'undefined') || (typeof data.password == 'undefined')) {
 		logHandler.log('# Could not authenticate user: No or missing data', 1);
+		var event = '{ "module": "user", "action": "notauthenticated", "data": ""}';
+		communicationHandler.sendToSession(event, sessionObject);
 		return false;
 	}
 
@@ -44,6 +48,8 @@ var run = function (session, data) {
 	// check if object was found
 	if ((!authenticationObject) || (authenticationObject.type != "AuthenticationObject")) {
 		logHandler.log('# Could not authenticate user: Given data does not match to a user authentication', 3);
+		var event = '{ "module": "user", "action": "notauthenticated", "data": ""}';
+		communicationHandler.sendToSession(event, sessionObject);
 		return false;
 	}
 	
@@ -58,6 +64,8 @@ var run = function (session, data) {
 	var userHash = newUserHash.digest('hex');
 	if (authenticationObject.password != userHash) {
 		logHandler.log('# Could not authenticate user: Pass does not match', 3);
+		var event = '{ "module": "user", "action": "notauthenticated", "data": ""}';
+		communicationHandler.sendToSession(event, sessionObject);
 		return false;
 	}
 	
@@ -67,20 +75,11 @@ var run = function (session, data) {
 	// check if user can be found
 	if ((!userObject) || (userObject.type != "UserObject")) {
 		logHandler.log('# Could not authenticate user: User not found', 3);
+		var event = '{ "module": "user", "action": "notauthenticated", "data": ""}';
+		communicationHandler.sendToSession(event, sessionObject);
 		return false;
 	}
-	
-	logHandler.log("# User found, clearing existing sessions", 2);
-	
-	// storageHandler.getByPropertyArray({type: 'SessionObject', user: userObject.id});
-	/*
-	// clear existing sessions for user
-	var userSessions = storageHandler.getByProperty('user', userObject.id);
-	for (var i = 0, len = userSessions.length; i < len; i++) {
-		logHandler.log("# Clearing " + userSessions[i].id + " of type " + userSessions[i].type, 1);
-		storageHandler.delete(userSessions[i]);
-	}
-*/
+
 	logHandler.log("# Binding new session", 2);
 
 	// bind user object to current session
