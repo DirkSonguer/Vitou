@@ -40,8 +40,8 @@ class CommunicationhandlerClass {
 		}
 	
 		// send message to all participants
-		for (var i = 0, len = receiverList.length; i < len; i++) {
-			var userSession = storageHandler.getByProperty('user', receiverList[i]);
+		for (let i = 0, len = receiverList.length; i < len; i++) {
+			let userSession = storageHandler.getByProperty('user', receiverList[i]);
 			this.sendToSession(message, userSession[0]);
 		}
 

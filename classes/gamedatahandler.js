@@ -66,15 +66,15 @@ class GamedatahandlerClass {
 		var componentFilesList = fileSystem.readdirSync(componentFilesPath);
 	
 		// iterate through component files
-		for (var i = 0, len = componentFilesList.length; i < len; i++) {
+		for (let i = 0, len = componentFilesList.length; i < len; i++) {
 			logHandler.log('Loading component data for file ' + componentFilesList[i] + ' (' + (i + 1) + ' / ' + componentFilesList.length + ')', 0);
 		
 			// build path to component source file
-			var componentSourcePath = filePath.join(__dirname, '/../' + configurationHandler.configurationStorage.server.gameDataDirectory + '/components/' + componentFilesList[i]);
+			let componentSourcePath = filePath.join(__dirname, '/../' + configurationHandler.configurationStorage.server.gameDataDirectory + '/components/' + componentFilesList[i]);
 
 			// checking if the component actually exists in the system
 			try {
-				var stat = fileSystem.statSync(componentSourcePath);
+				let stat = fileSystem.statSync(componentSourcePath);
 				if (!stat.isFile()) {
 					logHandler.log('Component does not exist: ' + componentSourcePath + ' not found (Not a file)', 0);
 					return false;
@@ -85,7 +85,7 @@ class GamedatahandlerClass {
 			}
 		
 			// load component structure from file system
-			var componentObject = JSON.parse(fileSystem.readFileSync(componentSourcePath, 'utf8'));
+			let componentObject = JSON.parse(fileSystem.readFileSync(componentSourcePath, 'utf8'));
 
 			// add component to global storage
 			this.gameComponents[componentObject.meta.name] = componentObject;
@@ -98,19 +98,19 @@ class GamedatahandlerClass {
 		logHandler.log('Importing all assemblages', 1);
 
 		// get list of assemblage files
-		var assemblageFilesPath = filePath.join(__dirname, '/../' + configurationHandler.configurationStorage.server.gameDataDirectory + '/assemblages/');
-		var assemblageFilesList = fileSystem.readdirSync(assemblageFilesPath);
+		let assemblageFilesPath = filePath.join(__dirname, '/../' + configurationHandler.configurationStorage.server.gameDataDirectory + '/assemblages/');
+		let assemblageFilesList = fileSystem.readdirSync(assemblageFilesPath);
 	
 		// iterate through component files
-		for (var i = 0, len = assemblageFilesList.length; i < len; i++) {
+		for (let i = 0, len = assemblageFilesList.length; i < len; i++) {
 			logHandler.log('Loading assemblage data for file ' + assemblageFilesList[i] + ' (' + (i + 1) + ' / ' + assemblageFilesList.length + ')', 0);
 	
 			// build path to component source file
-			var assemblageSourcePath = filePath.join(__dirname, '/../' + configurationHandler.configurationStorage.server.gameDataDirectory + '/assemblages/' + assemblageFilesList[i]);
+			let assemblageSourcePath = filePath.join(__dirname, '/../' + configurationHandler.configurationStorage.server.gameDataDirectory + '/assemblages/' + assemblageFilesList[i]);
 
 			// checking if the assemblage actually exists in the system
 			try {
-				var stat = fileSystem.statSync(assemblageSourcePath);
+				let stat = fileSystem.statSync(assemblageSourcePath);
 				if (!stat.isFile()) {
 					logHandler.log('Assemblage does not exist: ' + assemblageSourcePath + ' not found (Not a file)', 0);
 					return false;
@@ -121,7 +121,7 @@ class GamedatahandlerClass {
 			}
 	
 			// load assemblage structure from file system
-			var assemblageObject = JSON.parse(fileSystem.readFileSync(assemblageSourcePath, 'utf8'));
+			let assemblageObject = JSON.parse(fileSystem.readFileSync(assemblageSourcePath, 'utf8'));
 	
 			// add assemblage to global storage
 			this.gameAssemblages[assemblageObject.meta.name] = assemblageObject;
@@ -134,22 +134,22 @@ class GamedatahandlerClass {
 		logHandler.log('Importing game data', 1);
 
 		// get list of game data files
-		var dataFilesPath = filePath.join(__dirname, '/../' + configurationHandler.configurationStorage.server.gameDataDirectory + '/gamedata/');
-		var dataFilesList = fileSystem.readdirSync(dataFilesPath);
+		let dataFilesPath = filePath.join(__dirname, '/../' + configurationHandler.configurationStorage.server.gameDataDirectory + '/gamedata/');
+		let dataFilesList = fileSystem.readdirSync(dataFilesPath);
 		
 		// iterate through files
-		for (var i = 0, ilen = dataFilesList.length; i < ilen; i++) {
+		for (let i = 0, ilen = dataFilesList.length; i < ilen; i++) {
 			logHandler.log('Loading data for file ' + dataFilesList[i] + '(' + (i + 1) + ' / ' + dataFilesList.length + ')', 0);
 
 			// open file and get data
-			var dataFilePath = filePath.join(__dirname, '/../data/gamedata/' + dataFilesList[i]);
-			var dataFileContent = JSON.parse(fileSystem.readFileSync(dataFilePath, 'utf8'));
+			let dataFilePath = filePath.join(__dirname, '/../data/gamedata/' + dataFilesList[i]);
+			let dataFileContent = JSON.parse(fileSystem.readFileSync(dataFilePath, 'utf8'));
 
 			// this will hold the data structure for the entire assembly
-			var dataStructureForAssembly = {};
+			let dataStructureForAssembly = {};
 	
 			// get structure for each component and add them to the data structure to use
-			for (var j = 0, jlen = this.gameAssemblages[dataFileContent.meta.assemblage].components.length; j < jlen; j++) {
+			for (let j = 0, jlen = this.gameAssemblages[dataFileContent.meta.assemblage].components.length; j < jlen; j++) {
 				// add component data structure into assemblage data structure
 				dataStructureForAssembly = merge(dataStructureForAssembly, this.gameComponents[this.gameAssemblages[dataFileContent.meta.assemblage].components[j]].data);
 			}
@@ -158,19 +158,19 @@ class GamedatahandlerClass {
 			this.gameDataStructures[dataFileContent.meta.assemblage] = dataStructureForAssembly;
 
 			// load game data template
-			var GameDataObject = require('../structures/gamedata.js');
+			let GameDataObject = require('../structures/gamedata.js');
 		
 			// iterate through data array in the data file
 			// this will create new entities in the storage based on the recognised structures
-			for (var k = 0, klen = dataFileContent.data.length; k < klen; k++) {
+			for (let k = 0, klen = dataFileContent.data.length; k < klen; k++) {
 				// fill new game data object with standard info
-				var gameDataItem = new GameDataObject();
+				let gameDataItem = new GameDataObject();
 				gameDataItem.id = uuid.v1();
 				gameDataItem.assemblage = dataFileContent.meta.assemblage;
 				gameDataItem.components = this.gameAssemblages[dataFileContent.meta.assemblage].components;
 						
 				// transform the raw data into the component based structure
-				var gameDataObject = this.transformData(dataFileContent.data[k], dataStructureForAssembly);
+				let gameDataObject = this.transformData(dataFileContent.data[k], dataStructureForAssembly);
 				gameDataItem.data = gameDataObject;
 			
 				// push new item on game data array
@@ -191,15 +191,15 @@ class GamedatahandlerClass {
 
 		// iterate through the data structure
 		// the first layer is the component
-		var i = 0;
-		for (var key in dataStructure) {
+		let i = 0;
+		for (let key in dataStructure) {
 			dataObject[key] = rawData[i];
 			i++;
 		}
 		
 		// iterate through the data structure
 		// the first layer is the component
-		var i = 0;
+		i = 0;
 		for (var key in dataStructure) {
 			dataObject[key] = rawData[i];
 			i++;

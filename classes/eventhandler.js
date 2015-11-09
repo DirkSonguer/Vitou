@@ -33,7 +33,7 @@ class EventhandlerClass {
 	// input parameters
 	createEventString(eventType, eventModule, eventAction, eventData) {
 		// create event structure
-		var eventString = '{ "type":"' + eventType + '",  "module": "' + eventModule + '", "action": "' + eventAction + '", "data": "' + eventData + '" }';
+		let eventString = '{ "type":"' + eventType + '",  "module": "' + eventModule + '", "action": "' + eventAction + '", "data": "' + eventData + '" }';
 
 		// done
 		return eventString;
@@ -56,7 +56,7 @@ class EventhandlerClass {
 	// input parameters
 	createEventObject(eventType, eventModule, eventAction, eventData) {
 		// create event structure
-		var eventObject = { 'type': eventType, 'module': eventModule, 'action': eventAction, 'data': eventData };
+		let eventObject = { 'type': eventType, 'module': eventModule, 'action': eventAction, 'data': eventData };
 
 		// done
 		return eventObject;
@@ -75,7 +75,7 @@ class EventhandlerClass {
 		// TODO: OMFGWTF SECURITY!!!!
 	
 		// choose respective directory based on event type
-		var eventDirectory = configurationHandler.configurationStorage.server.gameDirectory;
+		let eventDirectory = configurationHandler.configurationStorage.server.gameDirectory;
 		if (event.type == 'system') {
 			// checking if server module is active
 			if (configurationHandler.configurationStorage.server.activeModules.indexOf(event.module) == -1) {
@@ -88,11 +88,11 @@ class EventhandlerClass {
 		}
 	
 		// build path to event source file
-		var eventSourcePath = filePath.join(__dirname, '/../' + eventDirectory + '/' + event.module + '/' + event.action + '.js');
+		let eventSourcePath = filePath.join(__dirname, '/../' + eventDirectory + '/' + event.module + '/' + event.action + '.js');
 
 		// checking if the module and action actually exists in the system
 		try {
-			var stat = fileSystem.statSync(eventSourcePath);
+			let stat = fileSystem.statSync(eventSourcePath);
 			if (!stat.isFile()) {
 				logHandler.log('Event is not implemented: ' + eventSourcePath + ' not found (Not a file)', 3);
 				return false;
@@ -103,7 +103,7 @@ class EventhandlerClass {
 		}
 
 		// get full session object for socket connection
-		var session = storageHandler.get(sender.id);
+		let session = storageHandler.get(sender.id);
 		if (!session) {
 			// note that the reason we can't find a session might be
 			// that this is the connection call
@@ -117,23 +117,23 @@ class EventhandlerClass {
 
 		// calling the actual module and action
 		logHandler.log('Calling ' + eventSourcePath + ' with data ' + event.data, 0);
-		var eventAction = require(eventSourcePath);
-		var eventResult = eventAction(session, event.data);
+		let eventAction = require(eventSourcePath);
+		let eventResult = eventAction(session, event.data);
 
 		// done
 		if (!eventResult) {
 			logHandler.log('# The call ' + eventSourcePath + ' with data ' + event.data + ' went wrong. INVESTIGATE!!!!', 3);
 		} else {
 			// check for relevant successors
-			var eventString = event.type + '/' + event.module + '/' + event.action;
-			var relevantSuccessors = configurationHandler.configurationStorage.successors.filter(function (el) {
+			let eventString = event.type + '/' + event.module + '/' + event.action;
+			let relevantSuccessors = configurationHandler.configurationStorage.successors.filter(function (el) {
 				return el.if == eventString;
 			});
 
 			// if successors were found, execute the first one
 			if (relevantSuccessors.length > 0) {
 				logHandler.log('Found successor for ' + eventString + ', calling ' + relevantSuccessors[0].then, 2);
-				var successorEventArray = relevantSuccessors[0].then.split('/');
+				let successorEventArray = relevantSuccessors[0].then.split('/');
 				if (successorEventArray.length != 3) {
 					logHandler.log('Successor has wrong format: ' + relevantSuccessors[0].then, 3);
 					return false;

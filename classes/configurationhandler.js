@@ -21,7 +21,7 @@ class ConfigurationhandlerClass {
     // note the file is always ./configuration.json 
     loadConfiguration() {
         // load general server configuration
-        var configurationFilePath = filePath.join(__dirname, '/../' + 'configuration.json');
+        let configurationFilePath = filePath.join(__dirname, '/../' + 'configuration.json');
         this.configurationStorage = JSON.parse(fileSystem.readFileSync(configurationFilePath));
 
         // done

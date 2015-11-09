@@ -36,7 +36,7 @@ class StoragehandlerClass {
 		logHandler.log('Retrieving data for key ' + key, 0);
 
 		// get actual value
-		var returnData = this.dataStorage.get(key);
+		let returnData = this.dataStorage.get(key);
 
 		if ((typeof returnData == 'object') && (returnData.type != 'SessionObject')) {
 			returnData = (JSON.parse(JSON.stringify(returnData)));
@@ -51,10 +51,10 @@ class StoragehandlerClass {
 		logHandler.log('Retrieving data that has property ' + property + '=' + value, 0);
 	
 		// create return object
-		var returnData = new Array();
+		let returnData = new Array();
 
 		// iterate through all data objects
-		var dataItem = new Map();
+		let dataItem = new Map();
 		for (dataItem of this.dataStorage.values()) {
 			if (dataItem[property] == value) {
 				returnData.push(dataItem);
