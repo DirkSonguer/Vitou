@@ -20,20 +20,22 @@ var communicationHandler = require('../../classes/communicationhandler.js');
 
 var run = function (session, data) {
 	// get session object
-	var sessionObject = storageHandler.get(session.id);
+	let sessionObject = storageHandler.get(session.id);
 	
 	// check if session has an attached user
 	if (sessionObject.user == "") {
 		logHandler.log('Could not get state for user: No user found in session', 3);
+		let event = '{ "module": "user", "action": "state", "data": "" }';
+		communicationHandler.sendToSession(event, sessionObject);
 		return false;
 	}
 
 	// get user object
-	var userObject = storageHandler.get(sessionObject.user);
+	let userObject = storageHandler.get(sessionObject.user);
 
 	// send state to client
-	var userDataString = JSON.stringify(userObject);
-	var event = '{ "module": "user", "action": "state", "data": ' + userDataString + ' }';
+	let userDataString = JSON.stringify(userObject);
+	let event = '{ "module": "user", "action": "state", "data": ' + userDataString + ' }';
 	communicationHandler.sendToSession(event, sessionObject);
 	
 	// done

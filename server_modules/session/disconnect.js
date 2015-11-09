@@ -19,7 +19,7 @@ var communicationHandler = require('../../classes/communicationhandler.js');
 
 var run = function (session, data) {
 	// get session object
-	var sessionObject = storageHandler.get(session.id);
+	let sessionObject = storageHandler.get(session.id);
 	
 	// check if session is already known
 	if (!sessionObject) {
@@ -30,7 +30,7 @@ var run = function (session, data) {
 	// delete session object from storage
 	storageHandler.delete(session.id);
 
-	var event = '{ "module": "session", "action": "connected", "data": "' + session.id + '" }';
+	let event = '{ "module": "session", "action": "connected", "data": "' + session.id + '" }';
 	communicationHandler.sendToSession(event, sessionObject);
 
 	// done

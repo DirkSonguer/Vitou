@@ -19,11 +19,13 @@ var communicationHandler = require('../../classes/communicationhandler.js');
 
 var run = function (session, data) {
 	// get session object
-	var sessionObject = storageHandler.get(session.id);
+	let sessionObject = storageHandler.get(session.id);
 	
 	// check if session has an attached user
 	if (sessionObject.user == "") {
 		logHandler.log('Could not leave lobby: User is not authenticated', 3);
+		let event = '{ "module": "lobby", "action": "notleave", "data": "" }';
+		communicationHandler.sendToSession(event, sessionObject);
 		return false;
 	}
 
@@ -33,26 +35,32 @@ var run = function (session, data) {
 	// check if session has an attached user
 	if ((!userObject) || (userObject.type != "UserObject")) {
 		logHandler.log('Could not leave lobby: No user object found', 3);
+		let event = '{ "module": "lobby", "action": "notleave", "data": "" }';
+		communicationHandler.sendToSession(event, sessionObject);
 		return false;
 	}
 
 	// check if user already is in a lobby
 	if (userObject.lobby == '') {
 		logHandler.log('Could not leave lobby: User is already in a lobby', 3);
+		let event = '{ "module": "lobby", "action": "notleave", "data": "" }';
+		communicationHandler.sendToSession(event, sessionObject);
 		return false;
 	}
 	
 	// get lobby object
-	var lobbyObject = storageHandler.get(userObject.lobby);
+	let lobbyObject = storageHandler.get(userObject.lobby);
 		
 	// check if given object really is a lobby
 	if ((!lobbyObject) || (lobbyObject.type != "LobbyObject")) {
 		logHandler.log('Could not leave lobby: Lobby object could not be found', 3);
+		let event = '{ "module": "lobby", "action": "notleave", "data": "" }';
+		communicationHandler.sendToSession(event, sessionObject);
 		return false;
 	}
 
 	// remove user from participants list
-	var cutIndex = lobbyObject.lobbyParticipants.indexOf(userObject.id);
+	let cutIndex = lobbyObject.lobbyParticipants.indexOf(userObject.id);
 	lobbyObject.lobbyParticipants.splice(cutIndex, 1);
 	storageHandler.set(lobbyObject.id, lobbyObject);
 	
@@ -61,7 +69,7 @@ var run = function (session, data) {
 	storageHandler.set(userObject.id, userObject);
 	
 	// send update event to all clients still in lobby
-	var event = '{ "module": "lobby", "action": "playerleft", "data": "' + userObject.id + '" }';
+	let event = '{ "module": "lobby", "action": "playerleft", "data": "' + userObject.id + '" }';
 	communicationHandler.sendToUserList(event, lobbyObject.lobbyParticipants);
 	
 	// send to user

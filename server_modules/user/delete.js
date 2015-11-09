@@ -19,11 +19,13 @@ var communicationHandler = require('../../classes/communicationhandler.js');
 
 var run = function (session, data) {
 	// get session object
-	var sessionObject = storageHandler.get(session.id);
+	let sessionObject = storageHandler.get(session.id);
 	
 	// check if session has an attached user
 	if (sessionObject.user == "") {
 		logHandler.log('Could not delete user: No user found in session', 3);
+		let event = '{ "module": "user", "action": "notdeleted", "data": "" }';
+		communicationHandler.sendToSession(event, sessionObject);
 		return false;
 	}
 
@@ -31,7 +33,7 @@ var run = function (session, data) {
 	storageHandler.delete(sessionObject.user);
 	
 	// send confirmation to creator
-	var event = '{ "module": "user", "action": "deleted", "data": "' + sessionObject.id + '" }';
+	let event = '{ "module": "user", "action": "deleted", "data": "' + sessionObject.id + '" }';
 	communicationHandler.sendToSession(event, sessionObject);
 
 	// remove user from current session

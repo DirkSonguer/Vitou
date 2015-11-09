@@ -24,12 +24,12 @@ var communicationHandler = require('../../classes/communicationhandler.js');
 
 var run = function (session, data) {
 	// get session object
-	var sessionObject = storageHandler.get(session.id);
+	let sessionObject = storageHandler.get(session.id);
 	
 	// check if session has an attached user
 	if (sessionObject.user != "") {
 		logHandler.log('# Could not authenticate user: User already authenticated', 3);
-		var event = '{ "module": "user", "action": "notauthenticated", "data": ""}';
+		let event = '{ "module": "user", "action": "notauthenticated", "data": ""}';
 		communicationHandler.sendToSession(event, sessionObject);
 		return false;
 	}
@@ -37,45 +37,45 @@ var run = function (session, data) {
 	// check if data is available
 	if ((!data) || (typeof data.login == 'undefined') || (typeof data.password == 'undefined')) {
 		logHandler.log('# Could not authenticate user: No or missing data', 1);
-		var event = '{ "module": "user", "action": "notauthenticated", "data": ""}';
+		let event = '{ "module": "user", "action": "notauthenticated", "data": ""}';
 		communicationHandler.sendToSession(event, sessionObject);
 		return false;
 	}
 
 	// get authentication object
-	var authenticationObject = storageHandler.get(data.login);
+	let authenticationObject = storageHandler.get(data.login);
 
 	// check if object was found
 	if ((!authenticationObject) || (authenticationObject.type != "AuthenticationObject")) {
 		logHandler.log('# Could not authenticate user: Given data does not match to a user authentication', 3);
-		var event = '{ "module": "user", "action": "notauthenticated", "data": ""}';
+		let event = '{ "module": "user", "action": "notauthenticated", "data": ""}';
 		communicationHandler.sendToSession(event, sessionObject);
 		return false;
 	}
 	
 	// create new hash from password
-	var newUserHash = crypto.createHash('sha1');
+	let newUserHash = crypto.createHash('sha1');
 	newUserHash.update(data.password);
 	
 	// add salt
 	newUserHash.update(authenticationObject.salt);	
 	
 	// check password hash
-	var userHash = newUserHash.digest('hex');
+	let userHash = newUserHash.digest('hex');
 	if (authenticationObject.password != userHash) {
 		logHandler.log('# Could not authenticate user: Pass does not match', 3);
-		var event = '{ "module": "user", "action": "notauthenticated", "data": ""}';
+		let event = '{ "module": "user", "action": "notauthenticated", "data": ""}';
 		communicationHandler.sendToSession(event, sessionObject);
 		return false;
 	}
 	
 	// get user object
-	var userObject = storageHandler.get(authenticationObject.user);
+	let userObject = storageHandler.get(authenticationObject.user);
 	
 	// check if user can be found
 	if ((!userObject) || (userObject.type != "UserObject")) {
 		logHandler.log('# Could not authenticate user: User not found', 3);
-		var event = '{ "module": "user", "action": "notauthenticated", "data": ""}';
+		let event = '{ "module": "user", "action": "notauthenticated", "data": ""}';
 		communicationHandler.sendToSession(event, sessionObject);
 		return false;
 	}
@@ -87,8 +87,8 @@ var run = function (session, data) {
 	storageHandler.set(session.id, sessionObject);
 
 	// send confirmation to authenticator
-	var userDataString = JSON.stringify(userObject);
-	var event = '{ "module": "user", "action": "authenticated", "data": ' + userDataString + ' }';
+	let userDataString = JSON.stringify(userObject);
+	let event = '{ "module": "user", "action": "authenticated", "data": ' + userDataString + ' }';
 	communicationHandler.sendToSession(event, sessionObject);
 			
 	// done

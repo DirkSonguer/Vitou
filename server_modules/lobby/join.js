@@ -22,47 +22,59 @@ var configurationHandler = require('../../classes/configurationhandler.js');
 
 var run = function (session, data) {
 	// get session object
-	var sessionObject = storageHandler.get(session.id);
+	let sessionObject = storageHandler.get(session.id);
 	
 	// check if session has an attached user
 	if (sessionObject.user == "") {
 		logHandler.log('Could not join lobby: User is not authenticated', 3);
+		let event = '{ "module": "lobby", "action": "notjoin", "data": "" }';
+		communicationHandler.sendToSession(event, sessionObject);
 		return false;
 	}
 
 	// get user object
-	var userObject = storageHandler.get(sessionObject.user);
+	let userObject = storageHandler.get(sessionObject.user);
 		
 	// check if session has an attached user
 	if ((!userObject) || (userObject.type != "UserObject")) {
 		logHandler.log('Could not join lobby: No user object found', 3);
+		let event = '{ "module": "lobby", "action": "notjoin", "data": "" }';
+		communicationHandler.sendToSession(event, sessionObject);
 		return false;
 	}
 
 	// check if user already is in a game
 	if (userObject.game != '') {
 		logHandler.log('Could not join lobby: User is already in a game', 3);
+		let event = '{ "module": "lobby", "action": "notjoin", "data": "" }';
+		communicationHandler.sendToSession(event, sessionObject);
 		return false;
 	}
 
 	// check if user already is in a lobby
 	if (userObject.lobby != '') {
 		logHandler.log('Could not join lobby: User is already in a lobby', 3);
+		let event = '{ "module": "lobby", "action": "notjoin", "data": "" }';
+		communicationHandler.sendToSession(event, sessionObject);
 		return false;
 	}
 	
 	// get lobby object
-	var lobbyObject = storageHandler.get(data);
+	let lobbyObject = storageHandler.get(data);
 		
 	// check if given object really is a lobby
 	if ((!lobbyObject) || (lobbyObject.type != "LobbyObject")) {
 		logHandler.log('Could not join lobby: Lobby object could not be found', 3);
+		let event = '{ "module": "lobby", "action": "notjoin", "data": "" }';
+		communicationHandler.sendToSession(event, sessionObject);
 		return false;
 	}
 
 	// check if lobby has space for new participants
 	if (lobbyObject.lobbyParticipants.length >= configurationHandler.configurationStorage.lobby.maxParticipants) {
 		logHandler.log('Could not join lobby: Lobby reached maximum members', 3);
+		let event = '{ "module": "lobby", "action": "notjoin", "data": "" }';
+		communicationHandler.sendToSession(event, sessionObject);
 		return false;
 	}
 

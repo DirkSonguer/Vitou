@@ -37,7 +37,7 @@ var run = function (session, data) {
 	// send message to all recipients
 	for (var i = 0, ilen = data.to.length; i < ilen; i++) {	
 		// get session object for respective user
-		var userObject = storageHandler.getByProperty('user', data.to[i]);
+		let userObject = storageHandler.getByProperty('user', data.to[i]);
 		
 		// check if given id is actually an allowed user
 		if ((userObject.length < 1) || (userObject[0].type != "SessionObject")) {
@@ -46,10 +46,10 @@ var run = function (session, data) {
 		}
 
 		// create message
-		var messageAuthor = "anonymous";
+		let messageAuthor = "anonymous";
 		if (session.user) messageAuthor = session.user;
-		var chatEvent = '{ "from": "' + messageAuthor + '", "message": "' + data.message + '" }';
-		var chatMessage = '{ "module": "chat", "action": "message", "data": ' + chatEvent + ' }';
+		let chatEvent = '{ "from": "' + messageAuthor + '", "message": "' + data.message + '" }';
+		let chatMessage = '{ "module": "chat", "action": "message", "data": ' + chatEvent + ' }';
 
 		// send data to recipient
 		communicationHandler.sendToSession(chatMessage, userObject[0]);

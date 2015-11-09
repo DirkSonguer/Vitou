@@ -19,7 +19,7 @@ var communicationHandler = require('../../classes/communicationhandler.js');
 
 var run = function (session, data) {
 	// get session object
-	var sessionObject = storageHandler.get(session.id);
+	let sessionObject = storageHandler.get(session.id);
 	
 	// check if session is already known
 	if (sessionObject) {
@@ -28,15 +28,15 @@ var run = function (session, data) {
 	}
 
 	// create new session object
-	var SessionObject = require('../../structures/session.js');
-	var newSession = new SessionObject();
+	let SessionObject = require('../../structures/session.js');
+	let newSession = new SessionObject();
 	newSession.id = session.id;
 	newSession.socket = session;
 
 	// add new session to storage
 	storageHandler.set(newSession.id, newSession);
 
-	var event = '{ "module": "session", "action": "connected", "data": "' + session.id + '" }';
+	let event = '{ "module": "session", "action": "connected", "data": "' + session.id + '" }';
 	communicationHandler.sendToSession(event, newSession);
 
 	// done

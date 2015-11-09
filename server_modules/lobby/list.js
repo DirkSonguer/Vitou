@@ -16,14 +16,14 @@ var communicationHandler = require('../../classes/communicationhandler.js');
 
 var run = function (session, data) {
 	// get session object
-	var sessionObject = storageHandler.get(session.id);
+	let sessionObject = storageHandler.get(session.id);
 
 	// get lobby object
-	var lobbyObjects = storageHandler.getByProperty('type', 'LobbyObject');	
+	let lobbyObjects = storageHandler.getByProperty('type', 'LobbyObject');	
 	
 	// send list of lobbies to client
-	var availableLobbiesString = JSON.stringify(lobbyObjects);
-	var event = '{ "module": "lobby", "action": "list", "data": ' + availableLobbiesString + ' }';
+	let availableLobbiesString = JSON.stringify(lobbyObjects);
+	let event = '{ "module": "lobby", "action": "list", "data": ' + availableLobbiesString + ' }';
 	communicationHandler.sendToSession(event, sessionObject);
 			
 	// done

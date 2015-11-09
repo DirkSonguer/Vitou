@@ -23,10 +23,10 @@ var run = function (session, data) {
 	}
 	
 	// create message
-	var messageAuthor = "anonymous";
+	let messageAuthor = "anonymous";
 	if (session.user) messageAuthor = session.user;
-	var chatEvent = '{ "from": "' + messageAuthor + '", "message": "' + data + '" }';
-	var chatMessage = '{ "module": "chat", "action": "message", "data": ' + chatEvent + ' }';
+	let chatEvent = '{ "from": "' + messageAuthor + '", "message": "' + data + '" }';
+	let chatMessage = '{ "module": "chat", "action": "message", "data": ' + chatEvent + ' }';
 	
 	// broadcast data
 	communicationHandler.sendToAll(chatMessage, session);

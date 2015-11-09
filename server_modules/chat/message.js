@@ -29,7 +29,7 @@ var run = function (session, data) {
 	}
 	
 	// get session object for respective user
-	var sessionObject = storageHandler.getByProperty('user', data.to);
+	let sessionObject = storageHandler.getByProperty('user', data.to);
 		
 	// check if given id is actually an allowed user
 	if ((sessionObject.length < 1) || (sessionObject[0].type != "SessionObject")) {
@@ -38,10 +38,10 @@ var run = function (session, data) {
 	}
 	
 	// create message
-	var messageAuthor = "anonymous";
+	let messageAuthor = "anonymous";
 	if (session.user) messageAuthor = session.user;
-	var chatEvent = '{ "from": "' + messageAuthor + '", "message": "' + data.message + '" }';
-	var chatMessage = '{ "module": "chat", "action": "message", "data": ' + chatEvent + ' }';
+	let chatEvent = '{ "from": "' + messageAuthor + '", "message": "' + data.message + '" }';
+	let chatMessage = '{ "module": "chat", "action": "message", "data": ' + chatEvent + ' }';
 
 	// send data to recipient
 	communicationHandler.sendToSession(chatMessage, sessionObject[0]);

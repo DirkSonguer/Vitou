@@ -26,47 +26,59 @@ var configurationHandler = require('../../classes/configurationhandler.js');
 
 var run = function (session, data) {
  	// get session object
-	var sessionObject = storageHandler.get(session.id);
+	let sessionObject = storageHandler.get(session.id);
 	
 	// check if session has an attached user
 	if (sessionObject.user == "") {
 		logHandler.log('Could not confirm lobby: User is not authenticated', 3);
+		let event = '{ "module": "lobby", "action": "playernotconfirmed", "data": "" }';
+		communicationHandler.sendToSession(event, sessionObject);
 		return false;
 	}
 
 	// get user object
-	var userObject = storageHandler.get(sessionObject.user);
+	let userObject = storageHandler.get(sessionObject.user);
 		
 	// check if session has an attached user
 	if ((!userObject) || (userObject.type != "UserObject")) {
 		logHandler.log('Could not confirm lobby: No user object found', 3);
+		let event = '{ "module": "lobby", "action": "playernotconfirmed", "data": "" }';
+		communicationHandler.sendToSession(event, sessionObject);
 		return false;
 	}
 
 	// check if user already is in a lobby
 	if (userObject.lobby == '') {
 		logHandler.log('Could not confirm lobby: User is not in a lobby', 3);
+		let event = '{ "module": "lobby", "action": "playernotconfirmed", "data": "" }';
+		communicationHandler.sendToSession(event, sessionObject);
 		return false;
 	}
 	
 	// get lobby object
-	var lobbyObject = storageHandler.get(userObject.lobby);
+	let lobbyObject = storageHandler.get(userObject.lobby);
 		
 	// check if given object really is a lobby
 	if ((lobbyObject) && (lobbyObject.type != "LobbyObject")) {
 		logHandler.log('Could not confirm lobby: Lobby object could not be found', 3);
+		let event = '{ "module": "lobby", "action": "playernotconfirmed", "data": "" }';
+		communicationHandler.sendToSession(event, sessionObject);
 		return false;
 	}
 
 	// check if lobby has reached min participants
 	if (lobbyObject.lobbyParticipants.length < configurationHandler.configurationStorage.lobby.minParticipants) {
 		logHandler.log('Could not confirm lobby: Lobby has not reached minimum members', 3);
+		let event = '{ "module": "lobby", "action": "playernotconfirmed", "data": "" }';
+		communicationHandler.sendToSession(event, sessionObject);
 		return false;
 	}
 
 	// check if user has already confirmed
 	if (lobbyObject.lobbyParticipantsConfirmed.indexOf(userObject.id) >= 0) {
 		logHandler.log('Could not confirm lobby: User has already confirmed', 3);
+		let event = '{ "module": "lobby", "action": "playernotconfirmed", "data": "" }';
+		communicationHandler.sendToSession(event, sessionObject);
 		return false;
 	}
 
@@ -75,13 +87,13 @@ var run = function (session, data) {
 	storageHandler.set(lobbyObject.id, lobbyObject);
 	
 	// send update event to all clients in lobby
-	var event = '{ "module": "lobby", "action": "playerconfirmed", "data": "' + userObject.id + '" }';
+	let event = '{ "module": "lobby", "action": "playerconfirmed", "data": "' + userObject.id + '" }';
 	communicationHandler.sendToUserList(event, lobbyObject.lobbyParticipants);
 		
 	// if all participants have already confirmed, start new game
 	if (lobbyObject.lobbyParticipantsConfirmed.length == lobbyObject.lobbyParticipants.length) {
 		// create new game
-		event = eventHandler.createEventObject("system", "game", "createfromlobby", "");
+		let event = eventHandler.createEventObject("system", "game", "createfromlobby", "");
 		eventHandler.executeEvent(session, event);
 	}		
 		
